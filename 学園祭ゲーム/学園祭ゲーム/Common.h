@@ -61,10 +61,10 @@
 #define CAMERA_ROTATE 200.0f
 
 // マップ
-#define MAP_Y 25
+#define MAP_Y 49
 #define MAP_X 10
 
-#define MAX_BLOCK 100
+#define MAX_BLOCK 140
 /* -----------------------------------------------------------------------------------------
 |
 |       共通ヘッダー

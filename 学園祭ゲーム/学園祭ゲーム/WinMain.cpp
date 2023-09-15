@@ -16,7 +16,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 		
 		
 	// カメラポジション cpos:カメラ位置　ctgt:カメラ注視点
-	cpos = VGet(0.0f,1000.0f,-2000.0f) ;
+	cpos = VGet(500.0f,1000.0f,-2000.0f) ;
 	ctgt = VGet(0.0f,500.0f,-400.0f) ;
 	cadd = VGet(0.0f, 0.0f, 0.0f);
 
@@ -41,6 +41,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	MV1SetUseZBuffer(skydata, false);
 	// ブロックモデルの読み込み
 	blockdate[TATAMI_BLOCK] = MV1LoadModel("..\\Data\\Stage\\たたみ.mv1");
+	blockdate[FALL_BLOCK] = MV1LoadModel("..\\Data\\Stage\\落下ブロック.mv1");
+	blockdate[NEEDLE_BLOCK] = MV1LoadModel("..\\Data\\Stage\\棘.mv1");
 	blockcnt = 0;
 	// マップデータに反映
 	for (int y = MAP_Y - 1; y >= 0; y--) {
@@ -51,6 +53,20 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					m_block[blockcnt].SetMapPositionY( y );
 					m_block[blockcnt].SetMapPositionX( x );
 					m_block[blockcnt].SetBlockFlag( TRUE );
+					break;
+
+				case FALL_BLOCK :
+					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[FALL_BLOCK]);
+					m_block[blockcnt].SetMapPositionY(y);
+					m_block[blockcnt].SetMapPositionX(x);
+					m_block[blockcnt].SetBlockFlag(TRUE);
+					break;
+
+				case NEEDLE_BLOCK :
+					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[NEEDLE_BLOCK]);
+					m_block[blockcnt].SetMapPositionY(y);
+					m_block[blockcnt].SetMapPositionX(x);
+					m_block[blockcnt].SetBlockFlag(TRUE);
 					break;
 			}
 			if (m_block[blockcnt].GetBlockFlag() == TRUE)
@@ -71,8 +87,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 			}
 		}
 	}
-
-
 	// シャドウマップハンドルの作成
 
 

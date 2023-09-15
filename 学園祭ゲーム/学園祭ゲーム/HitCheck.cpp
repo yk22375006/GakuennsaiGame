@@ -106,8 +106,8 @@ int CollisionBlock() {
 
 //	for (int i = 0; i < 100; i++) {
 		LineBlock = HitCheck_Line_Cube(cal_pos1, cal_pos2,
-			VGet(m_block[11].GetBlockPosition().x - 100.0f, m_block[11].GetBlockPosition().y, m_block[11].GetBlockPosition().z - 100.0f),
-			VGet(m_block[11].GetBlockTopPosition().x + 100.0f, m_block[11].GetBlockTopPosition().y, m_block[11].GetBlockTopPosition().z + 100.0f));
+			VGet(m_block[10].GetBlockPosition().x - 100.0f, m_block[10].GetBlockPosition().y, m_block[10].GetBlockPosition().z - 100.0f),
+			VGet(m_block[10].GetBlockTopPosition().x + 100.0f, m_block[10].GetBlockTopPosition().y, m_block[10].GetBlockTopPosition().z + 100.0f));
 
 		// “–‚½‚Á‚Ä‚¢‚È‚©‚Á‚½‚ç‰½‚à‚µ‚È‚¢
 		if (LineBlock.HitFlag == TRUE) {
@@ -115,7 +115,7 @@ int CollisionBlock() {
 			HitFlag = 1;
 
 			// ÚG‚µ‚½‚xÀ•W‚ð•Û‘¶‚·‚é
-			MaxY = m_block[11].GetBlockTopPosition().y;
+			MaxY = m_block[10].GetBlockTopPosition().y;
 		}
 //		if (m_block[i].GetBlockFlag() == FALSE) {
 //			break;

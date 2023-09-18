@@ -111,9 +111,16 @@ void PlayerMove() {
 		MV1SetAttachAnimTime(Player[0].model, Player[0].attachidx, Player[0].playtime);
 	}
 */
+
 	if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
 		Player[0].pos.y += 30.0f;
 		Player[0].move.y = 40.0f;
+		Player[0].mode = FALL;
+		AnimationPlayer(JUMPIN);
+		Player[0].playtime = 0.0f;
+		Player[0].anim_totaltime = MV1GetAnimTotalTime(Player[0].model, Player[0].attachidx);
+
+		MV1SetAttachAnimTime(Player[0].model, Player[0].attachidx, Player[0].playtime);
 	}
 	if (CheckHitKey(KEY_INPUT_LSHIFT) == 1) {
 		Player[0].move.x *= 2.0f;

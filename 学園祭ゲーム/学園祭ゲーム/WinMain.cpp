@@ -216,13 +216,15 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					if (Player[0].playtime > Player[0].anim_totaltime){
 						if (Player[0].mode == JUMPIN) {
 							AnimationPlayer(JUMPLOOP);
-							Player[0].move.y = 15.0f;
+							Player[0].move.y = 40.0f;
 							Player[0].pos.y += (Player[0].move.y * 4);	// ジャンプ直後の地面めり込みを避けるため
 						}
 
-						if (Player[0].mode == JUMPOUT)	AnimationPlayer(STAND);
+						if (Player[0].mode == JUMPOUT)
+							AnimationPlayer(STAND);
 
-						if (Player[0].mode == ATTACK) AnimationPlayer(STAND);
+						if (Player[0].mode == ATTACK)
+							AnimationPlayer(STAND);
 
 						Player[0].playtime = 0.0f ;
 					}
@@ -240,9 +242,9 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				// アニメーションの反映
 				MV1SetAttachAnimTime(Player[0].model, Player[0].attachidx, Player[0].playtime);
 				MV1SetAttachAnimTime(Player[1].model, Player[1].attachidx, Player[1].playtime);
+				PlayerMove();
 				// キー操作
 				if(Player[0].mode == STAND || Player[0].mode == RUN){
-					PlayerMove();
 
 					// アニメのループ管理(ジャンプループと落ちるものはループしない)
 					if ( Player[0].mode != JUMPLOOP && Player[0].mode != FALL ) {
@@ -332,9 +334,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					}
 				}
 
-				MV1SetupCollInfo(stagedata, -1);
-
-				HitDim = MV1CollCheck_Sphere(stagedata, -1, Player[0].pos, CHARA_ENUM_DEFAULT_SIZE + VSize( Player[0].move ) ) ;
+				HitDim = MV1CollCheck_Sphere(stagedata, -1, Player[0].pos, CHARA_ENUM_DEFAULT_SIZE + VSize(Player[0].move));
 				WallNum = 0 ;
 				FloorNum = 0 ;
 				// 検出されたポリゴンの数だけ繰り返し
@@ -371,8 +371,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				// 床ポリゴンとの当たり判定
 				if( FloorNum != 0 ){
 					HitFlag = FloorSearch();
-					HitFlag = CollisionBlock();
 				}
+				HitFlag = CollisionBlock();
 				// 床ポリゴンに当たったかどうかで処理を分岐
 				if( HitFlag == 1 ){
 					// 接触したポリゴンで一番高いＹ座標をキャラクターのＹ座標にする
@@ -413,6 +413,12 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				// 検出したキャラクターの周囲のポリゴン情報を開放する
 				MV1CollResultPolyDimTerminate( HitDim ) ;
+
+				if (CheckHitKey(KEY_INPUT_C) == 1) {
+					printf("%d|", Player[0].mode);
+					Player[0].pos.y = 1000.0f;
+					Player[0].move.y = 0.0f;
+				}
 
 				// 移動処理
 				Player[0].pos.x += Player[0].move.x ;

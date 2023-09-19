@@ -40,6 +40,7 @@
 #define CHOICESTAGE 1
 
 // ブロック
+#define MAX_BLOCK			140
 #define BLOCK_TYPE			10
 #define TATAMI_BLOCK		1
 #define BREAK_BLOCK			2
@@ -64,7 +65,6 @@
 #define MAP_Y 49
 #define MAP_X 10
 
-#define MAX_BLOCK 140
 /* -----------------------------------------------------------------------------------------
 |
 |       共通ヘッダー

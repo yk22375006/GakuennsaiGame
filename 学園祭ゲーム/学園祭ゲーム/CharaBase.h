@@ -16,7 +16,7 @@
 
 #define EFFECT_SLASH_RADIAN 315
 
-#define CHARA_ENUM_DEFAULT_SIZE		500.0f		// 周囲のポリゴン検出に使用する球の初期サイズ
+#define CHARA_ENUM_DEFAULT_SIZE		2000.0f		// 周囲のポリゴン検出に使用する球の初期サイズ
 #define CHARA_MAX_HITCOLL			2048		// 処理するコリジョンポリゴンの最大数
 
 #define CHARA_HIT_HEIGHT			700.0f		// 当たり判定カプセルの高さ

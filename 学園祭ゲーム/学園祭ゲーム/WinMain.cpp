@@ -334,7 +334,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					}
 				}
 
-				HitDim = MV1CollCheck_Sphere(stagedata, -1, Player[0].pos, CHARA_ENUM_DEFAULT_SIZE + VSize(Player[0].move));
+/*				HitDim = MV1CollCheck_Sphere(stagedata, -1, Player[0].pos, CHARA_ENUM_DEFAULT_SIZE + VSize(Player[0].move));
 				WallNum = 0 ;
 				FloorNum = 0 ;
 				// ŒŸo‚³‚ê‚½ƒ|ƒŠƒSƒ“‚Ì”‚¾‚¯ŒJ‚è•Ô‚µ
@@ -372,6 +372,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				if( FloorNum != 0 ){
 					HitFlag = FloorSearch();
 				}
+*/
 				HitFlag = CollisionBlock();
 				// °ƒ|ƒŠƒSƒ“‚É“–‚½‚Á‚½‚©‚Ç‚¤‚©‚Åˆ—‚ğ•ªŠò
 				if( HitFlag == 1 ){

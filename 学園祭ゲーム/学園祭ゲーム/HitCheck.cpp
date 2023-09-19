@@ -108,27 +108,25 @@ int CollisionBlock() {
 
 	for (int i = 0; i < MAX_BLOCK; i++) {
 		LineBlock = HitCheck_Line_Cube(cal_pos1, cal_pos2,
-<<<<<<< HEAD
 			VGet(m_block[i].GetBlockPosition().x - 100.0f, m_block[i].GetBlockPosition().y, m_block[i].GetBlockPosition().z - 100.0f),
 			VGet(m_block[i].GetBlockTopPosition().x + 100.0f, m_block[i].GetBlockTopPosition().y, m_block[i].GetBlockTopPosition().z + 100.0f));
-=======
+
 			VGet(m_block[10].GetBlockPosition().x - 100.0f, m_block[10].GetBlockPosition().y, m_block[10].GetBlockPosition().z - 100.0f),
-			VGet(m_block[10].GetBlockTopPosition().x + 100.0f, m_block[10].GetBlockTopPosition().y, m_block[10].GetBlockTopPosition().z + 100.0f));
->>>>>>> ff0c04983259298bee870d1f5a50aaffaff55f22
+			VGet(m_block[10].GetBlockTopPosition().x + 100.0f, m_block[10].GetBlockTopPosition().y, m_block[10].GetBlockTopPosition().z + 100.0f);
 
 		// “–‚½‚Á‚Ä‚¢‚È‚©‚Á‚½‚ç‰½‚à‚µ‚È‚¢
 		if (LineBlock.HitFlag == TRUE) {
 			// ƒ|ƒŠƒSƒ“‚É“–‚½‚Á‚½ƒtƒ‰ƒO‚ð—§‚Ä‚é
 			HitFlag = 1;
-<<<<<<< HEAD
+
 			// ÚG‚µ‚½‚xÀ•W‚ð•Û‘¶‚·‚é
 			MaxY = m_block[i].GetBlockTopPosition().y;
-=======
+
 			printf("ƒuƒƒbƒN‚É“–‚½‚Á‚½");
 
 			// ÚG‚µ‚½‚xÀ•W‚ð•Û‘¶‚·‚é
 			MaxY = m_block[10].GetBlockTopPosition().y;
->>>>>>> ff0c04983259298bee870d1f5a50aaffaff55f22
+
 		}
 
 		if (m_block[i].GetBlockFlag() == FALSE) {

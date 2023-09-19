@@ -136,7 +136,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 						
 		switch(gamemode){
 			case eSceneBlank :
-				gamemode = eSceneTitle;
+				gamemode = eScenePlay;
 				break;
 
 			case eSceneTitle:

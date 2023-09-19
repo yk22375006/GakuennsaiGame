@@ -35,6 +35,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	WeaponInit();
 	EnemyInit();
 
+	// コミット用コメント
 	// ステージ情報の読み込み
 	stagedata = MV1LoadModel("..\\Data\\Stage\\Stage00.mv1") ;
 	skydata = MV1LoadModel("..\\Data\\Stage\\Stage00_sky.mv1");

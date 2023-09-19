@@ -23,7 +23,7 @@ void Draw() {
 	MV1DrawModel(stagedata);
 
 	blockcnt = 0;
-	for (blockcnt = 0; blockcnt < 100; blockcnt++) {
+	for (blockcnt = 0; blockcnt < MAX_BLOCK; blockcnt++) {
 		if (m_block[blockcnt].GetBlockFlag() == TRUE) {
 			MV1DrawModel(m_block[blockcnt].b_model);
 		}

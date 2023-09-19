@@ -16,7 +16,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 		
 		
 	// カメラポジション cpos:カメラ位置　ctgt:カメラ注視点
-	cpos = VGet(0.0f,1000.0f,-2000.0f) ;
+	cpos = VGet(500.0f,1000.0f,-2000.0f) ;
 	ctgt = VGet(0.0f,500.0f,-400.0f) ;
 	cadd = VGet(0.0f, 0.0f, 0.0f);
 
@@ -41,6 +41,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	MV1SetUseZBuffer(skydata, false);
 	// ブロックモデルの読み込み
 	blockdate[TATAMI_BLOCK] = MV1LoadModel("..\\Data\\Stage\\たたみ.mv1");
+	blockdate[FALL_BLOCK] = MV1LoadModel("..\\Data\\Stage\\落下ブロック.mv1");
+	blockdate[NEEDLE_BLOCK] = MV1LoadModel("..\\Data\\Stage\\棘.mv1");
 	blockcnt = 0;
 	// マップデータに反映
 	for (int y = MAP_Y - 1; y >= 0; y--) {
@@ -51,6 +53,20 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					m_block[blockcnt].SetMapPositionY( y );
 					m_block[blockcnt].SetMapPositionX( x );
 					m_block[blockcnt].SetBlockFlag( TRUE );
+					break;
+
+				case FALL_BLOCK :
+					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[FALL_BLOCK]);
+					m_block[blockcnt].SetMapPositionY(y);
+					m_block[blockcnt].SetMapPositionX(x);
+					m_block[blockcnt].SetBlockFlag(TRUE);
+					break;
+
+				case NEEDLE_BLOCK :
+					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[NEEDLE_BLOCK]);
+					m_block[blockcnt].SetMapPositionY(y);
+					m_block[blockcnt].SetMapPositionX(x);
+					m_block[blockcnt].SetBlockFlag(TRUE);
 					break;
 			}
 			if (m_block[blockcnt].GetBlockFlag() == TRUE)
@@ -71,8 +87,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 			}
 		}
 	}
-
-
 	// シャドウマップハンドルの作成
 
 
@@ -202,13 +216,15 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					if (Player[0].playtime > Player[0].anim_totaltime){
 						if (Player[0].mode == JUMPIN) {
 							AnimationPlayer(JUMPLOOP);
-							Player[0].move.y = 15.0f;
+							Player[0].move.y = 40.0f;
 							Player[0].pos.y += (Player[0].move.y * 4);	// ジャンプ直後の地面めり込みを避けるため
 						}
 
-						if (Player[0].mode == JUMPOUT)	AnimationPlayer(STAND);
+						if (Player[0].mode == JUMPOUT)
+							AnimationPlayer(STAND);
 
-						if (Player[0].mode == ATTACK) AnimationPlayer(STAND);
+						if (Player[0].mode == ATTACK)
+							AnimationPlayer(STAND);
 
 						Player[0].playtime = 0.0f ;
 					}
@@ -226,9 +242,9 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				// アニメーションの反映
 				MV1SetAttachAnimTime(Player[0].model, Player[0].attachidx, Player[0].playtime);
 				MV1SetAttachAnimTime(Player[1].model, Player[1].attachidx, Player[1].playtime);
+				PlayerMove();
 				// キー操作
 				if(Player[0].mode == STAND || Player[0].mode == RUN){
-					PlayerMove();
 
 					// アニメのループ管理(ジャンプループと落ちるものはループしない)
 					if ( Player[0].mode != JUMPLOOP && Player[0].mode != FALL ) {
@@ -318,47 +334,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					}
 				}
 
-				MV1SetupCollInfo(stagedata, -1);
-
-				HitDim = MV1CollCheck_Sphere(stagedata, -1, Player[0].pos, CHARA_ENUM_DEFAULT_SIZE + VSize( Player[0].move ) ) ;
-				WallNum = 0 ;
-				FloorNum = 0 ;
-				// 検出されたポリゴンの数だけ繰り返し
-				for(int i = 0 ; i < HitDim.HitNum ; i ++ ){
-					// ＸＺ平面に垂直かどうかはポリゴンの法線のＹ成分が０に限りなく近いかどうかで判断する
-					if( HitDim.Dim[i].Normal.y < 0.000001f && HitDim.Dim[i].Normal.y > -0.000001f ){
-						printf("壁扱い\n") ;
-						// 壁ポリゴンと判断された場合でも、キャラクターのＹ座標＋１．０ｆより高いポリゴンのみ当たり判定を行う
-						if( HitDim.Dim[i].Position[0].y > Player[0].pos.y + 1.0f ||
-							HitDim.Dim[i].Position[1].y > Player[0].pos.y + 1.0f ||
-							HitDim.Dim[i].Position[2].y > Player[0].pos.y + 1.0f ){
-							// ポリゴンの数が列挙できる限界数に達していなかったらポリゴンを配列に追加
-							if( WallNum < CHARA_MAX_HITCOLL ){
-								// ポリゴンの構造体のアドレスを壁ポリゴンポインタ配列に保存する
-								Wall[WallNum] = &HitDim.Dim[i] ;
-
-								// 壁ポリゴンの数を加算する
-								WallNum ++ ;
-							}
-						}
-					}
-					else{
-						// ポリゴンの数が列挙できる限界数に達していなかったらポリゴンを配列に追加
-						if( FloorNum < CHARA_MAX_HITCOLL ){
-							// ポリゴンの構造体のアドレスを床ポリゴンポインタ配列に保存する
-							Floor[FloorNum] = &HitDim.Dim[i] ;
-
-							// 床ポリゴンの数を加算する
-							FloorNum ++ ;
-						}
-					}
-				}
-				
-				// 床ポリゴンとの当たり判定
-				if( FloorNum != 0 ){
-					HitFlag = FloorSearch();
-					HitFlag = CollisionBlock();
-				}
+				HitFlag = CollisionBlock();
 				// 床ポリゴンに当たったかどうかで処理を分岐
 				if( HitFlag == 1 ){
 					// 接触したポリゴンで一番高いＹ座標をキャラクターのＹ座標にする
@@ -399,6 +375,12 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				// 検出したキャラクターの周囲のポリゴン情報を開放する
 				MV1CollResultPolyDimTerminate( HitDim ) ;
+
+				if (CheckHitKey(KEY_INPUT_C) == 1) {
+					printf("%d|", Player[0].mode);
+					Player[0].pos.y = 1000.0f;
+					Player[0].move.y = 0.0f;
+				}
 
 				// 移動処理
 				Player[0].pos.x += Player[0].move.x ;

@@ -41,6 +41,7 @@
 
 // ブロック
 #define BLOCK_TYPE			10
+#define MAX_BLOCK			140
 #define TATAMI_BLOCK		1
 #define BREAK_BLOCK			2
 #define FALL_BLOCK			3
@@ -61,8 +62,9 @@
 #define CAMERA_ROTATE 200.0f
 
 // マップ
-#define MAP_Y 13
+#define MAP_Y 49
 #define MAP_X 10
+
 /* -----------------------------------------------------------------------------------------
 |
 |       共通ヘッダー
@@ -222,7 +224,7 @@ extern float MaxY;
 extern float E1_MaxY;
 
 extern int StageMap[MAP_Y][MAP_X];
-extern Block m_block[100];
+extern Block m_block[MAX_BLOCK];
 extern int blockcnt;
 
 // マトリックス

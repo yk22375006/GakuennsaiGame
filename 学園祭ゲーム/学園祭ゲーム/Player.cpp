@@ -86,35 +86,7 @@ void PlayerMove() {
 		}
 	}
 
-	// 攻撃ボタン Dキー
-/*	if (key & PAD_INPUT_6) {
-		if (Player[0].mode == RUN) {
-			if ((Player[0].direction >= 0) & (Player[0].direction < 1)) {
-				Player[0].move.z += (Player[0].direction - 1) * Player[0]_ATTACK_SPEED;
-				Player[0].move.x += (-Player[0].direction) * Player[0]_ATTACK_SPEED;
-			}
-			else if ((Player[0].direction >= 1) & (Player[0].direction < 2)) {
-				Player[0].move.z += (Player[0].direction - 1) * Player[0]_ATTACK_SPEED;
-				Player[0].move.x += (Player[0].direction - 2) * Player[0]_ATTACK_SPEED;
-			}
-			else if ((Player[0].direction >= 2) & (Player[0].direction < 3)) {
-				Player[0].move.z += (3 - Player[0].direction) * Player[0]_ATTACK_SPEED;
-				Player[0].move.x += (Player[0].direction - 2) * Player[0]_ATTACK_SPEED;
-			}
-			else if ((Player[0].direction >= 3) & (Player[0].direction < 4)) {
-				Player[0].move.z += (3 - Player[0].direction) * Player[0]_ATTACK_SPEED;
-				Player[0].move.x += (4 - Player[0].direction) * Player[0]_ATTACK_SPEED;
-			}
-		}
-		AnimationPlayer[0](ATTACK);
-		Player[0].playtime = 0.0f;
-		MV1SetAttachAnimTime(Player[0].model, Player[0].attachidx, Player[0].playtime);
-	}
-*/
-
 	if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
-		Player[0].pos.y += 30.0f;
-		Player[0].move.y = 40.0f;
 		Player[0].mode = FALL;
 		AnimationPlayer(JUMPIN);
 		Player[0].playtime = 0.0f;

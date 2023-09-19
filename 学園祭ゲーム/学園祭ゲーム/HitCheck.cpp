@@ -106,16 +106,17 @@ int CollisionBlock() {
 
 //	for (int i = 0; i < 100; i++) {
 		LineBlock = HitCheck_Line_Cube(cal_pos1, cal_pos2,
-			VGet(m_block[11].GetBlockPosition().x - 100.0f, m_block[11].GetBlockPosition().y, m_block[11].GetBlockPosition().z - 100.0f),
-			VGet(m_block[11].GetBlockTopPosition().x + 100.0f, m_block[11].GetBlockTopPosition().y, m_block[11].GetBlockTopPosition().z + 100.0f));
+			VGet(m_block[10].GetBlockPosition().x - 100.0f, m_block[10].GetBlockPosition().y, m_block[10].GetBlockPosition().z - 100.0f),
+			VGet(m_block[10].GetBlockTopPosition().x + 100.0f, m_block[10].GetBlockTopPosition().y, m_block[10].GetBlockTopPosition().z + 100.0f));
 
 		// 当たっていなかったら何もしない
 		if (LineBlock.HitFlag == TRUE) {
 			// ポリゴンに当たったフラグを立てる
 			HitFlag = 1;
+			printf("ブロックに当たった");
 
 			// 接触したＹ座標を保存する
-			MaxY = m_block[11].GetBlockTopPosition().y;
+			MaxY = m_block[10].GetBlockTopPosition().y;
 		}
 //		if (m_block[i].GetBlockFlag() == FALSE) {
 //			break;

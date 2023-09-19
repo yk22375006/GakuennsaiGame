@@ -53,7 +53,6 @@ typedef struct _CharaInfo{
 	VECTOR			move ;				// キャラの移動量 x,y,z
 	float			direction ;			// キャラの向き
 	SCharaHitInfo	charahitinfo ;		// キャラヒットチェック用情報
-
 } SCharaInfo ;
 
 typedef struct _WeaponInfo {

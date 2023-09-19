@@ -1,7 +1,6 @@
 ﻿  Animation.cpp
   Camera.cpp
   Common.cpp
-  ConsoleWindow.cpp
   Draw.cpp
   Enemy.cpp
   HitCheck.cpp

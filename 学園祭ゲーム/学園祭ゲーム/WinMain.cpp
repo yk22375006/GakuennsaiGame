@@ -16,7 +16,9 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 		
 		
 	// カメラポジション cpos:カメラ位置　ctgt:カメラ注視点
-	cpos = VGet(500.0f,1000.0f,-2000.0f) ;
+	cpos = VGet(1880.0f, 3256.0f, -3692.0f);
+
+//	cpos = VGet(500.0f,1000.0f,-2000.0f) ;
 	ctgt = VGet(0.0f,500.0f,-400.0f) ;
 	cadd = VGet(0.0f, 0.0f, 0.0f);
 
@@ -40,6 +42,10 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	stagedata = MV1LoadModel("..\\Data\\Stage\\Stage00.mv1") ;
 	skydata = MV1LoadModel("..\\Data\\Stage\\Stage00_sky.mv1");
 	MV1SetUseZBuffer(skydata, false);
+	// 背景読み込み
+	bgdate[BACKGROUNDTATAMI] = MV1LoadModel("..\\Data\\Stage\\背景_畳.mv1");
+	bg_tatami = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
+	MV1SetPosition(bg_tatami, VGet(1900.0f, 115.0f, 1200.0f));
 	// ブロックモデルの読み込み
 	blockdate[TATAMI_BLOCK] = MV1LoadModel("..\\Data\\Stage\\たたみ.mv1");
 	blockdate[FALL_BLOCK] = MV1LoadModel("..\\Data\\Stage\\落下ブロック.mv1");
@@ -376,12 +382,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				// 検出したキャラクターの周囲のポリゴン情報を開放する
 				MV1CollResultPolyDimTerminate( HitDim ) ;
-
-				if (CheckHitKey(KEY_INPUT_C) == 1) {
-					printf("%d|", Player[0].mode);
-					Player[0].pos.y = 1000.0f;
-					Player[0].move.y = 0.0f;
-				}
 
 				// 移動処理
 				Player[0].pos.x += Player[0].move.x ;

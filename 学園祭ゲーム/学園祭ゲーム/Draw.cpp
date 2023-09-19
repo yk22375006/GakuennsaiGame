@@ -21,6 +21,7 @@ void Draw() {
 	// ’n–Ê(”z’u)••`‰æ
 	MV1DrawModel(skydata);
 	MV1DrawModel(stagedata);
+	MV1DrawModel(bg_tatami);
 
 	blockcnt = 0;
 	for (blockcnt = 0; blockcnt < MAX_BLOCK; blockcnt++) {

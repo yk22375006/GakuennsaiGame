@@ -34,6 +34,13 @@ void CameraMove() {
 		cpos.y -= 24.0f;
 	}
 
+	if (CheckHitKey(KEY_INPUT_C)) {
+		printf("cpos.x | %8.4f\n" , cpos.x);
+		printf("cpos.y | %8.4f\n" , cpos.y);
+		printf("cpos.z | %8.4f\n" , cpos.z);
+		printf("\n\n\n");
+	}
+
 	// カメラの視点操作
 	cpos.x;
 	cpos.y;
@@ -41,7 +48,7 @@ void CameraMove() {
 
 	// カメラの注視点操作
 	ctgt.x = cpos.x;
-	ctgt.y = cpos.y - 200.0f;
+	ctgt.y = cpos.y;
 	ctgt.z = cpos.z + 1000.0f;
 }
 

@@ -135,11 +135,10 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 						
 		switch(gamemode){
 			case eSceneBlank :
-				gamemode = eScenePlay;
+				gamemode = eSceneTitle;
 				break;
 
 			case eSceneTitle:
-
 				if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
 					gamemode = eSceneChoice;
 				}

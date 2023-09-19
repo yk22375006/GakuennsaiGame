@@ -26,12 +26,12 @@ void CameraMove() {
 	}
 	// Wキー
 	if (key & PAD_INPUT_2) {
-		cpos.y += 12.0f;
+		cpos.y += 24.0f;
 	}
 
 	// Sキー
 	if (key & PAD_INPUT_1) {
-		cpos.y -= 12.0f;
+		cpos.y -= 24.0f;
 	}
 
 	// カメラの視点操作

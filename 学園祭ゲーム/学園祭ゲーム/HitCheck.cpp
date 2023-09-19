@@ -101,27 +101,37 @@ void E1_FloorSearch() {
 }
 
 int CollisionBlock() {
+	HitFlag = 0;
 	VECTOR cal_pos1 = VAdd(Player[0].pos, VGet(0.0f, PC_HEIGHT, 0.0f));
-	VECTOR cal_pos2 = VAdd(Player[0].pos, VGet(0.0f, -25.0f, 0.0f));
-
-//	for (int i = 0; i < 100; i++) {
+	VECTOR cal_pos2 = VAdd(Player[0].pos, VGet(0.0f, -10.0f, 0.0f));
+	
+	for (int i = 0; i < MAX_BLOCK; i++) {
 		LineBlock = HitCheck_Line_Cube(cal_pos1, cal_pos2,
+			VGet(m_block[i].GetBlockPosition().x - 100.0f, m_block[i].GetBlockPosition().y, m_block[i].GetBlockPosition().z - 100.0f),
+			VGet(m_block[i].GetBlockTopPosition().x + 100.0f, m_block[i].GetBlockTopPosition().y, m_block[i].GetBlockTopPosition().z + 100.0f));
+
 			VGet(m_block[10].GetBlockPosition().x - 100.0f, m_block[10].GetBlockPosition().y, m_block[10].GetBlockPosition().z - 100.0f),
-			VGet(m_block[10].GetBlockTopPosition().x + 100.0f, m_block[10].GetBlockTopPosition().y, m_block[10].GetBlockTopPosition().z + 100.0f));
+			VGet(m_block[10].GetBlockTopPosition().x + 100.0f, m_block[10].GetBlockTopPosition().y, m_block[10].GetBlockTopPosition().z + 100.0f);
 
 		// “–‚½‚Á‚Ä‚¢‚È‚©‚Á‚½‚ç‰½‚à‚µ‚È‚¢
 		if (LineBlock.HitFlag == TRUE) {
 			// ƒ|ƒŠƒSƒ“‚É“–‚½‚Á‚½ƒtƒ‰ƒO‚ð—§‚Ä‚é
 			HitFlag = 1;
+
+			// ÚG‚µ‚½‚xÀ•W‚ð•Û‘¶‚·‚é
+			MaxY = m_block[i].GetBlockTopPosition().y;
+
 			printf("ƒuƒƒbƒN‚É“–‚½‚Á‚½");
 
 			// ÚG‚µ‚½‚xÀ•W‚ð•Û‘¶‚·‚é
 			MaxY = m_block[10].GetBlockTopPosition().y;
+
 		}
-//		if (m_block[i].GetBlockFlag() == FALSE) {
-//			break;
-//		}
-//	}
+
+		if (m_block[i].GetBlockFlag() == FALSE) {
+			break;
+		}
+	}
 
 	return HitFlag;
 }

@@ -86,6 +86,7 @@ void PlayerMove() {
 		}
 	}
 
+	// コミット用コメント
 	if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
 		Player[0].mode = FALL;
 		AnimationPlayer(JUMPIN);

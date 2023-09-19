@@ -104,7 +104,8 @@ int CollisionBlock() {
 	HitFlag = 0;
 	VECTOR cal_pos1 = VAdd(Player[0].pos, VGet(0.0f, PC_HEIGHT, 0.0f));
 	VECTOR cal_pos2 = VAdd(Player[0].pos, VGet(0.0f, -10.0f, 0.0f));
-	
+	// コミット用コメント
+
 	for (int i = 0; i < MAX_BLOCK; i++) {
 		LineBlock = HitCheck_Line_Cube(cal_pos1, cal_pos2,
 <<<<<<< HEAD

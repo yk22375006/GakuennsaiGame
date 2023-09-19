@@ -24,21 +24,18 @@ void CameraMove() {
 	if (key & PAD_INPUT_6) {
 		cpos.x += 12.0f;
 	}
-	// Wキー
+	// Xキー
 	if (key & PAD_INPUT_2) {
-		cpos.y += 24.0f;
+		cpos.y += 48.0f;
 	}
 
-	// Sキー
+	// Zキー
 	if (key & PAD_INPUT_1) {
-		cpos.y -= 24.0f;
+		cpos.y -= 48.0f;
 	}
 
 	if (CheckHitKey(KEY_INPUT_C)) {
-		printf("cpos.x | %8.4f\n" , cpos.x);
-		printf("cpos.y | %8.4f\n" , cpos.y);
-		printf("cpos.z | %8.4f\n" , cpos.z);
-		printf("\n\n\n");
+		Player[0].pos.y = 1000.0f;
 	}
 
 	// カメラの視点操作

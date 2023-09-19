@@ -21,7 +21,9 @@ void Draw() {
 	// ’n–Ê(”z’u)••`‰æ
 	MV1DrawModel(skydata);
 	MV1DrawModel(stagedata);
-	MV1DrawModel(bg_tatami);
+	for (int i = 0; i < BACKGROUNDFLOOR; i++) {
+		MV1DrawModel(bg_tatami[i]);
+	}
 
 	blockcnt = 0;
 	for (blockcnt = 0; blockcnt < MAX_BLOCK; blockcnt++) {

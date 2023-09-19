@@ -6,7 +6,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	int stagedata_c ;
 	float camera_direction = 0.0f;
 
-	char str[100];
 	// 全体的なゲームの管理
 	int gamemode = eSceneBlank ;
 
@@ -44,40 +43,42 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	MV1SetUseZBuffer(skydata, false);
 	// 背景読み込み
 	bgdate[BACKGROUNDTATAMI] = MV1LoadModel("..\\Data\\Stage\\背景_畳.mv1");
-	bg_tatami = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
-	MV1SetPosition(bg_tatami, VGet(1900.0f, 115.0f, 1200.0f));
+	for (int i = 0; i < BACKGROUNDFLOOR; i++) {
+		bg_tatami[i] = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
+		MV1SetPosition(bg_tatami[i], VGet(2100.0f, 200.0f + (i * 1200.0f), 1200.0f));
+	}
 	// ブロックモデルの読み込み
-	blockdate[TATAMI_BLOCK] = MV1LoadModel("..\\Data\\Stage\\たたみ.mv1");
-	blockdate[FALL_BLOCK] = MV1LoadModel("..\\Data\\Stage\\落下ブロック.mv1");
-	blockdate[NEEDLE_BLOCK] = MV1LoadModel("..\\Data\\Stage\\棘.mv1");
+	blockdate[TATAMI_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\畳.mv1");
+	blockdate[FALL_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\落下ブロック.mv1");
+	blockdate[NEEDLE_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\棘.mv1");
+	blockdate[WOOD_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\柱.mv1");
 	blockcnt = 0;
 	// マップデータに反映
 	for (int y = MAP_Y - 1; y >= 0; y--) {
 		for (int x = 0; x < MAP_X; x++) {
-			switch (StageMap[y][x]) {
-				case TATAMI_BLOCK :
-					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[TATAMI_BLOCK]);
-					m_block[blockcnt].SetMapPositionY( y );
-					m_block[blockcnt].SetMapPositionX( x );
-					m_block[blockcnt].SetBlockFlag( TRUE );
-					break;
+			if (StageMap[y][x] != 0) {
+				switch (StageMap[y][x]) {
+					case TATAMI_BLOCK:
+						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[TATAMI_BLOCK]);
+						break;
 
-				case FALL_BLOCK :
-					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[FALL_BLOCK]);
-					m_block[blockcnt].SetMapPositionY(y);
-					m_block[blockcnt].SetMapPositionX(x);
-					m_block[blockcnt].SetBlockFlag(TRUE);
-					break;
+					case FALL_BLOCK:
+						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[FALL_BLOCK]);
+						break;
 
-				case NEEDLE_BLOCK :
-					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[NEEDLE_BLOCK]);
-					m_block[blockcnt].SetMapPositionY(y);
-					m_block[blockcnt].SetMapPositionX(x);
-					m_block[blockcnt].SetBlockFlag(TRUE);
-					break;
-			}
-			if (m_block[blockcnt].GetBlockFlag() == TRUE)
+					case NEEDLE_BLOCK:
+						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[NEEDLE_BLOCK]);
+						break;
+
+					case WOOD_BLOCK:
+						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[WOOD_BLOCK]);
+						break;
+				}
+				m_block[blockcnt].SetMapPositionY(y);
+				m_block[blockcnt].SetMapPositionX(x);
+				m_block[blockcnt].SetBlockFlag(TRUE);
 				blockcnt++;
+			}
 		}
 	}
 
@@ -88,8 +89,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 			if (StageMap[y][x] != 0) {
 				MV1SetPosition(m_block[blockcnt].b_model, VGet((x * 200.0f), ((MAP_Y - y) * 200.0f), 0.0f));
 				m_block[blockcnt].SetBlockPosition(VGet((x * 200.0f), ((MAP_Y - y) * 200.0f), 0.0f));
-				m_block[blockcnt].SetBlockTopPosition(m_block[blockcnt].GetBlockPosition());
-				m_block[blockcnt].SetBlockTopPositionY(m_block[blockcnt].GetBlockPosition().y + 120.0f);
 				blockcnt++;
 			}
 		}

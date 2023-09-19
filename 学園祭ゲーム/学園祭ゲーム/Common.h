@@ -40,7 +40,7 @@
 #define CHOICESTAGE 1
 
 // ブロック
-#define MAX_BLOCK			550
+#define MAX_BLOCK			700
 #define BLOCK_TYPE			10
 #define TATAMI_BLOCK		1
 #define BREAK_BLOCK			2
@@ -48,6 +48,7 @@
 #define INVINCIBLE_BLOCK	4
 #define MOVE_BLOCK			5
 #define NEEDLE_BLOCK		6
+#define WOOD_BLOCK			7
 
 #define WEAPON_HEIGHT 110.0f
 #define WEAPON_WIDTH 6.0f
@@ -68,7 +69,7 @@
 
 // マップ
 #define MAP_Y 97
-#define MAP_X 20
+#define MAP_X 22
 
 /* -----------------------------------------------------------------------------------------
 |

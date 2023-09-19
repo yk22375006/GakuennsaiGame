@@ -110,7 +110,7 @@ int CollisionBlock() {
 		if (m_block[i].GetBlockFlag() == TRUE) {
 			LineBlock = HitCheck_Line_Cube(cal_pos1, cal_pos2,
 				VGet(m_block[i].GetBlockPosition().x - 100.0f, m_block[i].GetBlockPosition().y, m_block[i].GetBlockPosition().z - 100.0f),
-				VGet(m_block[i].GetBlockTopPosition().x + 100.0f, m_block[i].GetBlockTopPosition().y, m_block[i].GetBlockTopPosition().z + 100.0f));
+				VGet(m_block[i].GetBlockPosition().x + 100.0f, m_block[i].GetBlockPosition().y + 200.0f, m_block[i].GetBlockPosition().z + 100.0f));
 
 			// ìñÇΩÇ¡ÇƒÇ¢Ç»Ç©Ç¡ÇΩÇÁâΩÇ‡ÇµÇ»Ç¢
 			if (LineBlock.HitFlag == TRUE) {
@@ -123,7 +123,7 @@ int CollisionBlock() {
 				}
 				else {
 					// ê⁄êGÇµÇΩÇxç¿ïWÇï€ë∂Ç∑ÇÈ
-					MaxY = m_block[i].GetBlockTopPosition().y;
+					MaxY = m_block[i].GetBlockPosition().y + 200.0f;
 				}
 			}
 		}

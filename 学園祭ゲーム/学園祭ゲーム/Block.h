@@ -8,7 +8,6 @@
 class Block {
 	private:
 		VECTOR b_posi;
-		VECTOR b_top_posi;
 		POINT b_Map;
 		bool b_use_flg;
 		 
@@ -21,15 +20,6 @@ class Block {
 		}
 		void SetBlockPosition(VECTOR set_top_posi) {
 			b_posi = set_top_posi;
-		}
-		VECTOR GetBlockTopPosition() {
-			return b_top_posi;
-		}
-		void SetBlockTopPosition(VECTOR set_top_posi) {
-			b_top_posi = set_top_posi;
-		}
-		void SetBlockTopPositionY(float set_top_posi_y) {
-			b_top_posi.y = set_top_posi_y;
 		}
 
 		// マップ座標

@@ -38,14 +38,12 @@ void CameraMove() {
 		Player[0].pos.y = 1000.0f;
 	}
 
-	// カメラの視点操作
-	cpos.x;
-	cpos.y;
-	cpos.z;
+	// カメラのスクロール
+//	cpos.y += 3.0f;
 
 	// カメラの注視点操作
 	ctgt.x = cpos.x;
-	ctgt.y = cpos.y;
+	ctgt.y = cpos.y - 400.0f ;
 	ctgt.z = cpos.z + 1000.0f;
 }
 

@@ -141,11 +141,10 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 						
 		switch(gamemode){
 			case eSceneBlank :
-				gamemode = eScenePlay;
+				gamemode = eSceneTitle;
 				break;
 
 			case eSceneTitle:
-
 				if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
 					gamemode = eSceneChoice;
 				}
@@ -169,7 +168,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				ScreenFlip();
 
 				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
-					Player[0].pos = VGet(200.0f, 200.0f, -1000.0f);
+					Player[0].pos = VGet(200.0f, 200.0f, 0.0f);
+					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
 					gamemode = eScenePlay;
 				}
 				break;

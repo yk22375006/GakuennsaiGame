@@ -111,7 +111,21 @@ int CollisionBlock() {
 				VGet(m_block[i].GetBlockPosition().x - 100.0f, m_block[i].GetBlockPosition().y, m_block[i].GetBlockPosition().z - 100.0f),
 				VGet(m_block[i].GetBlockPosition().x + 100.0f, m_block[i].GetBlockPosition().y + BLOCK_TOP, m_block[i].GetBlockPosition().z + 100.0f));
 
-			// 当たった場合の処理
+			// 当たっていなかったら何もしない
+			if (LineBlock.HitFlag == TRUE) {
+				// ポリゴンに当たったフラグを立てる
+				HitFlag = 1;
+
+				// 接触したＹ座標を保存する
+				MaxY = m_block[i].GetBlockPosition().y + BLOCK_TOP;
+
+				// 接触したＹ座標を保存する
+				MaxY = m_block[10].GetBlockPosition().y + BLOCK_TOP;
+
+			}
+
+
+				// 当たった場合の処理
 			if (LineBlock.HitFlag == TRUE) {
 				// ポリゴンに当たったフラグを立てる
 				HitFlag = 1;
@@ -127,7 +141,6 @@ int CollisionBlock() {
 			}
 		}
 	}
-
 	return HitFlag;
 }
 

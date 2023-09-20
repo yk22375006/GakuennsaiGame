@@ -40,7 +40,7 @@
 #define CHOICESTAGE 1
 
 // ÉuÉçÉbÉN
-#define MAX_BLOCK			900
+#define MAX_BLOCK			1100
 #define BLOCK_TYPE			10
 #define BLOCK_TOP			100.0f
 #define TATAMI_BLOCK		1

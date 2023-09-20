@@ -104,7 +104,6 @@ int CollisionBlock() {
 	HitFlag = 0;
 	VECTOR cal_pos1 = VAdd(Player[0].pos, VGet(0.0f, PC_HEIGHT, 0.0f));
 	VECTOR cal_pos2 = VAdd(Player[0].pos, VGet(0.0f, -10.0f, 0.0f));
-	// コミット用コメント
 
 	for (int i = 0; i < MAX_BLOCK; i++) {
 		if (m_block[i].GetBlockFlag() == TRUE) {
@@ -112,7 +111,7 @@ int CollisionBlock() {
 				VGet(m_block[i].GetBlockPosition().x - 100.0f, m_block[i].GetBlockPosition().y, m_block[i].GetBlockPosition().z - 100.0f),
 				VGet(m_block[i].GetBlockPosition().x + 100.0f, m_block[i].GetBlockPosition().y + BLOCK_TOP, m_block[i].GetBlockPosition().z + 100.0f));
 
-			// 当たっていなかったら何もしない
+			// 当たった場合の処理
 			if (LineBlock.HitFlag == TRUE) {
 				// ポリゴンに当たったフラグを立てる
 				HitFlag = 1;

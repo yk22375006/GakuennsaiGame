@@ -38,7 +38,7 @@ void Draw() {
 	// モデルの描画
 	MV1DrawModel(Player[0].model);
 	MV1DrawModel(Player[1].model);
-	MV1DrawModel(PlayerSabel.model);
+
 	// 描画に使用するシャドウマップの設定を解除
 	SetUseShadowMap(0, -1);
 

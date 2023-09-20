@@ -40,8 +40,9 @@
 #define CHOICESTAGE 1
 
 // ブロック
-#define MAX_BLOCK			700
+#define MAX_BLOCK			900
 #define BLOCK_TYPE			10
+#define BLOCK_TOP			100.0f
 #define TATAMI_BLOCK		1
 #define BREAK_BLOCK			2
 #define FALL_BLOCK			3
@@ -68,8 +69,8 @@
 #define CAMERA_ROTATE 200.0f
 
 // マップ
-#define MAP_Y 97
-#define MAP_X 22
+#define MAP_Y 161
+#define MAP_X 32
 
 /* -----------------------------------------------------------------------------------------
 |
@@ -189,8 +190,8 @@ extern int gobanim_ntural, gobanim_blowin, gobanim_blowloop, gobanim_blowout;
 extern SCharaInfo Player[2];
 
 // --- 武器
-extern SWeaponInfo PlayerSabel;
-extern int WeponAttachFrameNum;
+
+
 
 // --- カメラ
 extern VECTOR cpos;

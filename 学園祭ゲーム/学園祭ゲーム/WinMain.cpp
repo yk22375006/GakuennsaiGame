@@ -15,7 +15,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 		
 		
 	// カメラポジション cpos:カメラ位置　ctgt:カメラ注視点
-	cpos = VGet(1880.0f, 3256.0f, -3692.0f);
+	cpos = VGet(3500.0f, 2300.0f, -3500.0f);
 
 //	cpos = VGet(500.0f,1000.0f,-2000.0f) ;
 	ctgt = VGet(0.0f,500.0f,-400.0f) ;
@@ -24,9 +24,9 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	VECTOR Position ;
 
 
-	ChangeWindowMode(TRUE) ;
+	ChangeWindowMode(FALSE) ;
 
-	SetGraphMode(900,600,32) ;
+	SetGraphMode(1920,1080,32) ;
 
 	// DXライブラリの初期化				DXライブラリースタート
 	if(DxLib_Init() == -1) return -1 ;
@@ -45,7 +45,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	bgdate[BACKGROUNDTATAMI] = MV1LoadModel("..\\Data\\Stage\\背景_畳.mv1");
 	for (int i = 0; i < BACKGROUNDFLOOR; i++) {
 		bg_tatami[i] = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
-		MV1SetPosition(bg_tatami[i], VGet(2100.0f, 200.0f + (i * 1200.0f), 1200.0f));
+		MV1SetPosition(bg_tatami[i], VGet(3100.0f, 100.0f + (i * 1000.0f), 100.0f));
 	}
 	// ブロックモデルの読み込み
 	blockdate[TATAMI_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\畳.mv1");
@@ -87,8 +87,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	for (int y = (MAP_Y - 1); y >= 0; y--) {
 		for (int x = 0; x < MAP_X; x++) {
 			if (StageMap[y][x] != 0) {
-				MV1SetPosition(m_block[blockcnt].b_model, VGet((x * 200.0f), ((MAP_Y - y) * 200.0f), 0.0f));
-				m_block[blockcnt].SetBlockPosition(VGet((x * 200.0f), ((MAP_Y - y) * 200.0f), 0.0f));
+				MV1SetPosition(m_block[blockcnt].b_model, VGet((x * 200.0f), ((MAP_Y - y) * 100.0f), 0.0f));
+				m_block[blockcnt].SetBlockPosition(VGet((x * 200.0f), ((MAP_Y - y) * 100.0f), 0.0f));
 				blockcnt++;
 			}
 		}
@@ -414,10 +414,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				MV1SetRotationXYZ(Player[1].model, VGet(0.0f, 1.57f * Player[1].direction, 0.0f));
 				// モデルの移動(配置)
 				MV1SetPosition(Player[1].model,Player[1].pos);
-
-				// 武器を使うモデルにアタッチする(アタッチさせるモデルの回転や移動の後に行う)
-				WeaponMatrix = MV1GetFrameLocalWorldMatrix(Player[0].model, WeponAttachFrameNum);	// アタッチさせるモデルとそのフレームを貰いそのローカル座標をワールド座標に変換するマトリックスを返す関数
-				MV1SetMatrix(PlayerSabel.model, WeaponMatrix);									// アタッチするモデルとマトリックスを貰い座標に直す関数
 
 				// 地面(配置)
 				MV1SetPosition(stagedata, stagepos);

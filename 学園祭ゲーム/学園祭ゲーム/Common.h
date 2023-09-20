@@ -40,17 +40,24 @@
 #define CHOICESTAGE 1
 
 // ブロック
-#define MAX_BLOCK			140
+#define MAX_BLOCK			1100
 #define BLOCK_TYPE			10
+#define BLOCK_TOP			100.0f
 #define TATAMI_BLOCK		1
 #define BREAK_BLOCK			2
 #define FALL_BLOCK			3
 #define INVINCIBLE_BLOCK	4
 #define MOVE_BLOCK			5
 #define NEEDLE_BLOCK		6
+#define WOOD_BLOCK			7
 
 #define WEAPON_HEIGHT 110.0f
 #define WEAPON_WIDTH 6.0f
+
+// 背景
+#define BACKGROUNDTYPE		5
+#define BACKGROUNDTATAMI	0
+#define BACKGROUNDFLOOR		17
 
 // プレイヤーの移動攻撃時の加速
 #define Player_ATTACK_SPEED 16.0f
@@ -62,8 +69,8 @@
 #define CAMERA_ROTATE 200.0f
 
 // マップ
-#define MAP_Y 49
-#define MAP_X 10
+#define MAP_Y 161
+#define MAP_X 32
 
 /* -----------------------------------------------------------------------------------------
 |
@@ -183,8 +190,8 @@ extern int gobanim_ntural, gobanim_blowin, gobanim_blowloop, gobanim_blowout;
 extern SCharaInfo Player[2];
 
 // --- 武器
-extern SWeaponInfo PlayerSabel;
-extern int WeponAttachFrameNum;
+
+
 
 // --- カメラ
 extern VECTOR cpos;
@@ -223,9 +230,14 @@ extern VECTOR PolyCharaHitField[3];
 extern float MaxY;
 extern float E1_MaxY;
 
+// 足場ブロック
 extern int StageMap[MAP_Y][MAP_X];
 extern Block m_block[MAX_BLOCK];
 extern int blockcnt;
+
+// 背景
+extern int bgdate[BACKGROUNDTYPE];
+extern int bg_tatami[BACKGROUNDFLOOR];
 
 // マトリックス
 extern MATRIX WeaponMatrix;

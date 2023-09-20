@@ -24,14 +24,18 @@ void CameraMove() {
 	if (key & PAD_INPUT_6) {
 		cpos.x += 12.0f;
 	}
-	// Wキー
+	// Xキー
 	if (key & PAD_INPUT_2) {
-		cpos.y += 24.0f;
+		cpos.y += 48.0f;
 	}
 
-	// Sキー
+	// Zキー
 	if (key & PAD_INPUT_1) {
-		cpos.y -= 24.0f;
+		cpos.y -= 48.0f;
+	}
+
+	if (CheckHitKey(KEY_INPUT_C)) {
+		Player[0].pos.y = 1000.0f;
 	}
 
 	// カメラの視点操作
@@ -41,7 +45,7 @@ void CameraMove() {
 
 	// カメラの注視点操作
 	ctgt.x = cpos.x;
-	ctgt.y = cpos.y - 200.0f;
+	ctgt.y = cpos.y;
 	ctgt.z = cpos.z + 1000.0f;
 }
 

@@ -39,7 +39,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	// コミット用コメント
 	// ステージ情報の読み込み
 	stagedate = MV1LoadModel("..\\Data\\Stage\\石畳.mv1");
-	MV1SetPosition(stagedate, VGet(0.0f, 100.0f, 0.0f));
+	MV1SetPosition(stagedate, VGet(1500.0f, 100.0f, -100.0f));
 	skydate = MV1LoadModel("..\\Data\\Stage\\スカイドーム.mv1");
 	MV1SetUseZBuffer(skydate, false);
 	// 背景読み込み

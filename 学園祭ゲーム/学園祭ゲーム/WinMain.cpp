@@ -38,6 +38,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 	// コミット用コメント
 	// ステージ情報の読み込み
+<<<<<<< HEAD
 	stagedata = MV1LoadModel("..\\Data\\Stage\\Stage00.mv1") ;
 	skydata = MV1LoadModel("..\\Data\\Stage\\Stage00_sky.mv1");
 //	skydata = MV1LoadModel("..\\Data\\Stage\\夜空.mv1");
@@ -46,6 +47,18 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	MV1SetUseZBuffer(skydata, false);
 	// 背景読み込み
 	bgdate[BACKGROUNDTATAMI] = MV1LoadModel("..\\Data\\Stage\\背景_畳.mv1");
+=======
+	stagedate = MV1LoadModel("..\\Data\\Stage\\石畳.mv1");
+	MV1SetPosition(stagedate, VGet(1500.0f, 100.0f, -100.0f));
+	skydate = MV1LoadModel("..\\Data\\Stage\\スカイドーム.mv1");
+	MV1SetUseZBuffer(skydate, false);
+	// 背景読み込み
+	bgdate[BACKGROUNDTATAMI] = MV1LoadModel("..\\Data\\Stage\\背景_畳.mv1");
+	for (int i = 0; i < BACKGROUNDFLOOR; i++) {
+		bg_tatami[i] = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
+		MV1SetPosition(bg_tatami[i], VGet(1500.0f, 100.0f + (i * 800.0f), 100.0f));
+	}
+>>>>>>> Kota
 	// ブロックモデルの読み込み
 	blockdate[TATAMI_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\畳.mv1");
 	blockdate[FALL_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\落下ブロック.mv1");
@@ -64,29 +77,10 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	// シャドウマップに描画する範囲を設定
 	SetShadowMapDrawArea( ShadowMapHandle, VGet( -5000.0f, -10.0f, -5000.0f ), VGet( 5000.0f, 1000.0f, 5000.0f ) ) ;
 
-	stagedata_c = MV1LoadModel("..\\Data\\Stage\\Stage00_c.mv1") ;
-	if(stagedata == -1) return -1 ;
-	// モデル全体のコリジョン情報のセットアップ
-	MV1SetupCollInfo( stagedata, -1 ) ;
-
 	SetDrawScreen(DX_SCREEN_BACK) ;
 
 	int MeshNum ;
 
-	// モデルに含まれるメッシュの数を取得する
-    MeshNum = MV1GetMeshNum( stagedata ) ;
-
-    // メッシュの数だけループ
-    for(int i = 0 ; i < MeshNum ; i ++ ){
-	// メッシュに含まれる頂点のローカル座標の最大座標値を描画
-		Position = MV1GetMeshMaxPosition( stagedata, i ) ;
-//		DrawFormatString( 0, 112, GetColor( 255,255,255 ), "Max Position          x %f  y %f  z %f", Position.x, Position.y, Position.z ) ;
-
-		// メッシュに含まれる頂点のローカル座標の最小座標値を描画
-		Position = MV1GetMeshMinPosition( stagedata, i ) ;
-//		DrawFormatString( 0, 128, GetColor( 255,255,255 ), "Min Position          x %f  y %f  z %f", Position.x, Position.y, Position.z ) ;
-
-	}
 	/* ------------------------------------------------------------------------------------------------
 												ゲームループ										
 	 ----------------------------------------------------------------------------------------------- */
@@ -94,7 +88,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 		PolyCharaHitField[0] = VGet(0.0f,0.0f,0.0f) ;
 		PolyCharaHitField[1] = VGet(0.0f,0.0f,0.0f) ;
 		PolyCharaHitField[2] = VGet(0.0f,0.0f,0.0f) ;
-		MV1SetUseZBuffer(skydata, false);
+		MV1SetUseZBuffer(skydate, false);
 
 						
 		switch(gamemode){
@@ -423,9 +417,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				// モデルの移動(配置)
 				MV1SetPosition(Player[1].model,Player[1].pos);
 
-				// 地面(配置)
-				MV1SetPosition(stagedata, stagepos);
-				MV1SetPosition(skydata, skypos);
+				MV1SetPosition(skydate, skypos);
 
 				// 描画
 				Draw();
@@ -442,12 +434,16 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 	// シャドウマップの削除
 	DeleteShadowMap(ShadowMapHandle);
-	// ステージモデルの削除
-	MV1DeleteModel(stagedata);
 	// キャラクターモデルの削除
 	MV1DeleteModel(Player[0].model);
 	MV1DeleteModel(Player[1].model);
-
+	// ブロックモデルの削除
+	MV1DeleteModel(blockdate[TATAMI_BLOCK]);
+	MV1DeleteModel(blockdate[FALL_BLOCK]);
+	MV1DeleteModel(blockdate[NEEDLE_BLOCK]);
+	MV1DeleteModel(blockdate[WOOD_BLOCK]);
+	// 背景の削除
+	MV1DeleteModel(bgdate[BACKGROUNDTATAMI]);
 	DxLib_End();
 	return 0 ;
 }

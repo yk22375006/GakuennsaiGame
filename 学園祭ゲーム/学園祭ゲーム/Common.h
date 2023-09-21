@@ -40,7 +40,7 @@
 #define CHOICESTAGE 1
 
 // ブロック
-#define MAX_BLOCK			1100
+#define MAX_BLOCK			600
 #define BLOCK_TYPE			10
 #define BLOCK_TOP			100.0f
 #define TATAMI_BLOCK		1
@@ -69,8 +69,8 @@
 #define CAMERA_ROTATE 200.0f
 
 // マップ
-#define MAP_Y 161
-#define MAP_X 32
+#define MAP_Y 129
+#define MAP_X 16
 
 /* -----------------------------------------------------------------------------------------
 |
@@ -205,8 +205,8 @@ extern int key;
 extern int ShadowMapHandle;
 
 // ステージハンドル
-extern int stagedata;
-extern int skydata;
+extern int stagedate;
+extern int skydate;
 extern int blockdate[BLOCK_TYPE];
 
 

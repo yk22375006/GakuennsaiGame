@@ -242,3 +242,6 @@ extern int bg_tatami[BACKGROUNDFLOOR];
 // マトリックス
 extern MATRIX WeaponMatrix;
 
+// ライト
+extern int LHandle;
+

@@ -93,12 +93,17 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 			}
 		}
 	}
-	// シャドウマップハンドルの作成
-
 
 	// ライトの方向を設定
 	SetLightDirection( VGet( 0.5f, -0.5f, 0.5f ) );
 	ShadowMapHandle = MakeShadowMap( 1024, 1024 ) ;
+
+	// ライトの色　黒
+	SetLightDifColor(GetColorF(0.2f, 0.2f, 0.2f, 1.0f));
+
+	// スポットライト
+	//ChangeLightTypePoint(VAdd(Player[0].pos, Player[0].move), 1500.0f, 0.1f, 0.0f, 0.0f);
+	LHandle = CreateSpotLightHandle(Player[0].pos, VGet(0.0f, 0.0f, 6.0f), 2.0f, 2.0f, 1000.0f, 0.1f, 0.0f, 0.0f);
 
 	// シャドウマップが想定するライトの方向もセット
 	SetShadowMapLightDirection( ShadowMapHandle, VGet( 0.5f, -0.5f, 0.5f ) ) ;
@@ -428,10 +433,10 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 			case eSceneClear :
 				break ;
 		}
-
 	}
 
-
+	// ライトハンドルの削除
+	DeleteLightHandle(LHandle);
 	// シャドウマップの削除
 	DeleteShadowMap(ShadowMapHandle);
 	// ステージモデルの削除

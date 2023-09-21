@@ -273,5 +273,6 @@ void CameraMove();
 // --- •`‰æ
 void Draw();
 
-
+// ƒ‰ƒCƒg
+int LHandle;
 

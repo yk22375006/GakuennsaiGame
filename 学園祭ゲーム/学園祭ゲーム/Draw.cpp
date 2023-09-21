@@ -32,6 +32,9 @@ void Draw() {
 		}
 	}
 
+	// ƒ‰ƒCƒg
+	SetLightPositionHandle(LHandle, VGet(Player[0].pos.x, Player[0].pos.y + 100.0f, Player[0].pos.z - 100.0f));
+
 	DrawTriangle3D(PolyCharaHitField[0], PolyCharaHitField[1], PolyCharaHitField[2],
 		GetColor(255, 0, 0), TRUE);
 

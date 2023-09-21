@@ -40,59 +40,17 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	// ステージ情報の読み込み
 	stagedata = MV1LoadModel("..\\Data\\Stage\\Stage00.mv1") ;
 	skydata = MV1LoadModel("..\\Data\\Stage\\Stage00_sky.mv1");
+//	skydata = MV1LoadModel("..\\Data\\Stage\\夜空.mv1");
+	if (skydata == -1) return -1;
+
 	MV1SetUseZBuffer(skydata, false);
 	// 背景読み込み
 	bgdate[BACKGROUNDTATAMI] = MV1LoadModel("..\\Data\\Stage\\背景_畳.mv1");
-	for (int i = 0; i < BACKGROUNDFLOOR; i++) {
-		bg_tatami[i] = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
-		MV1SetPosition(bg_tatami[i], VGet(3100.0f, 100.0f + (i * 1000.0f), 100.0f));
-	}
 	// ブロックモデルの読み込み
 	blockdate[TATAMI_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\畳.mv1");
 	blockdate[FALL_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\落下ブロック.mv1");
 	blockdate[NEEDLE_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\棘.mv1");
 	blockdate[WOOD_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\柱.mv1");
-	blockcnt = 0;
-	// マップデータに反映
-	for (int y = MAP_Y - 1; y >= 0; y--) {
-		for (int x = 0; x < MAP_X; x++) {
-			if (StageMap[y][x] != 0) {
-				switch (StageMap[y][x]) {
-					case TATAMI_BLOCK:
-						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[TATAMI_BLOCK]);
-						break;
-
-					case FALL_BLOCK:
-						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[FALL_BLOCK]);
-						break;
-
-					case NEEDLE_BLOCK:
-						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[NEEDLE_BLOCK]);
-						break;
-
-					case WOOD_BLOCK:
-						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[WOOD_BLOCK]);
-						break;
-				}
-				m_block[blockcnt].SetMapPositionY(y);
-				m_block[blockcnt].SetMapPositionX(x);
-				m_block[blockcnt].SetBlockFlag(TRUE);
-				blockcnt++;
-			}
-		}
-	}
-
-	blockcnt = 0;
-
-	for (int y = (MAP_Y - 1); y >= 0; y--) {
-		for (int x = 0; x < MAP_X; x++) {
-			if (StageMap[y][x] != 0) {
-				MV1SetPosition(m_block[blockcnt].b_model, VGet((x * 200.0f), ((MAP_Y - y) * 100.0f), 0.0f));
-				m_block[blockcnt].SetBlockPosition(VGet((x * 200.0f), ((MAP_Y - y) * 100.0f), 0.0f));
-				blockcnt++;
-			}
-		}
-	}
 	// シャドウマップハンドルの作成
 
 
@@ -152,11 +110,15 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 			case eSceneChoice:
 				cpos = VGet(0.0f, 1000.0f, -1500.0f);
-				ctgt = VGet(0.0f, 500.0f, 0.0f);
+				ctgt = VGet(0.0f, 2000.0f, 0.0f);
 				cadd = VGet(0.0f, 0.0f, 0.0f);
 
 				Player[0].pos = VGet(200.0f, 200.0f, 0.0f);
-				Player[1].pos = VGet(600.0f, 300.0f, 200.0f);
+//				Player[1].pos = VGet(600.0f, 300.0f, 200.0f);
+				Player[1].pos = VGet(0.0f, 2000.0f, 0.0f);
+
+				//カメラ情報の反映
+				SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
 
 				// モデルの移動(配置)
 				MV1SetRotationXYZ(Player[0].model, VGet(0.0f, 1.57f * Player[0].direction, 0.0f));
@@ -170,6 +132,54 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
 					Player[0].pos = VGet(200.0f, 200.0f, 0.0f);
 					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
+
+					for (int i = 0; i < BACKGROUNDFLOOR; i++) {
+						bg_tatami[i] = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
+						MV1SetPosition(bg_tatami[i], VGet(3100.0f, 100.0f + (i * 1000.0f), 100.0f));
+					}
+
+					blockcnt = 0;
+					// マップデータに反映
+					for (int y = MAP_Y - 1; y >= 0; y--) {
+						for (int x = 0; x < MAP_X; x++) {
+							if (StageMap[y][x] != 0) {
+								switch (StageMap[y][x]) {
+								case TATAMI_BLOCK:
+									m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[TATAMI_BLOCK]);
+									break;
+
+								case FALL_BLOCK:
+									m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[FALL_BLOCK]);
+									break;
+
+								case NEEDLE_BLOCK:
+									m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[NEEDLE_BLOCK]);
+									break;
+
+								case WOOD_BLOCK:
+									m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[WOOD_BLOCK]);
+									break;
+								}
+								m_block[blockcnt].SetMapPositionY(y);
+								m_block[blockcnt].SetMapPositionX(x);
+								m_block[blockcnt].SetBlockFlag(TRUE);
+								blockcnt++;
+							}
+						}
+					}
+
+					blockcnt = 0;
+
+					for (int y = (MAP_Y - 1); y >= 0; y--) {
+						for (int x = 0; x < MAP_X; x++) {
+							if (StageMap[y][x] != 0) {
+								MV1SetPosition(m_block[blockcnt].b_model, VGet((x * 200.0f), ((MAP_Y - y) * 100.0f), 0.0f));
+								m_block[blockcnt].SetBlockPosition(VGet((x * 200.0f), ((MAP_Y - y) * 100.0f), 0.0f));
+								blockcnt++;
+							}
+						}
+					}
+
 					gamemode = eScenePlay;
 				}
 				break;
@@ -279,8 +289,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					}
 				}
 				ClearDrawScreen() ;
-				// ここに色々処理を追加する
-//				DrawBox(0,0,900,600,GetColor(255,255,255),true) ; //最後の引数をfalseにすると塗りつぶし無し
 
 				// キャラとヒットチェック
 				if(HitCheck_Capsule_Capsule(VAdd(Player[0].pos,Player[0].move),VAdd(Player[0].pos,Player[0].move),Player[0].charahitinfo.Width / 2,
@@ -396,7 +404,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				// 背景(空)の操作
 				skypos.x = cpos.x;
-				skypos.y = cpos.y - 5000.0f;
+				skypos.y = cpos.y - 3000.0f;
 				skypos.z = cpos.z;
 
 				// エネミーの向きの限定

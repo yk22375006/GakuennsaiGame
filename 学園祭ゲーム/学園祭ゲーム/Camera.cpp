@@ -7,22 +7,22 @@
 // ------------------------------------------------------------------------ //
 void CameraMove() {
 	if (key & PAD_INPUT_5) {
-		cpos.z -= 12.0f;
+		cpos.z -= 48.0f;
 	}
 
 	// ã‚ð‰Ÿ‰º ‰œ‚ÉˆÚ“®
 	if (key & PAD_INPUT_8) {
-		cpos.z += 12.0f;
+		cpos.z += 48.0f;
 	}
 
 	// ¶‚ð‰Ÿ‰º ¶‚ÉˆÚ“®
 	if (key & PAD_INPUT_4) {
-		cpos.x -= 12.0f;
+		cpos.x -= 48.0f;
 	}
 
 	// ‰E•ûŒü‚Ö‚ÌˆÚ“®ˆ—
 	if (key & PAD_INPUT_6) {
-		cpos.x += 12.0f;
+		cpos.x += 48.0f;
 	}
 	// XƒL[
 	if (key & PAD_INPUT_2) {

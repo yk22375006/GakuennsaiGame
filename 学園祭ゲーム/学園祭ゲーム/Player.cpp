@@ -9,7 +9,7 @@ void PlayerInit() {
 	//		キャラ情報セット		//
 	// ---------------------------- //
 	if (CHOICESTAGE == 1) {
-		Player[0].pos = VGet(200.0f, 700.0f, 0.0f);		 // 草原
+		Player[0].pos = VGet(500.0f, 700.0f, 0.0f);		 // 草原
 	}
 	else {
 		Player[0].pos = VGet(500.0f, 800.0f, 2800.0f); // 洞窟

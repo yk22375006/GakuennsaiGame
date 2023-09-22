@@ -19,8 +19,8 @@ void Draw() {
 	SetUseShadowMap(0, ShadowMapHandle);
 
 	// ’n–Ê(”z’u)••`‰æ
-	MV1DrawModel(skydata);
-	MV1DrawModel(stagedata);
+	MV1DrawModel(skydate);
+	MV1DrawModel(stagedate);
 	for (int i = 0; i < BACKGROUNDFLOOR; i++) {
 		MV1DrawModel(bg_tatami[i]);
 	}

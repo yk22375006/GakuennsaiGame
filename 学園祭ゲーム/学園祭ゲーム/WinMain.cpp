@@ -3,7 +3,7 @@
 
 int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	
-	int stagedata_c ;
+	int stagedate_c ;
 	float camera_direction = 0.0f;
 
 	// 全体的なゲームの管理
@@ -38,27 +38,20 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 	// コミット用コメント
 	// ステージ情報の読み込み
-<<<<<<< HEAD
-	stagedata = MV1LoadModel("..\\Data\\Stage\\Stage00.mv1") ;
-	skydata = MV1LoadModel("..\\Data\\Stage\\Stage00_sky.mv1");
-//	skydata = MV1LoadModel("..\\Data\\Stage\\夜空.mv1");
-	if (skydata == -1) return -1;
+	stagedate = MV1LoadModel("..\\Data\\Stage\\Stage00.mv1") ;
+	skydate = MV1LoadModel("..\\Data\\Stage\\Stage00_sky.mv1");
+//	skydate = MV1LoadModel("..\\Data\\Stage\\夜空.mv1");
+	if (skydate == -1) return -1;
 
-	MV1SetUseZBuffer(skydata, false);
+	MV1SetUseZBuffer(skydate, false);
 	// 背景読み込み
 	bgdate[BACKGROUNDTATAMI] = MV1LoadModel("..\\Data\\Stage\\背景_畳.mv1");
-=======
 	stagedate = MV1LoadModel("..\\Data\\Stage\\石畳.mv1");
 	MV1SetPosition(stagedate, VGet(1500.0f, 100.0f, -100.0f));
 	skydate = MV1LoadModel("..\\Data\\Stage\\スカイドーム.mv1");
 	MV1SetUseZBuffer(skydate, false);
 	// 背景読み込み
 	bgdate[BACKGROUNDTATAMI] = MV1LoadModel("..\\Data\\Stage\\背景_畳.mv1");
-	for (int i = 0; i < BACKGROUNDFLOOR; i++) {
-		bg_tatami[i] = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
-		MV1SetPosition(bg_tatami[i], VGet(1500.0f, 100.0f + (i * 800.0f), 100.0f));
-	}
->>>>>>> Kota
 	// ブロックモデルの読み込み
 	blockdate[TATAMI_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\畳.mv1");
 	blockdate[FALL_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\落下ブロック.mv1");
@@ -129,7 +122,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 					for (int i = 0; i < BACKGROUNDFLOOR; i++) {
 						bg_tatami[i] = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
-						MV1SetPosition(bg_tatami[i], VGet(3100.0f, 100.0f + (i * 1000.0f), 100.0f));
+						MV1SetPosition(bg_tatami[i], VGet(1500.0f, 100.0f + (i * 800.0f), 100.0f));
 					}
 
 					blockcnt = 0;

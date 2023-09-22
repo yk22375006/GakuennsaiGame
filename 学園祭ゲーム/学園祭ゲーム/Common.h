@@ -79,7 +79,7 @@
 + --------------------------------------------------------------------------------------- */
 #include <DxLib.h>
 #include "CharaBase.h"
-#include "StageData.h"
+#include "stagedata.h"
 #include "Animation.h"
 #include "Block.h"
 

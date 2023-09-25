@@ -9,6 +9,7 @@ class Block {
 	private:
 		VECTOR b_posi;
 		POINT b_Map;
+		int b_type;
 		bool b_use_flg;
 		 
 	public:
@@ -40,6 +41,14 @@ class Block {
 		}
 		void SetMapPositionX(int set_b_map_y) {
 			b_Map.y = set_b_map_y;
+		}
+
+		// ブロックの種類
+		int GetBlockType() {
+			return b_type;
+		}
+		void SetBlockType(int set_b_type) {
+			b_type = set_b_type;
 		}
 
 		// 使用フラグ

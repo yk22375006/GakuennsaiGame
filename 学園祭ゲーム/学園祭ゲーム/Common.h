@@ -57,7 +57,7 @@
 // 背景
 #define BACKGROUNDTYPE		5
 #define BACKGROUNDTATAMI	0
-#define BACKGROUNDFLOOR		17
+#define BACKGROUNDFLOOR		18
 
 // プレイヤーの移動攻撃時の加速
 #define Player_ATTACK_SPEED 16.0f
@@ -69,7 +69,7 @@
 #define CAMERA_ROTATE 200.0f
 
 // マップ
-#define MAP_Y 129
+#define MAP_Y 145
 #define MAP_X 16
 
 /* -----------------------------------------------------------------------------------------

@@ -48,7 +48,7 @@ int CharaBase::init( )
  + ======================================================== */
 int CharaBase::MoveSet( )
 {
-	switch ( key & (PAD_INPUT_LEFT + PAD_INPUT_RIGHT + PAD_INPUT_DOWN + PAD_INPUT_UP) )
+	switch ( key1 & (PAD_INPUT_LEFT + PAD_INPUT_RIGHT + PAD_INPUT_DOWN + PAD_INPUT_UP) )
 	{
 		case PAD_INPUT_DOWN:
 //			spd.x = 0.0f ;

@@ -50,6 +50,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	blockdate[WOOD_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\柱.mv1");
 	// プレイヤーの作成
 	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_sub.mv1");
+	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_sub.mv1");
 
 	// ライトの方向を設定
 	SetLightDirection( VGet( 0.5f, -0.5f, 0.5f ) );
@@ -73,7 +74,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 		switch(gamemode){
 			case eSceneBlank :
 				gamemode = eSceneChoice;
-				g_Chara[0] = &player[0];				
+				g_Chara[0] = &player[0];
+				g_Chara[1] = &player[1];
 				break;
 
 			case eSceneTitle:
@@ -105,6 +107,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
 					player[0].SetPosition(VGet(200.0f, 1800.0f, 0.0f));
+					player[1].SetPosition(VGet(1200.0f, 1800.0f, 0.0f));
 					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
 
 					for (int i = 0; i < BACKGROUNDFLOOR; i++) {
@@ -184,6 +187,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 			case eScenePlay :
 				g_Chara[0]->ActionLoop(g_Chara[0], g_Chara[1]);
+				g_Chara[1]->ActionLoop(g_Chara[1], g_Chara[0]);
 
 				// アニメーションの反映
 //				MV1SetAttachAnimTime(player[0].anim.model, player[0].GetAnim_Attach(), player[0].GetAnim_Time());
@@ -215,30 +219,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				}
 */
 				HitFlag = CollisionBlock();
-				// 床ポリゴンに当たったかどうかで処理を分岐
-				if( HitFlag == 1 ){
-					// 接触したポリゴンで一番高いＹ座標をキャラクターのＹ座標にする
-					player[0].SetY_Posi(MaxY);
-					player[0].SetY_Spd(0.0f);
-
-					if(player[0].GetAct_Mode() == eCharaFall) {
-						player[0].SetAct_Mode(eCharaStop);
-						player[0].SetAnim_Time(0.0f);
-						player[0].SetSpeed(VGet(0.0f, 0.0f, 0.0f));
-					}
-				}
-				else{
-					// 宙に浮いた状態
-					if(player[0].GetAct_Mode() != eCharaFall){ // ジャンプ状態じゃない
-						MV1DetachAnim(player[0].anim.model,player[0].GetAnim_Attach()) ;
-						player[0].SetAct_Mode(eCharaFall);
-						player[0].SetAnim_Attach(MV1AttachAnim(player[0].anim.model, 0, player[0].anim.jump));
-						player[0].SetAnim_Time(MV1GetAttachAnimTotalTime(player[0].anim.model,player[0].GetAnim_Attach()));
-						player[0].SetAnim_Time(7.0f);
-						MV1SetAttachAnimTime(player[0].anim.model,player[0].GetAnim_Attach(),player[0].GetAnim_Time()) ;
-					}
-				}
-
+				g_Chara[0]->Block_HitCheck(g_Chara[0]);
+				g_Chara[1]->Block_HitCheck(g_Chara[1]);
 				// カメラの視点操作
 				CameraMove();
 

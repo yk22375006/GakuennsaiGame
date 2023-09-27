@@ -32,8 +32,9 @@ void Draw() {
 		}
 	}
 
-	// ライト
-	SetLightPositionHandle(LHandle, VGet(Player[0].pos.x, Player[0].pos.y + 100.0f, Player[0].pos.z - 100.0f));
+	SetLightPositionHandle(LHandle, VGet(Player[0].pos.x, Player[0].pos.y + 100.0f, Player[0].pos.z - 100.0f)); // ライトの位置
+//	SetLightDirectionHandle(LHandle, VGet(ctgt.x = cpos.x , ctgt.y = cpos.y - 400   , ctgt.z = cpos.z ));  // ライトの方向
+//	SetLightAngleHandle(LHandle, 0.78f, 0.5f);
 
 	DrawTriangle3D(PolyCharaHitField[0], PolyCharaHitField[1], PolyCharaHitField[2],
 		GetColor(255, 0, 0), TRUE);

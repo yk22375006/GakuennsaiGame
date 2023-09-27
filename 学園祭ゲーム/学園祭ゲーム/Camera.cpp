@@ -35,11 +35,11 @@ void CameraMove() {
 	}
 
 	if (CheckHitKey(KEY_INPUT_C)) {
-		Player[0].pos.y = 1000.0f;
+		Player[0].pos.y = 1800.0f;
 	}
 
 	// カメラのスクロール
-//	cpos.y += 3.0f;
+	cpos.y += 3.5f;
 
 	// カメラの注視点操作
 	ctgt.x = cpos.x;

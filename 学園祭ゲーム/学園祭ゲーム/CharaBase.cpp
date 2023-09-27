@@ -60,8 +60,11 @@ int CharaBase::MoveSet( )
 //			spd.x = 0.0f ;
 //			spd.z = 12.0f ; // ‰º‚ð‰Ÿ‰º Žè‘O‚ÉˆÚ“®
 //			direction = UP ;
-			spd.y = 40.0f;
-			act_mode = eCharaJump;
+			if (act_mode != eCharaFall) {
+				posi.y = posi.y + 10.0f;
+				spd.y = 50.0f;
+				act_mode = eCharaJump;
+			}
 			break ;
 
 		case PAD_INPUT_LEFT:

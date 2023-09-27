@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 	ChangeWindowMode(TRUE) ;
 
-	SetGraphMode(960,540,32) ;
+	SetGraphMode(1440,810,32) ;
 
 	// DXライブラリの初期化				DXライブラリースタート
 	if(DxLib_Init() == -1) return -1 ;
@@ -190,30 +190,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 //				MV1SetAttachAnimTime(player[1].anim.model, player[1].GetAnim_Attach(), player[1].GetAnim_Time());
 //				PlayerMove();
 				ClearDrawScreen() ;
-/*
-				// キャラとヒットチェック
-				if (HitCheck_Capsule_Capsule(
-					VAdd(player[0].GetPosition(), player[0].GetSpeed()),
-					VAdd(player[0].GetPosition(), player[0].GetSpeed()), PLAYER_SIZE_W / 2,
-					VAdd(player[1].GetPosition(), player[1].GetSpeed()),
-					VAdd(player[1].GetPosition(), player[1].GetSpeed()), PLAYER_SIZE_W / 2) == TRUE) {
-					// 移動量を無しに
-					player[0].SetSpeed(VGet(0.0f, 0.0f, 0.0f));
-				}
-
-				// 攻撃時のエネミーのヒットチェック
-				if (player[0].GetAct_Mode() == eCharaAttack) {
-					if (player[1].GetAct_Mode() == eCharaStop) {
-						if (HitCheck_Capsule_Capsule(
-							VAdd(player[0].GetPosition() , player[0].GetSpeed()),
-							VAdd(player[0].GetPosition() , player[0].GetSpeed()), PLAYER_SIZE_W / 2,
-							VAdd(player[1].GetPosition() , player[1].GetSpeed()), 
-							VAdd(player[1].GetPosition() , player[1].GetSpeed()), PLAYER_SIZE_W / 2) == TRUE) {
-							player[1].SetAnim_Time(0.0f);
-						}
-					}
-				}
-*/
 				HitFlag = CollisionBlock();
 				// 床ポリゴンに当たったかどうかで処理を分岐
 				if( HitFlag == 1 ){

@@ -31,7 +31,7 @@ int CollisionBlock() {
 			// “–‚½‚Á‚½ê‡‚Ìˆ—
 			if (LineBlock.HitFlag == TRUE) {
 				// ƒ|ƒŠƒSƒ“‚É“–‚½‚Á‚½ƒtƒ‰ƒO‚ð—§‚Ä‚é
-				if (player->GetSpeed().y> 0) {
+				if (player->GetSpeed().y > 0) {
 					switch (m_block[i].GetBlockType()) {
 						case TATAMI_BLOCK :
 						case BREAK_BLOCK :

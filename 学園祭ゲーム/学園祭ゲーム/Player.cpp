@@ -148,7 +148,6 @@ int Player::ChangeAnimation(CharaBase* pp1, int set_anim)
  + ======================================================== */
 void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 {
-	printf("停止中");
 	// アニメーション
 	pp1->AddPlay_Time( 0.5f ) ;
 //	pp1->SetMotion( pp1->GetAnimation_Data( ).stop ) ;
@@ -197,8 +196,6 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
  + ======================================================== */
 void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 {
-	printf("移動");
-
 	// アニメーション
 	pp1->AddPlay_Time( 0.5f ) ;
 //	pp1->SetMotion( pp1->GetAnimation_Data( ).run ) ;
@@ -259,8 +256,6 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
  + ======================================================== */
 void Player::CharaAttack(CharaBase* pp1, CharaBase* pp2)
 {
-	printf("攻撃");
-
 	// アニメーション
 	pp1->AddPlay_Time(0.5f);
 //	pp1->SetMotion(pp1->GetAnimation_Data().attack);
@@ -341,13 +336,11 @@ void Player::CharaAttack(CharaBase* pp1, CharaBase* pp2)
  + ======================================================== */
 void Player::CharaJump(CharaBase* pp1, CharaBase* pp2)
 {
-
 	pp1->AddPlay_Time(0.5f);
 //	pp1->SetMotion(pp1->GetAnimation_Data().jump);
 
 	pp1->SetY_Spd(40.0f);
 	pp1->SetAct_Mode(eCharaFall);
-	printf("aaa");
 /*	if (pp1->GetAnim_Time() < pp1->GetPlay_Time()) {
 		// 何も押されていなければ
 		if (key == 0) {
@@ -365,7 +358,7 @@ void Player::CharaJump(CharaBase* pp1, CharaBase* pp2)
 
 void Player::CharaFall(CharaBase* pp1, CharaBase* pp2) {
 	pp1->MoveSet();
-
+	printf("bbb");
 	pp1->SetY_Spd(pp1->GetSpeed().y - 1.5f);
 	pp1->SetPosition(VAdd(pp1->GetPosition(), pp1->GetSpeed()));
 }
@@ -378,8 +371,6 @@ void Player::CharaFall(CharaBase* pp1, CharaBase* pp2) {
  + ======================================================== */
 void Player::CharaDamage(CharaBase* pp1, CharaBase* pp2)
 {
-	printf("ダメージ");
-
 	pp1->AddPlay_Time(0.5f);
 //	pp1->SetMotion(pp1->GetAnimation_Data().damage);
 
@@ -410,8 +401,6 @@ void Player::CharaDamage(CharaBase* pp1, CharaBase* pp2)
  + ======================================================== */
 void Player::CharaDown(CharaBase* pp1, CharaBase* pp2)
 {
-	printf("ダウン");
-
 	pp1->AddPlay_Time(0.5f);
 //	pp1->SetMotion(pp1->GetAnimation_Data().down);
 

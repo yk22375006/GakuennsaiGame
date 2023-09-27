@@ -39,6 +39,10 @@
 // ステージ選択
 #define CHOICESTAGE 1
 
+// プレイヤーモデルのサイズ
+#define PLAYER_SIZE_H	180.0f
+#define PLAYER_SIZE_W	80.0f
+
 // ブロック
 #define MAX_BLOCK			600
 #define BLOCK_TYPE			10
@@ -71,6 +75,23 @@
 // マップ
 #define MAP_Y 145
 #define MAP_X 16
+/* -----------------------------------------------------------------------------------------
+|
+|       構造体宣言
+|
++ --------------------------------------------------------------------------------------- */
+typedef struct
+{
+	int model;		// モデル
+	int run;		// 走り
+	int attack;		// 攻撃
+	int stop;		// 停止中
+	int damage;		// ダメージ中
+	int down;		// ダウン
+	int jump;		// ジャンプ
+	int jimp_in;	// ジャンプ入り
+	int jump_out;	// ジャンプ終わり
+} AnimationDate;
 
 /* -----------------------------------------------------------------------------------------
 |
@@ -82,6 +103,8 @@
 #include "stagedata.h"
 #include "Animation.h"
 #include "Block.h"
+#include "Player.h"
+
 
 #include "ConsoleWindow.h"	// --- コンソールウィンドウ
 
@@ -106,26 +129,20 @@ enum SceneName
 	eSceneOver ,
 } ;
 
-// --- キャラの方向
-enum Direction
+enum CharaAnimationMode
 {
-	DOWN,
-	LEFT,
-	UP,
-	RIGHT,
-} ;
+	STAND,
+	RUN,
+	JUMPIN,
+	JUMPLOOP,
+	JUMPOUT,
+	FALL,
+	ATTACK,
+	BLOW,
+	BLOWLOOP,
+	DOWNLOOP,
 
-// --- キャラの状態
-enum CharaMode
-{
-	STAND,		// 立ち待機
-	RUN,		// 走り状態
-	JUMPIN,		// ジャンプ開始
-	JUMPLOOP,	// 上昇中
-	JUMPOUT,	// 着地
-	FALL,		// 落下中
-	ATTACK,		// 攻撃
-} ;
+};
 
 enum EnemyMode 
 {
@@ -135,11 +152,7 @@ enum EnemyMode
 	E_BLOWOUT,	// ダメージ終了
 };
 
-/* -----------------------------------------------------------------------------------------
-|
-|       構造体宣言
-|
-+ --------------------------------------------------------------------------------------- */
+
 
 /* -----------------------------------------------------------------------------------------
 |
@@ -147,23 +160,16 @@ enum EnemyMode
 |
 + --------------------------------------------------------------------------------------- */
 // --- アニメーション
-extern void AnimationInit();
 extern void AnimationPlayer(int);
 extern void AnimationEnemy(int);
 
 // --- プレイヤー
-extern void PlayerInit();
-extern void PlayerMove();
 
 // --- 武器
 extern void WeaponInit();
 
-// --- エネミー
-extern void EnemyInit();
 
 // --- 床の当たり判定
-extern int FloorSearch();
-extern void E1_FloorSearch();
 extern int CollisionBlock();
 
 // --- カメラの移動
@@ -180,14 +186,9 @@ extern void Draw();
 // --- コンソールウィンドウ
 extern ConsoleWindow g_cWin ;	
 
-// --- アニメーション
-extern int plyanim_nutral, plyanim_run, plyanim_jumpin, plyanim_jumploop, plyanim_jumpout;
-extern int plyanim_attack;
-
-extern int gobanim_ntural, gobanim_blowin, gobanim_blowloop, gobanim_blowout;
-
 // --- プレイヤー
-extern SCharaInfo Player[2];
+extern Player player[2];
+extern Player* g_Chara[2];
 
 // --- 武器
 
@@ -211,13 +212,6 @@ extern int blockdate[BLOCK_TYPE];
 
 
 // ステージコリジョン情報
-extern MV1_COLL_RESULT_POLY_DIM HitDim;					// キャラクターの周囲にあるポリゴンを検出した結果が代入される当たり判定結果構造体
-extern int WallNum;										// 壁ポリゴンと判断されたポリゴンの数
-extern int FloorNum;										// 床ポリゴンと判断されたポリゴンの数
-extern MV1_COLL_RESULT_POLY* Wall[CHARA_MAX_HITCOLL];		// 壁ポリゴンと判断されたポリゴンの構造体のアドレスを保存しておくためのポインタ配列
-extern MV1_COLL_RESULT_POLY* Floor[CHARA_MAX_HITCOLL];	// 床ポリゴンと判断されたポリゴンの構造体のアドレスを保存しておくためのポインタ配列
-
-
 extern int HitFlag;						// ポリゴンに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
 extern int E1_HitFlag;					// エネミー用ヒットフラグ
 extern MV1_COLL_RESULT_POLY* Poly;		// ポリゴンの構造体にアクセスするために使用するポインタ( 使わなくても済ませられますがプログラムが長くなるので・・・ )

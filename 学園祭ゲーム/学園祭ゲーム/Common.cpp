@@ -1,7 +1,7 @@
 
 /* _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
-	FILE	: Common.cpp
+	FILE	: Common.cpp1
 	NAME	: kz-matsu
 
 + ------ Explanation of file --------------------------------------------------------------------------
@@ -21,11 +21,6 @@
 |
 + --------------------------------------------------------------------------------------- */
 // --- アニメーション
-int plyanim_nutral, plyanim_run, plyanim_jumpin, plyanim_jumploop, plyanim_jumpout;
-int plyanim_attack;
-
-int gobanim_ntural, gobanim_blowin, gobanim_blowloop, gobanim_blowout;
-
 // --- キー入力用変数
 int key;
 
@@ -38,11 +33,6 @@ int skydate;
 int blockdate[BLOCK_TYPE];
 
 // ステージコリジョン情報
-MV1_COLL_RESULT_POLY_DIM HitDim;					// キャラクターの周囲にあるポリゴンを検出した結果が代入される当たり判定結果構造体
-int WallNum;										// 壁ポリゴンと判断されたポリゴンの数
-int FloorNum;										// 床ポリゴンと判断されたポリゴンの数
-MV1_COLL_RESULT_POLY* Wall[CHARA_MAX_HITCOLL];		// 壁ポリゴンと判断されたポリゴンの構造体のアドレスを保存しておくためのポインタ配列
-MV1_COLL_RESULT_POLY* Floor[CHARA_MAX_HITCOLL];	// 床ポリゴンと判断されたポリゴンの構造体のアドレスを保存しておくためのポインタ配列
 
 // 当たり判定
 int HitFlag = FALSE;							// ポリゴンに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
@@ -55,9 +45,47 @@ HITRESULT_LINE LineBlock;
 // キャラがヒットした床のポリゴン表示の座標
 VECTOR PolyCharaHitField[3];
 
+Block m_block[MAX_BLOCK];
+int blockcnt;
+
+// 背景
+int bgdate[BACKGROUNDTYPE];
+int bg_tatami[BACKGROUNDFLOOR];
+
+// マトリックス
+MATRIX WeaponMatrix;
+
+/* -----------------------------------------------------------------------------------------
+|
+|       グローバル関数の実装部
+|
++ --------------------------------------------------------------------------------------- */
+
+// --- コンソールウィンドウ
+ConsoleWindow g_cWin;	
+
+// --- プレイヤー
+Player player[2];
+Player* g_Chara[2];
+
+
+
+// --- カメラ
+VECTOR cpos;
+VECTOR ctgt;
+VECTOR cadd;
+
+// --- 床の当たり判定
+int CollisionBlock();
+
+// --- カメラの移動
+void CameraMove();
+
+// --- 描画
+void Draw();
+
 // 床
 float MaxY;
-float E1_MaxY;
 int StageMap[MAP_Y][MAP_X] = {
 	{ 7 , 0 , 0 , 0 , 0 , 0 , 5 , 5 , 5 , 5 , 0 , 0 , 0 , 0 , 0 , 7 },	//		17
 	{ 7 , 0 , 0 , 0 , 0 , 6 , 0 , 0 , 0 , 0 , 6 , 0 , 0 , 0 , 0 , 7 },	// 07
@@ -205,59 +233,5 @@ int StageMap[MAP_Y][MAP_X] = {
 	{ 7 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 7 },	// 01
 	{ 7 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 7 }	// ダミー
 };
-
-Block m_block[MAX_BLOCK];
-int blockcnt;
-
-// 背景
-int bgdate[BACKGROUNDTYPE];
-int bg_tatami[BACKGROUNDFLOOR];
-
-// マトリックス
-MATRIX WeaponMatrix;
-
-/* -----------------------------------------------------------------------------------------
-|
-|       グローバル関数の実装部
-|
-+ --------------------------------------------------------------------------------------- */
-
-// --- コンソールウィンドウ
-ConsoleWindow g_cWin;	
-
-// --- アニメーション
-void AnimationInit();
-void AnimationPlayer(int);
-void AnimationEnemy(int);
-
-// --- プレイヤー
-SCharaInfo Player[2];
-void PlayerInit();
-void PlayerMove();
-
-// --- 武器
-
-
-
-
-// --- エネミー
-void EnemyInit();
-
-// --- カメラ
-VECTOR cpos;
-VECTOR ctgt;
-VECTOR cadd;
-
-// --- 床の当たり判定
-int FloorSearch();
-void E1_FloorSearch();
-int CollisionBlock();
-
-// --- カメラの移動
-void CameraMove();
-
-// --- 描画
-void Draw();
-
 
 

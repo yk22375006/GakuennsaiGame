@@ -34,10 +34,6 @@ void CameraMove() {
 		cpos.y -= 48.0f;
 	}
 
-	if (CheckHitKey(KEY_INPUT_C)) {
-		Player[0].pos.y = 1000.0f;
-	}
-
 	// カメラのスクロール
 	cpos.y += 3.0f;
 

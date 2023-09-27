@@ -9,8 +9,8 @@ void Draw() {
 	ShadowMap_DrawSetup(ShadowMapHandle);
 
 	// モデルの描画 - 影の描画
-	MV1DrawModel(Player[0].model);
-	MV1DrawModel(Player[1].model);
+	MV1DrawModel(player[0].anim.model);
+	MV1DrawModel(player[1].anim.model);
 
 	// シャドウマップへの描画を終了
 	ShadowMap_DrawEnd();
@@ -36,8 +36,8 @@ void Draw() {
 		GetColor(255, 0, 0), TRUE);
 
 	// モデルの描画
-	MV1DrawModel(Player[0].model);
-	MV1DrawModel(Player[1].model);
+	MV1DrawModel(player[0].anim.model);
+	MV1DrawModel(player[1].anim.model);
 
 	// 描画に使用するシャドウマップの設定を解除
 	SetUseShadowMap(0, -1);

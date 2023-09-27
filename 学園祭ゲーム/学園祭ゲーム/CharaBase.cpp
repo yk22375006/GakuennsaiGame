@@ -51,9 +51,9 @@ int CharaBase::MoveSet( )
 	switch ( key & (PAD_INPUT_LEFT + PAD_INPUT_RIGHT + PAD_INPUT_DOWN + PAD_INPUT_UP) )
 	{
 		case PAD_INPUT_DOWN:
-			spd.x = 0.0f ;
-			spd.z = -12.0f ; // 下を押下 手前に移動
-			direction = DOWN ;
+//			spd.x = 0.0f ;
+//			spd.z = -12.0f ; // 下を押下 手前に移動
+//			direction = DOWN ;
 			break ;
 
 		case PAD_INPUT_UP:
@@ -76,7 +76,7 @@ int CharaBase::MoveSet( )
 			direction = RIGHT ;
 			break ;
 
-		case (PAD_INPUT_LEFT + PAD_INPUT_DOWN) :
+/*		case (PAD_INPUT_LEFT + PAD_INPUT_DOWN):
 			spd.x = -8.0f ; // 右を押下 右に移動
 			spd.z = -8.0f ;
 			direction = DOWN + 0.5f ;
@@ -99,7 +99,7 @@ int CharaBase::MoveSet( )
 			spd.z = 8.0f ;
 			direction = UP + 0.5f ;
 			break ;
-	}
+*/	}
 
 
 	return( false ) ;

@@ -200,7 +200,8 @@ extern VECTOR ctgt;
 extern VECTOR cadd;
 
 // --- キー入力
-extern int key;
+extern int key1;
+extern int key2;
 
 // シャドウマップハンドル
 extern int ShadowMapHandle;

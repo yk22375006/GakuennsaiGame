@@ -8,8 +8,8 @@ void AnimationInit() {
 	// -------------------------------- // 
 	//		アニメーションの読み込み	//
 	// -------------------------------- //
-	plyanim_nutral = MV1LoadModel("..\\Data\\Player\\Anim_Neutral.mv1");		// 立ちアニメ
-	plyanim_run = MV1LoadModel("..\\Data\\Player\\Anim_Run.mv1");				// 走りアニメ	
+	plyanim_nutral = MV1LoadModel("..\\Data\\Ninja\\忍者stand.mv1");		// 立ちアニメ
+	plyanim_run = MV1LoadModel("..\\Data\\Ninja\\忍者run.mv1");				// 走りアニメ	
 	plyanim_jumpin = MV1LoadModel("..\\Data\\Player\\Anim_Jump_In.mv1");		// ジャンプ入り始めアニメ
 	plyanim_jumploop = MV1LoadModel("..\\Data\\Player\\Anim_Jump_Loop.mv1");	// ジャンプループアニメ
 	plyanim_jumpout = MV1LoadModel("..\\Data\\Player\\Anim_Jump_Out.mv1");		// ジャンプ着地アニメ

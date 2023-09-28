@@ -88,7 +88,10 @@ int CharaBase::MoveSet( )
 			}
 			break ;
 	}
-
+	if (posi.x < 137.0f && spd.x < 0 )
+		spd.x = 0.0f;
+	if (posi.x > 2863.0f && spd.x > 0)
+		spd.x = 0.0f;
 
 	return( false ) ;
 }

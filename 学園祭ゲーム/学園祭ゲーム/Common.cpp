@@ -37,7 +37,6 @@ int blockdate[BLOCK_TYPE];
 
 // 当たり判定
 int HitFlag = FALSE;							// ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
-int WallHitFlag = FALSE;						// 壁ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
 HITRESULT_LINE LineBlock;
 
 

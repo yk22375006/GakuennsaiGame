@@ -144,6 +144,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 									case MOVE_BLOCK:
 										m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[MOVE_BLOCK]);
 										m_block[blockcnt].SetBlockType(MOVE_BLOCK);
+										m_block[blockcnt].SetMapPositionX(x);
 										break;
 
 									case NEEDLE_BLOCK:

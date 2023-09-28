@@ -216,7 +216,6 @@ extern int blockdate[BLOCK_TYPE];
 
 // ステージコリジョン情報
 extern int HitFlag;						// ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
-extern int WallHitFlag;					// 壁ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
 extern HITRESULT_LINE LineBlock;
 
 // キャラがヒットした床のポリゴン表示の座標

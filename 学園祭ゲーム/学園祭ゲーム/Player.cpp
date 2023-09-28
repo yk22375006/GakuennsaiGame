@@ -182,8 +182,8 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 	}
 
 	if (key1 & PAD_INPUT_10) {
-		pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
-		pp1->SetAct_Mode(eCharaJump);
+//		pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
+//		pp1->SetAct_Mode(eCharaJump);
 //		pp1->SetMotion(pp1->GetAnimation_Data().jump);
 //		ChangeAnimation(pp1, pp1->GetAnimation_Data().jump);	// アニメーション切り替え
 	}
@@ -205,6 +205,8 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 
 	// ヒットチェック
 	Move_HitCheck( pp1 , pp2) ;
+
+	Block_HitCheck(pp1);
 
 	// 移動量を加える
 	pp1->SetPosition( VAdd( pp1->GetPosition( ) , pp1->GetSpeed( ) ) ) ;
@@ -363,7 +365,11 @@ void Player::CharaJump(CharaBase* pp1, CharaBase* pp2)
  + ======================================================== */
 void Player::CharaFall(CharaBase* pp1, CharaBase* pp2) {
 	pp1->MoveSet();
+	
 	pp1->SetY_Spd(pp1->GetSpeed().y - PLAYER_FALL_SPEED);
+
+	Block_HitCheck(pp1);
+
 	pp1->SetPosition(VAdd(pp1->GetPosition(), pp1->GetSpeed()));
 }
 
@@ -463,7 +469,7 @@ void Player::Move_HitCheck(CharaBase* pp1, CharaBase* pp2)
 }
 
 /* ======================================================== +
- |                    Move_HitCheck( )                      |
+ |                    Block_HitCheck( )                      |
  |             　     ヒットチェック　                      |
  |                                                          |
  + ======================================================== */
@@ -503,11 +509,22 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 						case BREAK_BLOCK:
 						case FALL_BLOCK:
 							if (m_block[i].GetBlockPosition().y < pp1->GetPosition().y + PLAYER_SIZE_H) {
-								if (m_block[i].GetBlockPosition().x + (BLOCK_X_SIZE - PLAYER_SPEED) > pp1->GetPosition().x &&
-									m_block[i].GetBlockPosition().x - (BLOCK_X_SIZE - PLAYER_SPEED) < pp1->GetPosition().x) {
+								if (m_block[i].GetBlockPosition().y + BLOCK_TOP > pp1->GetPosition().y + PLAYER_SIZE_H) {
 									pp1->SetY_Spd(pp1->GetSpeed().y * -1);
 									MaxY = pp1->GetPosition().y - 250.0f;
 									m_block[i].SetBlockFlag(FALSE);
+								}
+								else {
+									if (m_block[i].GetBlockPosition().x < pp1->GetPosition().x) {
+										pp1->SetX_Posi(m_block[i].GetBlockPosition().x + (BLOCK_X_SIZE + PLAYER_SPEED));
+										if (pp1->GetSpeed().x > 0)
+											pp1->SetX_Spd(0.0f);
+									}
+									if (m_block[i].GetBlockPosition().x > pp1->GetPosition().x) {
+										pp1->SetX_Posi(m_block[i].GetBlockPosition().x - (BLOCK_X_SIZE + PLAYER_SPEED));
+										if (pp1->GetSpeed().x < 0)
+											pp1->SetX_Spd(0.0f);
+									}
 								}
 							}
 							break;
@@ -517,9 +534,22 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 						case NEEDLE_BLOCK:
 						case WOOD_BLOCK:
 							if (m_block[i].GetBlockPosition().y < pp1->GetPosition().y + PLAYER_SIZE_H) {
-
-								pp1->SetY_Spd(pp1->GetSpeed().y * -1);
-								MaxY = pp1->GetPosition().y - 250.0f;
+								if (m_block[i].GetBlockPosition().y + BLOCK_TOP > pp1->GetPosition().y + PLAYER_SIZE_H) {
+									pp1->SetY_Spd(pp1->GetSpeed().y * -1);
+									MaxY = pp1->GetPosition().y - 250.0f;
+								}
+								else {
+									if (m_block[i].GetBlockPosition().x < pp1->GetPosition().x) {
+										pp1->SetX_Posi(m_block[i].GetBlockPosition().x + (BLOCK_X_SIZE + PLAYER_SPEED));
+										if (pp1->GetSpeed().x > 0)
+											pp1->SetX_Spd(0.0f);
+									}
+									if (m_block[i].GetBlockPosition().x > pp1->GetPosition().x) {
+										pp1->SetX_Posi(m_block[i].GetBlockPosition().x - (BLOCK_X_SIZE + PLAYER_SPEED));
+										if (pp1->GetSpeed().x < 0)
+											pp1->SetX_Spd(0.0f);
+									}
+								}
 							}
 							break;
 					}
@@ -527,17 +557,15 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 				else {
 					HitFlag = 1;
 					if (m_block[i].GetBlockType() != INVINCIBLE_BLOCK && m_block[i].GetBlockType() != NEEDLE_BLOCK) {
-						if (m_block[i].GetBlockPosition().y <= pp1->GetPosition().y) {
+						if (m_block[i].GetBlockPosition().y + (BLOCK_TOP / 2) <= pp1->GetPosition().y) {
 							// 接触したＹ座標を保存する
 							MaxY = m_block[i].GetBlockPosition().y + BLOCK_TOP;
 						}
 						else {
 							MaxY = pp1->GetPosition().y;
-							HitFlag = 0;
-							// 壁以外に当たったらフラグを下げる
-							if (m_block[i].GetBlockType() != WOOD_BLOCK) {
-								WallHitFlag = 1;
-							}
+							if (pp1->GetSpeed().y < 0)
+								HitFlag = 0;
+
 							// 横の床への移動の制限
 							if (m_block[i].GetBlockPosition().x < pp1->GetPosition().x) {
 								pp1->SetX_Posi(m_block[i].GetBlockPosition().x + (BLOCK_X_SIZE + PLAYER_SPEED));
@@ -552,13 +580,14 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 						}
 					}
 					else {
-						if (m_block[i].GetBlockPosition().y + BLOCK_TOP <= pp1->GetPosition().y) {
+						if (m_block[i].GetBlockPosition().y + BLOCK_TOP + (BLOCK_TOP / 2) <= pp1->GetPosition().y) {
 							// 接触したＹ座標を保存する
 							MaxY = m_block[i].GetBlockPosition().y + BLOCK_TOP * 2;
 						}
 						else {
 							MaxY = pp1->GetPosition().y;
-							HitFlag = 0;
+							if (pp1->GetSpeed().y < 0)
+								HitFlag = 0;
 							if (m_block[i].GetBlockPosition().x < pp1->GetPosition().x) {
 								pp1->SetX_Posi(m_block[i].GetBlockPosition().x + (BLOCK_X_SIZE + PLAYER_SPEED));
 								if (pp1->GetSpeed().x > 0)
@@ -584,13 +613,7 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 		if (pp1->GetAct_Mode() == eCharaFall) {
 			pp1->SetAct_Mode(eCharaStop);
 			pp1->SetAnim_Time(0.0f);
-			if (WallHitFlag == 0) {
-				pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
-			}
-			else
-			{
-				WallHitFlag = 1;
-			}
+			pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
 		}
 	}
 	else {

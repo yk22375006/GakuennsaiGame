@@ -52,7 +52,7 @@ int CharaBase::MoveSet( )
 	{
 		case PAD_INPUT_UP:
 			if (act_mode != eCharaFall) {
-				posi.y = posi.y + 10.0f;
+				posi.y = posi.y + 11.0f;
 				spd.y = PLAYER_JUMP_SPEED;
 				act_mode = eCharaJump;
 			}
@@ -73,7 +73,7 @@ int CharaBase::MoveSet( )
 		case (PAD_INPUT_LEFT + PAD_INPUT_UP) :
 			spd.x = -PLAYER_SPEED; // 右を押下 右に移動
 			if (act_mode != eCharaFall) {
-				posi.y = posi.y + 10.0f;
+				posi.y = posi.y + 11.0f;
 				spd.y = PLAYER_JUMP_SPEED;
 				act_mode = eCharaJump;
 			}
@@ -82,7 +82,7 @@ int CharaBase::MoveSet( )
 		case (PAD_INPUT_RIGHT + PAD_INPUT_UP) :
 			spd.x = PLAYER_SPEED; // 右を押下 右に移動
 			if (act_mode != eCharaFall) {
-				posi.y = posi.y + 10.0f;
+				posi.y = posi.y + 11.0f;
 				spd.y = PLAYER_JUMP_SPEED;
 				act_mode = eCharaJump;
 			}

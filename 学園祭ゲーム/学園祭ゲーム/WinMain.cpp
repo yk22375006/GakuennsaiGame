@@ -194,8 +194,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 //				MV1SetAttachAnimTime(player[1].anim.model, player[1].GetAnim_Attach(), player[1].GetAnim_Time());
 //				PlayerMove();
 				ClearDrawScreen() ;
-				g_Chara[0]->Block_HitCheck(g_Chara[0]);
-				g_Chara[1]->Block_HitCheck(g_Chara[1]);
 				// ƒJƒƒ‰‚Ì‹“_‘€ì
 				CameraMove();
 

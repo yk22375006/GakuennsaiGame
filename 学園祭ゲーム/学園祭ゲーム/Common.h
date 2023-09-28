@@ -40,13 +40,19 @@
 #define CHOICESTAGE 1
 
 // プレイヤーモデルのサイズ
-#define PLAYER_SIZE_H	180.0f
+#define PLAYER_SIZE_H	340.0f
 #define PLAYER_SIZE_W	80.0f
+
+// プレイヤーの移動速度
+#define PLAYER_SPEED 12.0f
+#define PLAYER_JUMP_SPEED 50.0f
+#define PLAYER_FALL_SPEED 1.5f
 
 // ブロック
 #define MAX_BLOCK			600
 #define BLOCK_TYPE			10
 #define BLOCK_TOP			100.0f
+#define BLOCK_X_SIZE		125.0f
 #define TATAMI_BLOCK		1
 #define BREAK_BLOCK			2
 #define FALL_BLOCK			3
@@ -168,10 +174,6 @@ extern void AnimationEnemy(int);
 // --- 武器
 extern void WeaponInit();
 
-
-// --- 床の当たり判定
-extern int CollisionBlock();
-
 // --- カメラの移動
 void CameraMove();
 
@@ -213,17 +215,12 @@ extern int blockdate[BLOCK_TYPE];
 
 
 // ステージコリジョン情報
-extern int HitFlag;						// ポリゴンに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
-extern int E1_HitFlag;					// エネミー用ヒットフラグ
-extern MV1_COLL_RESULT_POLY* Poly;		// ポリゴンの構造体にアクセスするために使用するポインタ( 使わなくても済ませられますがプログラムが長くなるので・・・ )
-extern HITRESULT_LINE LineRes;			// 線分とポリゴンとの当たり判定の結果を代入する構造体
-extern HITRESULT_LINE E1_LineRes;
+extern int HitFlag;						// ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
+extern int WallHitFlag;					// 壁ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
 extern HITRESULT_LINE LineBlock;
 
 // キャラがヒットした床のポリゴン表示の座標
-extern VECTOR PolyCharaHitField[3];
 extern float MaxY;
-extern float E1_MaxY;
 
 // 足場ブロック
 extern int StageMap[MAP_Y][MAP_X];

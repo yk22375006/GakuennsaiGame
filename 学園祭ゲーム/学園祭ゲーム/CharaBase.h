@@ -70,6 +70,10 @@ class CharaBase {
 			posi.y = set_posi ;
 		}
 
+		void SetX_Posi(float set_posi) {
+			posi.x = set_posi;
+		}
+
 		// スピード
 		VECTOR GetSpeed( ) {
 			return spd ;
@@ -81,6 +85,10 @@ class CharaBase {
 
 		void SetY_Spd( float set_spd ) {
 			spd.y = set_spd ;
+		}
+
+		void SetX_Spd(float set_spd) {
+			spd.x = set_spd;
 		}
 
 		// アクションモード

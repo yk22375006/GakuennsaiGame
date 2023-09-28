@@ -356,10 +356,14 @@ void Player::CharaJump(CharaBase* pp1, CharaBase* pp2)
 	}*/
 }
 
+/* ======================================================== +
+ |                       CharaFall( )                 Å@	|
+ |							óéâ∫							|
+ |                                                          |
+ + ======================================================== */
 void Player::CharaFall(CharaBase* pp1, CharaBase* pp2) {
 	pp1->MoveSet();
-	printf("bbb");
-	pp1->SetY_Spd(pp1->GetSpeed().y - 1.5f);
+	pp1->SetY_Spd(pp1->GetSpeed().y - PLAYER_FALL_SPEED);
 	pp1->SetPosition(VAdd(pp1->GetPosition(), pp1->GetSpeed()));
 }
 
@@ -477,16 +481,16 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 			case FALL_BLOCK:
 			case MOVE_BLOCK:
 			case WOOD_BLOCK:
-			case NEEDLE_BLOCK:
 				LineBlock = HitCheck_Line_Cube(cal_pos1, cal_pos2,
-					VGet(m_block[i].GetBlockPosition().x - 100.0f, m_block[i].GetBlockPosition().y, m_block[i].GetBlockPosition().z - 100.0f),
-					VGet(m_block[i].GetBlockPosition().x + 100.0f, m_block[i].GetBlockPosition().y + BLOCK_TOP, m_block[i].GetBlockPosition().z + 100.0f));
+					VGet(m_block[i].GetBlockPosition().x - BLOCK_X_SIZE, m_block[i].GetBlockPosition().y,				m_block[i].GetBlockPosition().z - 100.0f),
+					VGet(m_block[i].GetBlockPosition().x + BLOCK_X_SIZE, m_block[i].GetBlockPosition().y + BLOCK_TOP, m_block[i].GetBlockPosition().z + 100.0f));
 				break;
 
 			case INVINCIBLE_BLOCK:
+			case NEEDLE_BLOCK:
 				LineBlock = HitCheck_Line_Cube(cal_pos1, cal_pos2,
-					VGet(m_block[i].GetBlockPosition().x - 100.0f, m_block[i].GetBlockPosition().y, m_block[i].GetBlockPosition().z - 100.0f),
-					VGet(m_block[i].GetBlockPosition().x + 100.0f, m_block[i].GetBlockPosition().y + BLOCK_TOP * 2, m_block[i].GetBlockPosition().z + 100.0f));
+					VGet(m_block[i].GetBlockPosition().x - BLOCK_X_SIZE, m_block[i].GetBlockPosition().y,					m_block[i].GetBlockPosition().z - 100.0f),
+					VGet(m_block[i].GetBlockPosition().x + BLOCK_X_SIZE, m_block[i].GetBlockPosition().y + BLOCK_TOP * 2, m_block[i].GetBlockPosition().z + 100.0f));
 				break;
 			}
 
@@ -495,32 +499,77 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 				// É|ÉäÉSÉìÇ…ìñÇΩÇ¡ÇΩÉtÉâÉOÇóßÇƒÇÈ
 				if (pp1->GetSpeed().y > 0) {
 					switch (m_block[i].GetBlockType()) {
-					case TATAMI_BLOCK:
-					case BREAK_BLOCK:
-					case FALL_BLOCK:
-						pp1->SetY_Spd(pp1->GetSpeed().y * -1);
-						MaxY = pp1->GetSpeed().y - 100.0f;
-						m_block[i].SetBlockFlag(FALSE);
-						break;
+						case TATAMI_BLOCK:
+						case BREAK_BLOCK:
+						case FALL_BLOCK:
+							if (m_block[i].GetBlockPosition().y < pp1->GetPosition().y + PLAYER_SIZE_H) {
+								if (m_block[i].GetBlockPosition().x + (BLOCK_X_SIZE - PLAYER_SPEED) > pp1->GetPosition().x &&
+									m_block[i].GetBlockPosition().x - (BLOCK_X_SIZE - PLAYER_SPEED) < pp1->GetPosition().x) {
+									pp1->SetY_Spd(pp1->GetSpeed().y * -1);
+									MaxY = pp1->GetPosition().y - 250.0f;
+									m_block[i].SetBlockFlag(FALSE);
+								}
+							}
+							break;
 
-					case INVINCIBLE_BLOCK:
-					case MOVE_BLOCK:
-					case NEEDLE_BLOCK:
-					case WOOD_BLOCK:
-						pp1->SetY_Spd(pp1->GetSpeed().y * -1);
-						MaxY = pp1->GetSpeed().y - 100.0f;
-						break;
+						case INVINCIBLE_BLOCK:
+						case MOVE_BLOCK:
+						case NEEDLE_BLOCK:
+						case WOOD_BLOCK:
+							if (m_block[i].GetBlockPosition().y < pp1->GetPosition().y + PLAYER_SIZE_H) {
+
+								pp1->SetY_Spd(pp1->GetSpeed().y * -1);
+								MaxY = pp1->GetPosition().y - 250.0f;
+							}
+							break;
 					}
 				}
 				else {
 					HitFlag = 1;
-					if (m_block[i].GetBlockType() != INVINCIBLE_BLOCK) {
-						// ê⁄êGÇµÇΩÇxç¿ïWÇï€ë∂Ç∑ÇÈ
-						MaxY = m_block[i].GetBlockPosition().y + BLOCK_TOP;
+					if (m_block[i].GetBlockType() != INVINCIBLE_BLOCK && m_block[i].GetBlockType() != NEEDLE_BLOCK) {
+						if (m_block[i].GetBlockPosition().y <= pp1->GetPosition().y) {
+							// ê⁄êGÇµÇΩÇxç¿ïWÇï€ë∂Ç∑ÇÈ
+							MaxY = m_block[i].GetBlockPosition().y + BLOCK_TOP;
+						}
+						else {
+							MaxY = pp1->GetPosition().y;
+							HitFlag = 0;
+							// ï«à»äOÇ…ìñÇΩÇ¡ÇΩÇÁÉtÉâÉOÇâ∫Ç∞ÇÈ
+							if (m_block[i].GetBlockType() != WOOD_BLOCK) {
+								WallHitFlag = 1;
+							}
+							// â°ÇÃè∞Ç÷ÇÃà⁄ìÆÇÃêßå¿
+							if (m_block[i].GetBlockPosition().x < pp1->GetPosition().x) {
+								pp1->SetX_Posi(m_block[i].GetBlockPosition().x + (BLOCK_X_SIZE + PLAYER_SPEED));
+								if (pp1->GetSpeed().x > 0)
+									pp1->SetX_Spd(0.0f);
+							}
+							if (m_block[i].GetBlockPosition().x > pp1->GetPosition().x) {
+								pp1->SetX_Posi(m_block[i].GetBlockPosition().x - (BLOCK_X_SIZE + PLAYER_SPEED));
+								if (pp1->GetSpeed().x < 0)
+									pp1->SetX_Spd(0.0f);
+							}
+						}
 					}
 					else {
-						// ê⁄êGÇµÇΩÇxç¿ïWÇï€ë∂Ç∑ÇÈ
-						MaxY = m_block[i].GetBlockPosition().y + BLOCK_TOP * 2;
+						if (m_block[i].GetBlockPosition().y + BLOCK_TOP <= pp1->GetPosition().y) {
+							// ê⁄êGÇµÇΩÇxç¿ïWÇï€ë∂Ç∑ÇÈ
+							MaxY = m_block[i].GetBlockPosition().y + BLOCK_TOP * 2;
+						}
+						else {
+							MaxY = pp1->GetPosition().y;
+							HitFlag = 0;
+							if (m_block[i].GetBlockPosition().x < pp1->GetPosition().x) {
+								pp1->SetX_Posi(m_block[i].GetBlockPosition().x + (BLOCK_X_SIZE + PLAYER_SPEED));
+								if (pp1->GetSpeed().x > 0)
+									pp1->SetX_Spd(0.0f);
+							}
+							if (m_block[i].GetBlockPosition().x > pp1->GetPosition().x) {
+								pp1->SetX_Posi(m_block[i].GetBlockPosition().x - (BLOCK_X_SIZE + PLAYER_SPEED));
+								if (pp1->GetSpeed().x < 0)
+									pp1->SetX_Spd(0.0f);
+							}
+						}
 					}
 				}
 			}
@@ -535,7 +584,13 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 		if (pp1->GetAct_Mode() == eCharaFall) {
 			pp1->SetAct_Mode(eCharaStop);
 			pp1->SetAnim_Time(0.0f);
-			pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
+			if (WallHitFlag == 0) {
+				pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
+			}
+			else
+			{
+				WallHitFlag = 1;
+			}
 		}
 	}
 	else {

@@ -36,15 +36,10 @@ int blockdate[BLOCK_TYPE];
 // ステージコリジョン情報
 
 // 当たり判定
-int HitFlag = FALSE;							// ポリゴンに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
-int E1_HitFlag = FALSE;								
-MV1_COLL_RESULT_POLY* Poly;						// ポリゴンの構造体にアクセスするために使用するポインタ( 使わなくても済ませられますがプログラムが長くなるので・・・ )
-HITRESULT_LINE LineRes;							// 線分とポリゴンとの当たり判定の結果を代入する構造体
-HITRESULT_LINE E1_LineRes;
+int HitFlag = FALSE;							// ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
+int WallHitFlag = FALSE;						// 壁ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
 HITRESULT_LINE LineBlock;
 
-// キャラがヒットした床のポリゴン表示の座標
-VECTOR PolyCharaHitField[3];
 
 Block m_block[MAX_BLOCK];
 int blockcnt;
@@ -75,9 +70,6 @@ Player* g_Chara[2];
 VECTOR cpos;
 VECTOR ctgt;
 VECTOR cadd;
-
-// --- 床の当たり判定
-int CollisionBlock();
 
 // --- カメラの移動
 void CameraMove();

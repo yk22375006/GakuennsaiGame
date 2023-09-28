@@ -6,36 +6,32 @@
 //								カメラの移動関数							//
 // ------------------------------------------------------------------------ //
 void CameraMove() {
-	if (key & PAD_INPUT_5) {
+	if (CheckHitKey(KEY_INPUT_S) == 1) {
 		cpos.z -= 48.0f;
 	}
 
 	// 上を押下 奥に移動
-	if (key & PAD_INPUT_8) {
+	if (CheckHitKey(KEY_INPUT_W) == 1) {
 		cpos.z += 48.0f;
 	}
 
 	// 左を押下 左に移動
-	if (key & PAD_INPUT_4) {
+	if (CheckHitKey(KEY_INPUT_A) == 1) {
 		cpos.x -= 48.0f;
 	}
 
 	// 右方向への移動処理
-	if (key & PAD_INPUT_6) {
+	if (CheckHitKey(KEY_INPUT_D) == 1) {
 		cpos.x += 48.0f;
 	}
 	// Xキー
-	if (key & PAD_INPUT_2) {
+	if (CheckHitKey(KEY_INPUT_X) == 1) {
 		cpos.y += 48.0f;
 	}
 
 	// Zキー
-	if (key & PAD_INPUT_1) {
+	if (CheckHitKey(KEY_INPUT_Z) == 1) {
 		cpos.y -= 48.0f;
-	}
-
-	if (CheckHitKey(KEY_INPUT_C)) {
-		Player[0].pos.y = 1800.0f;
 	}
 
 	// カメラのスクロール

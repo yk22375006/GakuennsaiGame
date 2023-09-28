@@ -39,8 +39,8 @@ class Block {
 		void SetMapPositionY(int set_b_map_x) {
 			b_Map.x = set_b_map_x;
 		}
-		void SetMapPositionX(int set_b_map_y) {
-			b_Map.y = set_b_map_y;
+		void SetMapPositionX(int set_b_map_x) {
+			b_Map.y = set_b_map_x;
 		}
 
 		// ƒuƒƒbƒN‚Ìí—Ş

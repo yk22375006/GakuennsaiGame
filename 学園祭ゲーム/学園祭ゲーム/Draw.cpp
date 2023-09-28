@@ -9,8 +9,8 @@ void Draw() {
 	ShadowMap_DrawSetup(ShadowMapHandle);
 
 	// モデルの描画 - 影の描画
-	MV1DrawModel(Player[0].model);
-	MV1DrawModel(Player[1].model);
+	MV1DrawModel(player[0].anim.model);
+	MV1DrawModel(player[1].anim.model);
 
 	// シャドウマップへの描画を終了
 	ShadowMap_DrawEnd();
@@ -32,16 +32,14 @@ void Draw() {
 		}
 	}
 
-	SetLightPositionHandle(LHandle, VGet(Player[0].pos.x, Player[0].pos.y + 100.0f, Player[0].pos.z - 100.0f)); // ライトの位置
+	SetLightPositionHandle(LHandle, VGet(player[0].GetPosition().x, player[0].GetPosition().y + 100.0f, player[0].GetPosition().z - 100.0f)); // ライトの位置
 //	SetLightDirectionHandle(LHandle, VGet(ctgt.x = cpos.x , ctgt.y = cpos.y - 400   , ctgt.z = cpos.z ));  // ライトの方向
 //	SetLightAngleHandle(LHandle, 0.78f, 0.5f);
 
-	DrawTriangle3D(PolyCharaHitField[0], PolyCharaHitField[1], PolyCharaHitField[2],
-		GetColor(255, 0, 0), TRUE);
 
 	// モデルの描画
-	MV1DrawModel(Player[0].model);
-	MV1DrawModel(Player[1].model);
+	MV1DrawModel(player[0].anim.model);
+	MV1DrawModel(player[1].anim.model);
 
 	// 描画に使用するシャドウマップの設定を解除
 	SetUseShadowMap(0, -1);

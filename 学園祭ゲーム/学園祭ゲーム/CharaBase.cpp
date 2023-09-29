@@ -52,11 +52,13 @@ int CharaBase::MoveSet( )
 	{
 		case PAD_INPUT_UP:
 			if (act_mode != eCharaFall) {
-				posi.y = posi.y + 11.0f;
-				spd.y = PLAYER_JUMP_SPEED;
 				act_mode = eCharaJump;
 			}
 			break ;
+
+		case PAD_INPUT_DOWN:
+			direction = DOWN;
+			break;
 
 		case PAD_INPUT_LEFT:
 			spd.x = -PLAYER_SPEED; // ç∂Çâüâ∫ ç∂Ç…à⁄ìÆ

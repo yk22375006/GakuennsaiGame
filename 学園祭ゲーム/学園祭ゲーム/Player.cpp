@@ -343,8 +343,8 @@ void Player::CharaJump(CharaBase* pp1, CharaBase* pp2)
 {
 	pp1->AddPlay_Time(0.5f);
 //	pp1->SetMotion(pp1->GetAnimation_Data().jump);
-
-	pp1->SetY_Spd(40.0f);
+	pp1->SetY_Posi(posi.y + 11.0f);
+	pp1->SetY_Spd(PLAYER_JUMP_SPEED);
 	pp1->SetAct_Mode(eCharaFall);
 /*	if (pp1->GetAnim_Time() < pp1->GetPlay_Time()) {
 		// ‰½‚à‰Ÿ‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î

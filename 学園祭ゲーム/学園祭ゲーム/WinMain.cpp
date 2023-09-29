@@ -21,22 +21,18 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	ctgt = VGet(0.0f,500.0f,-400.0f) ;
 	cadd = VGet(0.0f, 0.0f, 0.0f);
 
-
-	ChangeWindowMode(TRUE) ;
-
-
-	SetGraphMode(1440,810,32) ;
+	ChangeWindowMode(TRUE);
+	SetGraphMode(960, 540, 32);
 
 	// DXライブラリの初期化				DXライブラリースタート
 	if(DxLib_Init() == -1) return -1 ;
 
-	WeaponInit();
 
 
 	// ステージ情報の読み込み
 	// コミット用コメント
 	// ステージ情報の読み込み
-	skydate = MV1LoadModel("..\\Data\\Stage\\夜空.mv1");
+	skydate = MV1LoadModel("..\\Data\\Stage\\スカイドーム.mv1");
 	if (skydate == -1) return -1;
 
 	MV1SetUseZBuffer(skydate, false);
@@ -65,10 +61,25 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 	// ライトの色　黒
 	SetLightDifColor(GetColorF(0.5f, 0.5f, 0.5f, 1.0f));
-
+	Range = 2000.0f;
+	Atten0 = 0.3f;
+	Atten1 = 0.0f;
+	Atten2 = 0.0f;
+	OutAngle = 0.f;
+	InAngle = 0.5f;
+	Lightlimit = 0;
 	// スポットライト
-	LHandle = CreateSpotLightHandle(VGet(player[0].GetPosition().x,player[0].GetPosition().y + 0.0f, player[0].GetPosition().z - 100.0f)
-		, VGet(0.0f, 0.78f, 1.57f), 0.78f, 0.5f, 1500.0f, 0.3f, 0.0f, 0.0f);
+	LHandle_p1 = CreateSpotLightHandle(VGet(player[0].GetPosition().x, player[0].GetPosition().y + 0.0f, player[0].GetPosition().z - 100.0f),
+		VGet(0.0f, 0.78f, 1.57f),
+		OutAngle, InAngle,
+		Range,
+		Atten0, Atten1, Atten2);
+
+	LHandle_p2 = CreateSpotLightHandle(VGet(player[1].GetPosition().x, player[1].GetPosition().y + 0.0f, player[1].GetPosition().z - 100.0f)
+		, VGet(0.0f, 0.78f, 1.57f),
+		0.78f, 0.5f,
+		2000.0f,
+		0.3f, 0.0f, 0.0f);
 
 	// シャドウマップが想定するライトの方向もセット
 	SetShadowMapLightDirection( ShadowMapHandle, VGet( 0.5f, -0.5f, 0.5f ) ) ;
@@ -120,8 +131,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				ScreenFlip();
 
 				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
-					player[0].SetPosition(VGet(200.0f, 1800.0f, 0.0f));
-					player[1].SetPosition(VGet(1200.0f, 1800.0f, 0.0f));
+					player[0].SetPosition(VGet(1500.0f, 1800.0f, 0.0f));
+					player[1].SetPosition(VGet(2800.0f, 5800.0f, 0.0f));
 					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
 
 					for (int i = 0; i < BACKGROUNDFLOOR; i++) {
@@ -243,7 +254,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	}
 
 	// ライトハンドルの削除
-	DeleteLightHandle(LHandle);
+	DeleteLightHandle(LHandle_p1);
+	DeleteLightHandle(LHandle_p2);
 	// シャドウマップの削除
 	DeleteShadowMap(ShadowMapHandle);
 	// キャラクターモデルの削除

@@ -22,13 +22,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	ctgt = VGet(0.0f,500.0f,-400.0f) ;
 	cadd = VGet(0.0f, 0.0f, 0.0f);
 
-<<<<<<< HEAD
 	ChangeWindowMode(TRUE);
 	SetGraphMode(1440, 810, 32);
-=======
-	ChangeWindowMode(FALSE);
-	SetGraphMode(1920, 1080, 32);
->>>>>>> origin/ã•ã™ã‚‰ã„ã®åç„¡ã—ã®ãƒ–ãƒ©ãƒ³ãƒã ãŠ
 
 	// DXƒ‰ƒCƒuƒ‰ƒŠ‚Ì‰Šú‰»				DXƒ‰ƒCƒuƒ‰ƒŠ[ƒXƒ^[ƒg
 	if(DxLib_Init() == -1) return -1 ;
@@ -241,7 +236,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					}
 				}
 
-				SetLightRangeAttenHandle(LHandle_p1, Range, Atten0, Atten1, Atten2);
+//				SetLightRangeAttenHandle(LHandle_p1, Range, Atten0, Atten1, Atten2);
 				SetLightAngleHandle(LHandle_p1, 0.24582103f, 6.28318548f);
 				SetLightPositionHandle(LHandle_p1, VGet(player[0].GetPosition().x, player[0].GetPosition().y + 100.0f, player[0].GetPosition().z - 500.0f)); // ƒ‰ƒCƒg‚ÌˆÊ’u
 				SetLightPositionHandle(LHandle_p2, VGet(player[1].GetPosition().x, player[1].GetPosition().y + 100.0f, player[1].GetPosition().z - 500.0f)); // ƒ‰ƒCƒg‚ÌˆÊ’u

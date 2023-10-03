@@ -17,7 +17,6 @@ void Draw() {
 
 	// 描画に使用するシャドウマップを設定
 	SetUseShadowMap(0, ShadowMapHandle);
-
 	// 地面(配置)＆描画
 	MV1DrawModel(skydate);
 	MV1DrawModel(stagedate);

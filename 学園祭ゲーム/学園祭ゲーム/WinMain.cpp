@@ -21,7 +21,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	ctgt = VGet(0.0f,500.0f,-400.0f) ;
 	cadd = VGet(0.0f, 0.0f, 0.0f);
 
-	ChangeWindowMode(FALSE);
+	ChangeWindowMode(TRUE);
 	SetGraphMode(1440, 810, 32);
 
 	// DXライブラリの初期化				DXライブラリースタート
@@ -52,36 +52,39 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	blockdate[NEEDLE_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\棘.mv1");
 	blockdate[WOOD_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\柱.mv1");
 	// プレイヤーの作成
-	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_sub.mv1");
-	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_sub.mv1");
+	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\白忍者.mv1");
+	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者.mv1");
 
-	// ライトの方向を設定
-	SetLightDirection( VGet( 0.5f, -0.5f, 0.5f ) );
-	ShadowMapHandle = MakeShadowMap( 1024, 1024 ) ;
+	//	Atten0 = 0.3f;
+	//	Atten1 = 0.0f;
+	//	Atten2 = 0.0f;
+	//	C_DirectionX = 0.0f * (DX_PI_F / 180.0f);
+	//	C_DirectionY = 270.0f * (DX_PI_F / 180.0f);
+	//	C_DirectionZ = 0.0f;
+	// スポットライト
+	LHandle_p1 = CreateSpotLightHandle(
+		VGet(player[0].GetPosition().x - 0.0f, player[0].GetPosition().y - 0.0f, player[0].GetPosition().z - 500.0f),
+		VGet(0.0f, 45.0f * (DX_PI_F / 180.0f), 90.0f * (DX_PI_F / 180.0f)),
+		0.7f, 0.4f,
+		2000.0f,
+		0.391586f, 0.001662f, 0.0f);
 
-	// ライトの色　黒
-	SetLightDifColor(GetColorF(0.5f, 0.5f, 0.5f, 1.0f));
-//	Atten0 = 0.3f;
-//	Atten1 = 0.0f;
-//	Atten2 = 0.0f;
-//	C_DirectionX = 0.0f * (DX_PI_F / 180.0f);
-//	C_DirectionY = 270.0f * (DX_PI_F / 180.0f);
-//	C_DirectionZ = 0.0f;
-// スポットライト
-	LHandle_p1 = CreateSpotLightHandle(VGet(player[0].GetPosition().x - 0.0f , player[0].GetPosition().y - 0.0f, player[0].GetPosition().z - 500.0f),
+	LHandle_p2 = CreateSpotLightHandle(
+		VGet(player[1].GetPosition().x, player[1].GetPosition().y + 0.0f, player[1].GetPosition().z - 100.0f),
 		VGet(0.0f, 0.78f, 1.57f),
-		0.24582103f, 6.28318548f,
-		2000.0,
-		0.3f, 0.0f, 0.0f);
-
-	LHandle_p2 = CreateSpotLightHandle(VGet(player[1].GetPosition().x, player[1].GetPosition().y + 0.0f, player[1].GetPosition().z - 100.0f)
-		, VGet(0.0f, 0.78f, 1.57f),
 		0.24582103f, 6.28318548f,
 		2000.0f,
 		0.3f, 0.0f, 0.0f);
 
+	// ライトの方向を設定
+	SetLightDirection( VGet( 0.0f, -0.5f, 0.5f ) );
+	ShadowMapHandle = MakeShadowMap( 1024, 1024 ) ;
+
+	// ライトの色　黒
+	SetLightDifColor(GetColorF(0.5f, 0.5f, 0.5f, 0.0f));
+
 	// シャドウマップが想定するライトの方向もセット
-	SetShadowMapLightDirection( ShadowMapHandle, VGet( 0.5f, -0.5f, 0.5f ) ) ;
+	SetShadowMapLightDirection( ShadowMapHandle, VGet( 0.0f, -0.5f, 0.5f ) ) ;
 
 	// シャドウマップに描画する範囲を設定
 	SetShadowMapDrawArea( ShadowMapHandle, VGet( -5000.0f, -10.0f, -5000.0f ), VGet( 5000.0f, 1000.0f, 5000.0f ) ) ;

@@ -252,12 +252,11 @@ int LHandle_p1;
 int LHandle_p2;
 
 float Range;
-float Atten0;
-float Atten1;
-float Atten2;
 float OutAngle;
 float InAngle;
-int Lightlimit;
+float C_DirectionX;
+float C_DirectionY;
+float C_DirectionZ;
 
 
 

@@ -237,11 +237,11 @@ extern MATRIX WeaponMatrix;
 extern int LHandle_p1;
 extern int LHandle_p2;
 extern float Range;
-extern float Atten0;
-extern float Atten1;
-extern float Atten2;
 extern float OutAngle;
 extern float InAngle;
-extern int Lightlimit;
+extern float C_DirectionX;
+extern float C_DirectionY;
+extern float C_DirectionZ;
+
 
 

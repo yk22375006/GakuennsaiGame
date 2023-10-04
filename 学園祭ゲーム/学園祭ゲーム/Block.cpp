@@ -187,10 +187,10 @@ void Block::BlockMove(Block *bb) {
 			if (bb->b_move_flg == TRUE)
 				bb->b_spd.y = -BLOCK_MOVE_SPD;
 
-			if (bb->b_posi.y - bb->b_first_posi.y > 350.0f)
+			if (bb->b_posi.y - bb->b_first_posi.y > 320.0f)
 				bb->b_move_flg = TRUE;
 
-			if (bb->b_posi.y - bb->b_first_posi.y < -350.0f)
+			if (bb->b_posi.y - bb->b_first_posi.y < -320.0f)
 				bb->b_move_flg = FALSE;
 
 			bb->b_posi.y += bb->b_spd.y;

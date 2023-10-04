@@ -151,6 +151,8 @@ int Player::ChangeAnimation(CharaBase* pp1, int set_anim)
  + ======================================================== */
 void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 {
+	pp1->SetX_Spd(0.0f);
+
 	// アニメーション
 	pp1->AddPlay_Time( 0.5f ) ;
 //	pp1->SetMotion( pp1->GetAnimation_Data( ).stop ) ;
@@ -164,8 +166,6 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 
 	// 移動量を加える
 	pp1->SetPosition(VAdd(pp1->GetPosition(), pp1->GetSpeed()));
-
-	pp1->SetX_Spd(0.0f);
 
 	// 移動量セット
 //	pp1->MoveSet( ) ;
@@ -205,6 +205,7 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
  + ======================================================== */
 void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 {
+	pp1->SetX_Spd(0.0f);
 	// アニメーション
 	pp1->AddPlay_Time( 0.5f ) ;
 //	pp1->SetMotion( pp1->GetAnimation_Data( ).run ) ;
@@ -349,6 +350,7 @@ void Player::CharaJump(CharaBase* pp1, CharaBase* pp2)
 {
 	pp1->AddPlay_Time(0.5f);
 //	pp1->SetMotion(pp1->GetAnimation_Data().jump);
+	pp1->SetX_Spd(0.0f);
 	pp1->SetY_Posi(posi.y + 11.0f);
 	pp1->SetY_Spd(PLAYER_JUMP_SPEED);
 	pp1->SetAct_Mode(eCharaFall);
@@ -519,10 +521,11 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 						case TATAMI_BLOCK:
 						case BREAK_BLOCK:
 						case FALL_BLOCK:
+							// ブロックの底面よりプレイヤーの頭が小さい時の処理
 							if (m_block[i].GetBlockPosition().y < pp1->GetPosition().y + PLAYER_SIZE_H) {
 								if (m_block[i].GetBlockPosition().y + BLOCK_TOP > pp1->GetPosition().y + PLAYER_SIZE_H) {
 									pp1->SetY_Spd(pp1->GetSpeed().y * -1);
-									MaxY = pp1->GetPosition().y - 250.0f;
+									MaxY = m_block[i].GetBlockPosition().y - PLAYER_SIZE_H;
 									m_block[i].SetBlockFlag(FALSE);
 								}
 								else {
@@ -574,7 +577,7 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 							// 接触したＹ座標を保存する
 							MaxY = m_block[i].GetBlockPosition().y + BLOCK_TOP;
 							if (m_block[i].GetBlockType() == MOVE_BLOCK_X) {
-								pp1->SetX_Spd(pp1->GetSpeed().x + m_block[i].GetBlockSpeed().x);
+//								pp1->SetX_Spd(pp1->GetSpeed().x + m_block[i].GetBlockSpeed().x);
 							}
 						}
 						else {

@@ -160,6 +160,12 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 //		pp1->SetMotion( pp1->GetAnimation_Data( ).run ) ;
 //		ChangeAnimation(pp1, pp1->GetAnimation_Data().run);	// アニメーション切り替え
 	}
+	Block_HitCheck(pp1);
+
+	// 移動量を加える
+	pp1->SetPosition(VAdd(pp1->GetPosition(), pp1->GetSpeed()));
+
+	pp1->SetX_Spd(0.0f);
 
 	// 移動量セット
 //	pp1->MoveSet( ) ;
@@ -488,8 +494,10 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 			case TATAMI_BLOCK:
 			case BREAK_BLOCK:
 			case FALL_BLOCK:
-			case MOVE_BLOCK:
 			case WOOD_BLOCK:
+			case MOVE_BLOCK_X:
+			case MOVE_BLOCK_Y:
+			case MOVE_BLOCK_Z:
 				LineBlock = HitCheck_Line_Cube(cal_pos1, cal_pos2,
 					VGet(m_block[i].GetBlockPosition().x - BLOCK_X_SIZE, m_block[i].GetBlockPosition().y,				m_block[i].GetBlockPosition().z - 100.0f),
 					VGet(m_block[i].GetBlockPosition().x + BLOCK_X_SIZE, m_block[i].GetBlockPosition().y + BLOCK_TOP, m_block[i].GetBlockPosition().z + 100.0f));
@@ -533,7 +541,9 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 							break;
 
 						case INVINCIBLE_BLOCK:
-						case MOVE_BLOCK:
+						case MOVE_BLOCK_X:
+						case MOVE_BLOCK_Y:
+						case MOVE_BLOCK_Z:
 						case NEEDLE_BLOCK:
 						case WOOD_BLOCK:
 							if (m_block[i].GetBlockPosition().y < pp1->GetPosition().y + PLAYER_SIZE_H) {
@@ -563,6 +573,9 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 						if (m_block[i].GetBlockPosition().y + (BLOCK_TOP / 2) <= pp1->GetPosition().y) {
 							// 接触したＹ座標を保存する
 							MaxY = m_block[i].GetBlockPosition().y + BLOCK_TOP;
+							if (m_block[i].GetBlockType() == MOVE_BLOCK_X) {
+								pp1->SetX_Spd(pp1->GetSpeed().x + m_block[i].GetBlockSpeed().x);
+							}
 						}
 						else {
 							MaxY = pp1->GetPosition().y;

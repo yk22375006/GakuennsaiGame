@@ -90,9 +90,9 @@ int CharaBase::MoveSet( )
 			}
 			break ;
 	}
-	if (posi.x < 137.0f && spd.x < 0 )
+	if (posi.x < (100.0f + PLAYER_SIZE_W)&& spd.x < 0 )
 		spd.x = 0.0f;
-	if (posi.x > 2863.0f && spd.x > 0)
+	if (posi.x > (2900.0f - PLAYER_SIZE_W) && spd.x > 0)
 		spd.x = 0.0f;
 
 	return( false ) ;

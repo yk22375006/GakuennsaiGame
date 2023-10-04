@@ -39,20 +39,19 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 	MV1SetUseZBuffer(skydate, false);
 	// 背景読み込み
-	bgdate[BACKGROUNDTATAMI] = MV1LoadModel("..\\Data\\Stage\\背景_畳sub.mv1");
+	bgdate[BACKGROUNDTATAMI] = MV1LoadModel("..\\Data\\Stage\\背景_畳.mv1");
 	stagedate = MV1LoadModel("..\\Data\\Stage\\石畳.mv1");
 	MV1SetPosition(stagedate, VGet(1500.0f, 100.0f, -100.0f));
 	MV1SetUseZBuffer(skydate, false);
 
 	// ブロックモデルの読み込み
-
 	blockdate[TATAMI_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\畳.mv1");
 	blockdate[BREAK_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\木材.mv1");
 	blockdate[FALL_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\落下ブロック.mv1");
 	blockdate[INVINCIBLE_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\無敵畳.mv1");
-	blockdate[MOVE_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\移動床.mv1");
 	blockdate[NEEDLE_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\棘.mv1");
 	blockdate[WOOD_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\柱.mv1");
+	blockdate[MOVE_BLOCK_X] = MV1LoadModel("..\\Data\\Stage\\移動床.mv1");
 	// プレイヤーの作成
 	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\白忍者.mv1");
 	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者.mv1");
@@ -93,78 +92,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	for (int i = 0; i < BACKGROUNDFLOOR; i++) {
-		bg_tatami[i] = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
-		MV1SetPosition(bg_tatami[i], VGet(1500.0f, 100.0f + (i * 800.0f), 100.0f));
-	}
-
-	blockcnt = 0;
-	// マップデータに反映
-	for (int y = MAP_Y - 1; y >= 0; y--) {
-		for (int x = 0; x < MAP_X; x++) {
-			if (StageMap[y][x] != 0) {
-				switch (StageMap[y][x]) {
-				case TATAMI_BLOCK:
-					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[TATAMI_BLOCK]);
-					m_block[blockcnt].SetBlockType(TATAMI_BLOCK);
-					break;
-
-				case BREAK_BLOCK:
-					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[BREAK_BLOCK]);
-					m_block[blockcnt].SetBlockType(BREAK_BLOCK);
-					break;
-
-				case FALL_BLOCK:
-					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[FALL_BLOCK]);
-					m_block[blockcnt].SetBlockType(FALL_BLOCK);
-					break;
-
-				case INVINCIBLE_BLOCK:
-					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[INVINCIBLE_BLOCK]);
-					m_block[blockcnt].SetBlockType(INVINCIBLE_BLOCK);
-					break;
-
-				case MOVE_BLOCK:
-					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[MOVE_BLOCK]);
-					m_block[blockcnt].SetBlockType(MOVE_BLOCK);
-					m_block[blockcnt].SetMapPositionX(x);
-					break;
-
-				case NEEDLE_BLOCK:
-					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[NEEDLE_BLOCK]);
-					m_block[blockcnt].SetBlockType(NEEDLE_BLOCK);
-					break;
-
-				case WOOD_BLOCK:
-					m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[WOOD_BLOCK]);
-					m_block[blockcnt].SetBlockType(WOOD_BLOCK);
-					break;
-				}
-				m_block[blockcnt].SetMapPositionY(y);
-				m_block[blockcnt].SetMapPositionX(x);
-				m_block[blockcnt].SetBlockFlag(TRUE);
-				blockcnt++;
-			}
-		}
-	}
-
-	blockcnt = 0;
-
-	for (int y = (MAP_Y - 1); y >= 0; y--) {
-		for (int x = 0; x < MAP_X; x++) {
-			if (StageMap[y][x] != 0) {
-				if (StageMap[y][x] != NEEDLE_BLOCK) {
-					MV1SetPosition(m_block[blockcnt].b_model, VGet((x * 200.0f), ((MAP_Y - y) * 100.0f), 0.0f));
-					m_block[blockcnt].SetBlockPosition(VGet((x * 200.0f), ((MAP_Y - y) * 100.0f), 0.0f));
-				}
-				else {
-					MV1SetPosition(m_block[blockcnt].b_model, VGet((x * 200.0f), ((MAP_Y - y) * 100.0f) + 50.0f, 0.0f));
-					m_block[blockcnt].SetBlockPosition(VGet((x * 200.0f), ((MAP_Y - y) * 100.0f) + 50.0f, 0.0f));
-				}
-				blockcnt++;
-			}
-		}
-	}
+	m_block->init();
 
 	/* ------------------------------------------------------------------------------------------------
 												ゲームループ										
@@ -178,6 +106,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				gamemode = eSceneChoice;
 				g_Chara[0] = &player[0];
 				g_Chara[1] = &player[1];
+				DrawLimit = 0;
 				break;
 
 			case eSceneTitle:
@@ -197,7 +126,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				cadd = VGet(0.0f, 0.0f, 0.0f);
 
 				player[0].SetPosition(VGet(200.0f, 200.0f, 0.0f));
-//				player[1].pos = VGet(600.0f, 300.0f, 200.0f);
 				player[1].SetPosition(VGet(0.0f, 2000.0f, 0.0f));
 
 				//カメラ情報の反映
@@ -262,8 +190,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				ScreenFlip();
 
 				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
-					player[0].SetPosition(VGet(200.0f, 1800.0f, 0.0f));
-					player[1].SetPosition(VGet(2800.0f, 1800.0f, 0.0f));
+					player[0].SetPosition(VGet(200.0f, 2000.0f, 0.0f));
+					player[1].SetPosition(VGet(2800.0f, 2000.0f, 0.0f));
 					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
 
 					gamemode = eScenePlay;
@@ -274,10 +202,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				g_Chara[0]->ActionLoop(g_Chara[0], g_Chara[1]);
 				g_Chara[1]->ActionLoop(g_Chara[1], g_Chara[0]);
 
-				// アニメーションの反映
-//				MV1SetAttachAnimTime(player[0].anim.model, player[0].GetAnim_Attach(), player[0].GetAnim_Time());
-//				MV1SetAttachAnimTime(player[1].anim.model, player[1].GetAnim_Attach(), player[1].GetAnim_Time());
-//				PlayerMove();
+				// スクリーンクリアー
 				ClearDrawScreen() ;
 				// カメラの視点操作
 				CameraMove();
@@ -303,6 +228,12 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				// 描画
 				Draw();
+
+				if (DrawLimit > 0)
+					DrawLimit--;
+
+				if (DrawLimit < 0)
+					DrawLimit = 0;
 
 				ScreenFlip() ;
 				break ;

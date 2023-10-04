@@ -40,16 +40,16 @@
 #define CHOICESTAGE 1
 
 // プレイヤーモデルのサイズ
-#define PLAYER_SIZE_H	340.0f
-#define PLAYER_SIZE_W	80.0f
+#define PLAYER_SIZE_H	425.0f
+#define PLAYER_SIZE_W	100.0f
 
 // プレイヤーの移動速度
 #define PLAYER_SPEED 12.0f
-#define PLAYER_JUMP_SPEED 50.0f
+#define PLAYER_JUMP_SPEED 57.0f
 #define PLAYER_FALL_SPEED 1.5f
 
 // ブロック
-#define MAX_BLOCK			600
+#define MAX_BLOCK			620
 #define BLOCK_TYPE			10
 #define BLOCK_TOP			100.0f
 #define BLOCK_X_SIZE		125.0f
@@ -57,9 +57,12 @@
 #define BREAK_BLOCK			2
 #define FALL_BLOCK			3
 #define INVINCIBLE_BLOCK	4
-#define MOVE_BLOCK			5
-#define NEEDLE_BLOCK		6
-#define WOOD_BLOCK			7
+#define NEEDLE_BLOCK		5
+#define WOOD_BLOCK			6
+#define MOVE_BLOCK_X		7
+#define MOVE_BLOCK_Y		8
+#define MOVE_BLOCK_Z		9
+#define BLOCK_MOVE_SPD		2.5f
 
 #define WEAPON_HEIGHT 110.0f
 #define WEAPON_WIDTH 6.0f
@@ -79,7 +82,7 @@
 #define CAMERA_ROTATE 200.0f
 
 // マップ
-#define MAP_Y 145
+#define MAP_Y 163
 #define MAP_X 16
 /* -----------------------------------------------------------------------------------------
 |
@@ -171,9 +174,6 @@ extern void AnimationEnemy(int);
 
 // --- プレイヤー
 
-// --- 武器
-extern void WeaponInit();
-
 // --- カメラの移動
 void CameraMove();
 
@@ -242,6 +242,9 @@ extern float InAngle;
 extern float C_DirectionX;
 extern float C_DirectionY;
 extern float C_DirectionZ;
+
+extern int DrawLimit;
+
 
 
 

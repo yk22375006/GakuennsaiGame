@@ -90,7 +90,7 @@ int Player::AllowKey( )
  + ======================================================== */
 int Player::AnimationInit()
 {
-//	g_Chara[0]->SetMotion(anim.stop);
+	g_Chara[0]->SetMotion(anim.stop);
 //	g_Chara[1]->SetMotion(anim.stop);
 
 	// アニメーションセット
@@ -129,15 +129,15 @@ int Player::Animation(CharaBase* pp1)
 int Player::ChangeAnimation(CharaBase* pp1, int set_anim)
 {
 	// アニメーションをデタッチする
-//	MV1DetachAnim(pp1->GetAnimation_Data().model, pp1->GetAnim_Attach());
+	MV1DetachAnim(pp1->GetAnimation_Data().model, pp1->GetAnim_Attach());
 
 	// アニメーションセット(切り替え)
-//	pp1->SetAnim_Attach(MV1AttachAnim(pp1->GetAnimation_Data().model, 0, set_anim));
-//	pp1->SetAnim_Time(MV1GetAttachAnimTotalTime(pp1->GetAnimation_Data().model, pp1->GetAnim_Attach()));
+	pp1->SetAnim_Attach(MV1AttachAnim(pp1->GetAnimation_Data().model, 0, set_anim));
+	pp1->SetAnim_Time(MV1GetAttachAnimTotalTime(pp1->GetAnimation_Data().model, pp1->GetAnim_Attach()));
 
 	// アニメーションして動いてもその場で動いてるような状態にする
-//	pp1->SetRootFlm(MV1SearchFrame(pp1->GetAnimation_Data().model, "root"));
-//	MV1SetFrameUserLocalMatrix(pp1->GetAnimation_Data().model, pp1->GetRootFlm(), MGetIdent());
+	pp1->SetRootFlm(MV1SearchFrame(pp1->GetAnimation_Data().model, "root"));
+	MV1SetFrameUserLocalMatrix(pp1->GetAnimation_Data().model, pp1->GetRootFlm(), MGetIdent());
 	pp1->SetPlay_Time(0.0f);
 
 	return(false);
@@ -155,7 +155,7 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 
 	// アニメーション
 	pp1->AddPlay_Time( 0.5f ) ;
-//	pp1->SetMotion( pp1->GetAnimation_Data( ).stop ) ;
+	pp1->SetMotion( pp1->GetAnimation_Data( ).stop ) ;
 
 	if ( AllowKey( ) == (int)true ){
 		pp1->SetAct_Mode( eCharaMove ) ;
@@ -222,8 +222,8 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 	pp1->SetPosition( VAdd( pp1->GetPosition( ) , pp1->GetSpeed( ) ) ) ;
 
 	// アニメーション
-/*	pp1->AddPlay_Time(0.5f);
-//	pp1->SetMotion(pp1->GetAnimation_Data().run);
+	pp1->AddPlay_Time(0.5f);
+/*	pp1->SetMotion(pp1->GetAnimation_Data().run);
 
 	// zが押されたら
 	if (key1 & PAD_INPUT_7) {
@@ -250,8 +250,8 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 	if (key1 == 0) {
 		pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
 		pp1->SetAct_Mode(eCharaStop);
-//		pp1->SetMotion(pp1->GetAnimation_Data().stop);
-//		ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
+		pp1->SetMotion(pp1->GetAnimation_Data().stop);
+		ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
 	}
 
 //	if (key1 & PAD_INPUT_3) {
@@ -354,19 +354,6 @@ void Player::CharaJump(CharaBase* pp1, CharaBase* pp2)
 	pp1->SetY_Posi(posi.y + 11.0f);
 	pp1->SetY_Spd(PLAYER_JUMP_SPEED);
 	pp1->SetAct_Mode(eCharaFall);
-/*	if (pp1->GetAnim_Time() < pp1->GetPlay_Time()) {
-		// 何も押されていなければ
-		if (key1 == 0) {
-			printf("無");
-			pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
-			pp1->SetAct_Mode(eCharaStop);
-		}
-
-		if (AllowKey() == (int)true) {
-			printf("有");
-			pp1->SetAct_Mode(eCharaMove);
-		}
-	}*/
 }
 
 /* ======================================================== +
@@ -377,8 +364,12 @@ void Player::CharaJump(CharaBase* pp1, CharaBase* pp2)
 void Player::CharaFall(CharaBase* pp1, CharaBase* pp2) {
 	pp1->MoveSet();
 	
-	pp1->SetY_Spd(pp1->GetSpeed().y - PLAYER_FALL_SPEED);
-
+	if (pp1->GetSpeed().y > -50.0f) {
+		pp1->SetY_Spd(pp1->GetSpeed().y - PLAYER_FALL_SPEED);
+		if (pp1->GetSpeed().y < -2.0f && pp1->GetSpeed().y > -40.0f) {
+			pp1->SetY_Spd(pp1->GetSpeed().y - PLAYER_FALL_SPEED);
+		}
+	}
 	Block_HitCheck(pp1);
 
 	pp1->SetPosition(VAdd(pp1->GetPosition(), pp1->GetSpeed()));
@@ -403,8 +394,8 @@ void Player::CharaDamage(CharaBase* pp1, CharaBase* pp2)
 		if (key1 == 0) {
 			pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
 			pp1->SetAct_Mode(eCharaStop);
-//			pp1->SetMotion(pp1->GetAnimation_Data().stop);
-//			ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
+			pp1->SetMotion(pp1->GetAnimation_Data().stop);
+			ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
 		}
 
 		if (AllowKey() == (int)true) {
@@ -449,8 +440,8 @@ void Player::CharaDown(CharaBase* pp1, CharaBase* pp2)
 		if (key1 == 0) {
 			pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
 			pp1->SetAct_Mode(eCharaStop);
-//			pp1->SetMotion(pp1->GetAnimation_Data().stop);
-//			ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
+			pp1->SetMotion(pp1->GetAnimation_Data().stop);
+			ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
 		}
 	}
 
@@ -459,8 +450,8 @@ void Player::CharaDown(CharaBase* pp1, CharaBase* pp2)
 		if (key1 == 0) {
 			pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
 			pp1->SetAct_Mode(eCharaStop);
-//			pp1->SetMotion(pp1->GetAnimation_Data().stop);
-//			ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
+			pp1->SetMotion(pp1->GetAnimation_Data().stop);
+			ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
 		}
 	}
 }
@@ -577,7 +568,7 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 							// 接触したＹ座標を保存する
 							MaxY = m_block[i].GetBlockPosition().y + BLOCK_TOP;
 							if (m_block[i].GetBlockType() == MOVE_BLOCK_X) {
-//								pp1->SetX_Spd(pp1->GetSpeed().x + m_block[i].GetBlockSpeed().x);
+								pp1->SetX_Spd(pp1->GetSpeed().x + m_block[i].GetBlockSpeed().x);
 							}
 						}
 						else {

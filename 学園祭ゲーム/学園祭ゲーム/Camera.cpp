@@ -15,15 +15,6 @@ void CameraMove() {
 		cpos.z += 48.0f;
 	}
 
-	// 左を押下 左に移動
-	if (CheckHitKey(KEY_INPUT_A) == 1) {
-		cpos.x -= 48.0f;
-	}
-
-	// 右方向への移動処理
-	if (CheckHitKey(KEY_INPUT_D) == 1) {
-		cpos.x += 48.0f;
-	}
 	// Xキー
 	if (CheckHitKey(KEY_INPUT_X) == 1) {
 		cpos.y += 48.0f;
@@ -35,12 +26,14 @@ void CameraMove() {
 	}
 
 	// カメラのスクロール
-	cpos.y += 3.5f;
+//	cpos.y += 3.5f;
 
 	// カメラの注視点操作
 	ctgt.x = cpos.x;
-	ctgt.y = cpos.y - 400.0f ;
+	ctgt.y = cpos.y - 400.0f;
 	ctgt.z = cpos.z + 1000.0f;
+//	ctgt.y = cpos.y - 200.0f ;
+//	ctgt.z = cpos.z + 600.0f;
 }
 
 

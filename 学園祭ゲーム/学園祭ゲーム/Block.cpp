@@ -32,7 +32,7 @@ Block::~Block() {
 void Block::init() {
 	for (int i = 0; i < BACKGROUNDFLOOR; i++) {
 		bg_tatami[i] = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
-		MV1SetPosition(bg_tatami[i], VGet(1500.0f, 100.0f + (i * 900.0f), 100.0f));
+		MV1SetPosition(bg_tatami[i], VGet(1500.0f, 100.0f + (i * 1000.0f), 100.0f));
 	}
 	blockcnt = 0;
 	// マップデータを反映
@@ -117,6 +117,9 @@ void Block::init() {
 			}
 		}
 	}
+	MV1SetPosition(m_block[27].b_model, VGet(1500.0f, 100.0f + (6 * 1000.0f), 300.0f));
+	m_block[27].b_posi = VGet(1500.0f, 100.0f + (6 * 1000.0f), 300.0f);
+	m_block[27].b_first_posi = VGet(1500.0f, 100.0f + (6 * 1000.0f), 300.0f);
 }
 
 /* ======================================================== +

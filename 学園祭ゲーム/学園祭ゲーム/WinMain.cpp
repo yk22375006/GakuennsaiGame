@@ -53,8 +53,10 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	blockdate[WOOD_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\柱.mv1");
 	blockdate[MOVE_BLOCK_X] = MV1LoadModel("..\\Data\\Stage\\移動床.mv1");
 	// プレイヤーの作成
-	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\白忍者.mv1");
-	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者.mv1");
+	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
+	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\白忍者.mv1");
+
+	player[0].anim.stop = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");		// 立ちアニメ
 
 	//	Atten0 = 0.3f;
 	//	Atten1 = 0.0f;
@@ -190,9 +192,11 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				ScreenFlip();
 
 				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
-					player[0].SetPosition(VGet(200.0f, 2000.0f, 0.0f));
-					player[1].SetPosition(VGet(2800.0f, 2000.0f, 0.0f));
+					player[0].SetPosition(VGet(200.0f, 2200.0f, 0.0f));
+//					player[1].SetPosition(VGet(2800.0f, 2200.0f, 0.0f));
+					player[1].SetPosition(VGet(1500.0f, 150.0f + (6 * 1000.0f), 300.0f));
 					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
+//					cpos = VGet(1484.0f, 2360.0f, -1060.0f);
 
 					gamemode = eScenePlay;
 				}
@@ -201,6 +205,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 			case eScenePlay :
 				g_Chara[0]->ActionLoop(g_Chara[0], g_Chara[1]);
 				g_Chara[1]->ActionLoop(g_Chara[1], g_Chara[0]);
+				g_Chara[0]->Animation(g_Chara[0]);
 
 				// スクリーンクリアー
 				ClearDrawScreen() ;

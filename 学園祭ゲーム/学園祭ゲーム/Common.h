@@ -45,11 +45,11 @@
 
 // プレイヤーの移動速度
 #define PLAYER_SPEED 12.0f
-#define PLAYER_JUMP_SPEED 57.0f
+#define PLAYER_JUMP_SPEED 63.0f
 #define PLAYER_FALL_SPEED 1.5f
 
 // ブロック
-#define MAX_BLOCK			620
+#define MAX_BLOCK			640
 #define BLOCK_TYPE			10
 #define BLOCK_TOP			100.0f
 #define BLOCK_X_SIZE		125.0f
@@ -82,7 +82,7 @@
 #define CAMERA_ROTATE 200.0f
 
 // マップ
-#define MAP_Y 163
+#define MAP_Y 181
 #define MAP_X 16
 /* -----------------------------------------------------------------------------------------
 |

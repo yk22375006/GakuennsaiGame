@@ -41,6 +41,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	blockdate[INVINCIBLE_BLOCK]	= MV1LoadModel("..\\Data\\Stage\\–³“Gô.mv1");
 	blockdate[NEEDLE_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\™.mv1");
 	blockdate[WOOD_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\’Œ.mv1");
+	blockdate[MOVE_BLOCK_X]		= MV1LoadModel("..\\Data\\Stage\\ˆÚ“®°.mv1");
 
 	//Œƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
 	moon = MV1LoadModel("..\\Data\\Stage\\moon.mv1");

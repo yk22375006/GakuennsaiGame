@@ -60,6 +60,16 @@ void Block::init() {
 						m_block[blockcnt].b_type = INVINCIBLE_BLOCK;
 						break;
 
+					case NEEDLE_BLOCK:
+						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[NEEDLE_BLOCK]);
+						m_block[blockcnt].b_type = NEEDLE_BLOCK;
+						break;
+
+					case WOOD_BLOCK:
+						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[WOOD_BLOCK]);
+						m_block[blockcnt].b_type = WOOD_BLOCK;
+						break;
+
 					case MOVE_BLOCK_X:
 						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[MOVE_BLOCK_X]);
 						m_block[blockcnt].b_type = MOVE_BLOCK_X;
@@ -73,16 +83,6 @@ void Block::init() {
 					case MOVE_BLOCK_Z:
 						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[MOVE_BLOCK_X]);
 						m_block[blockcnt].b_type = MOVE_BLOCK_Z;
-						break;
-
-					case NEEDLE_BLOCK:
-						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[NEEDLE_BLOCK]);
-						m_block[blockcnt].b_type = NEEDLE_BLOCK;
-						break;
-
-					case WOOD_BLOCK:
-						m_block[blockcnt].b_model = MV1DuplicateModel(blockdate[WOOD_BLOCK]);
-						m_block[blockcnt].b_type = WOOD_BLOCK;
 						break;
 				}
 				m_block[blockcnt].b_Map.y = y;
@@ -117,9 +117,6 @@ void Block::init() {
 			}
 		}
 	}
-	MV1SetPosition(m_block[27].b_model, VGet(1500.0f, 100.0f + (6 * 1000.0f), 300.0f));
-//	m_block[27].b_posi = VGet(1500.0f, 100.0f + (6 * 1000.0f), 300.0f);
-//	m_block[27].b_first_posi = VGet(1500.0f, 100.0f + (6 * 1000.0f), 300.0f);
 }
 
 /* ======================================================== +

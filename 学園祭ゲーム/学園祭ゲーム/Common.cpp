@@ -66,12 +66,6 @@ VECTOR cpos;
 VECTOR ctgt;
 VECTOR cadd;
 
-// --- ƒJƒƒ‰‚ÌˆÚ“®
-void CameraMove();
-
-// --- •`‰æ
-void Draw();
-
 // °
 float MaxY;
 int DrawLimit;

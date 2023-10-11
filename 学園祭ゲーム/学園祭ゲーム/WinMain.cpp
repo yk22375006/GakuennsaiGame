@@ -4,6 +4,7 @@
 int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	
 	int ScreenHandle;
+	int Gauss = 0;			//ガウスフィルタ大きさ
 
 	float camera_direction = 0.0f;
 	
@@ -14,28 +15,16 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	VECTOR stagepos = VGet(0.0f,0.0f,0.0f) ;
 	VECTOR skypos = VGet(0.0f, 0.0f, 0.0f);
 		
-		
-	// カメラポジション cpos:カメラ位置　ctgt:カメラ注視点
-	cpos = VGet(3500.0f, 2300.0f, -3500.0f);
-
-//	cpos = VGet(500.0f,1000.0f,-2000.0f) ;
-	ctgt = VGet(0.0f,500.0f,-400.0f) ;
-	cadd = VGet(0.0f, 0.0f, 0.0f);
-
-	ChangeWindowMode(TRUE);
-	SetGraphMode(1440, 810, 32);
+	ChangeWindowMode(FALSE);
+	SetGraphMode(1920, 1080, 32);
 
 	// DXライブラリの初期化				DXライブラリースタート
 	if(DxLib_Init() == -1) return -1 ;
 
 	ScreenHandle = MakeScreen(1920, 1080, FALSE);
 
-
-	// ステージ情報の読み込み
-	// コミット用コメント
 	// ステージ情報の読み込み
 	skydate = MV1LoadModel("..\\Data\\Stage\\スカイドーム.mv1");
-	if (skydate == -1) return -1;
 
 	MV1SetUseZBuffer(skydate, false);
 	// 背景読み込み
@@ -58,12 +47,20 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 	player[0].anim.stop = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");		// 立ちアニメ
 
+	//月モデルの読み込み
+	moon = MV1LoadModel("..\\Data\\Stage\\moon.mv1");
+	//城モデルの読み込み
+	castle = MV1LoadModel("..\\Data\\japanese-castle\\source\\japanese castle 2.mv1");
+
+	player[0].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
+
 	//	Atten0 = 0.3f;
 	//	Atten1 = 0.0f;
 	//	Atten2 = 0.0f;
 	//	C_DirectionX = 0.0f * (DX_PI_F / 180.0f);
 	//	C_DirectionY = 270.0f * (DX_PI_F / 180.0f);
 	//	C_DirectionZ = 0.0f;
+
 	// スポットライト
 	LHandle_p1 = CreateSpotLightHandle(
 		VGet(player[0].GetPosition().x - 0.0f, player[0].GetPosition().y - 0.0f, player[0].GetPosition().z - 500.0f),
@@ -96,28 +93,76 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 	m_block->init();
 
+	//月 初期セット
+	MV1SetPosition(moon, VGet(600.0f, 1000.0f, 1000.0f));
+	//城 初期セット
+	MV1SetPosition(castle, VGet(3000.0f, 170.0f, 3000.0f));
+	MV1SetRotationXYZ(castle, VGet(0.0f, 1.57f * 1.3f, 0.0f));
+
+	// ＢＭＰ画像のメモリへの読みこみ
+	static int GHandle[6];
+	GHandle[0] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト1.png");
+	GHandle[1] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト2.png");
+	GHandle[2] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト3.png");
+	GHandle[3] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト4.png");
+	GHandle[4] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト5.png");
+	GHandle[5] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト6.png");
+
+
 	/* ------------------------------------------------------------------------------------------------
 												ゲームループ										
 	 ----------------------------------------------------------------------------------------------- */
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
+		static int x = 0;
+
 		MV1SetUseZBuffer(skydate, false);
 
-						
 		switch(gamemode){
 			case eSceneBlank :
-				gamemode = eSceneChoice;
+				cpos = VGet(1600.0f, 170.0f, -100.0f);
+				ctgt = VGet(1600.0f, 200.0f,    0.0f);
+
+				//カメラ情報の反映
+				SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
+
 				g_Chara[0] = &player[0];
 				g_Chara[1] = &player[1];
 				DrawLimit = 0;
+				gamemode = eSceneTitle;
 				break;
 
 			case eSceneTitle:
+
+				ClearDrawScreen();
+
+				// 地面(配置)＆描画
+				MV1DrawModel(skydate);
+				MV1DrawModel(stagedate);
+				MV1DrawModel(moon);
+				MV1DrawModel(castle);
+
+				// BMP画像の表示
+				LoadGraphScreen(0, 0, "..\\Data\\Stage\\金箔雲エフェクト1.png", TRUE);
+				LoadGraphScreen(0, 360, "..\\Data\\Stage\\金箔雲エフェクト2.png", TRUE);
+				LoadGraphScreen(0, 690, "..\\Data\\Stage\\金箔雲エフェクト3.png", TRUE);
+				LoadGraphScreen(1000, 0, "..\\Data\\Stage\\金箔雲エフェクト4.png", TRUE);
+				LoadGraphScreen(1000, 360, "..\\Data\\Stage\\金箔雲エフェクト5.png", TRUE);
+				LoadGraphScreen(1000, 690, "..\\Data\\Stage\\金箔雲エフェクト6.png", TRUE);
+
+				ScreenFlip();
 				if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
 					gamemode = eSceneChoice;
 				}
+
 				break;
 
 			case eSceneChoice:
+				if (player[0].GetPosition().x >= 1930) {
+					player[0].SetPosition(VGet(2400.0f - x, 150.0f, 500.0f));
+					player[1].SetPosition(VGet( 800.0f + x, 150.0f, 500.0f));
+					x += 20;
+					Gauss += 20;
+				}
 				SetDrawScreen(ScreenHandle);
 
 				// 画面をクリア
@@ -127,61 +172,45 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				ctgt = VGet(0.0f, 2000.0f, 0.0f);
 				cadd = VGet(0.0f, 0.0f, 0.0f);
 
-				player[0].SetPosition(VGet(200.0f, 200.0f, 0.0f));
-				player[1].SetPosition(VGet(0.0f, 2000.0f, 0.0f));
+//				player[0].SetPosition(VGet(200.0f, 200.0f, 0.0f));
+//				player[1].SetPosition(VGet(0.0f, 2000.0f, 0.0f));
 
 				//カメラ情報の反映
 				SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
 
 				// モデルの移動(配置)
-				MV1SetRotationXYZ(player[0].anim.model, VGet(0.0f, 1.57f * player[0].GetDirection(), 0.0f));
 				MV1SetPosition(player[0].anim.model, player[0].GetPosition());
-				MV1SetRotationXYZ(player[1].anim.model, VGet(0.0f, 1.57f * player[1].GetDirection(), 0.0f));
 				MV1SetPosition(player[1].anim.model, player[1].GetPosition());
-
-				// シャドウマップへの描画の準備
-				ShadowMap_DrawSetup(ShadowMapHandle);
-
-				// モデルの描画 - 影の描画
-				MV1DrawModel(player[0].anim.model);
-				MV1DrawModel(player[1].anim.model);
-
-				// シャドウマップへの描画を終了
-				ShadowMap_DrawEnd();
-
-				// 描画に使用するシャドウマップを設定
-				SetUseShadowMap(0, ShadowMapHandle);
 
 				// 地面(配置)＆描画
 				MV1DrawModel(skydate);
 				MV1DrawModel(stagedate);
-				for (int i = 0; i < BACKGROUNDFLOOR; i++) {
-					MV1DrawModel(bg_tatami[i]);
-				}
+				MV1DrawModel(moon);
+				MV1DrawModel(castle);
 
-				blockcnt = 0;
-				for (blockcnt = 0; blockcnt < MAX_BLOCK; blockcnt++) {
-					if (m_block[blockcnt].GetBlockFlag() == TRUE) {
-						MV1DrawModel(m_block[blockcnt].b_model);
-					}
-				}
-
-//				SetLightRangeAttenHandle(LHandle_p1, Range, Atten0, Atten1, Atten2);
 				SetLightAngleHandle(LHandle_p1, 0.24582103f, 6.28318548f);
 				SetLightPositionHandle(LHandle_p1, VGet(player[0].GetPosition().x, player[0].GetPosition().y + 100.0f, player[0].GetPosition().z - 500.0f)); // ライトの位置
 				SetLightPositionHandle(LHandle_p2, VGet(player[1].GetPosition().x, player[1].GetPosition().y + 100.0f, player[1].GetPosition().z - 500.0f)); // ライトの位置
-			//	SetLightDirectionHandle(LHandle_p1, VGet(ctgt.x = cpos.x , ctgt.y = cpos.y - 400   , ctgt.z = cpos.z ));  // ライトの方向
-			//	SetLightAngleHandle(LHandle_p1, 0.78f, 0.5f);
-
-				// 描画に使用するシャドウマップの設定を解除
-				SetUseShadowMap(0, -1);
 
 				// ８分の１に縮小した画像をガウスフィルタでぼかす
-				GraphFilter(ScreenHandle, DX_GRAPH_FILTER_GAUSS, 16, 1400);
+				GraphFilter(ScreenHandle, DX_GRAPH_FILTER_GAUSS, 32, Gauss);
 
 				// モデルの描画
 				MV1DrawModel(player[0].anim.model);
 				MV1DrawModel(player[1].anim.model);
+
+				if (player[0].GetPosition().x <= 1930) {
+					SetFontSize(128);
+					ChangeFont("HGS行書体");
+					DrawString(130, 70, "プレイヤー１", GetColor(252, 252, 252));
+					DrawString(1030, 70, "プレイヤー２", GetColor(252, 252, 252));
+
+					DrawString(100, 380, "<", GetColor(252, 0, 0));
+					DrawString(830, 380, ">", GetColor(252, 0, 0));
+
+					DrawString(1000, 380, "<", GetColor(252, 0, 0));
+					DrawString(1730, 380, ">", GetColor(252, 0, 0));
+				}
 
 				// 描画対象を裏画面にする
 				SetDrawScreen(DX_SCREEN_BACK);
@@ -198,6 +227,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
 //					cpos = VGet(1484.0f, 2360.0f, -1060.0f);
 
+					ctgt = VGet(0.0f, 1000.0f, 0.0f);
 					gamemode = eScenePlay;
 				}
 				break;

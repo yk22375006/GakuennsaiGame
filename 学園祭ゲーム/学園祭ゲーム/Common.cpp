@@ -39,9 +39,12 @@ int blockdate[BLOCK_TYPE];
 int HitFlag = FALSE;							// ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
 HITRESULT_LINE LineBlock;
 
-
+//モデル
 Block m_block[MAX_BLOCK];
 int blockcnt;
+int moon;
+int castle;
+
 
 // 背景
 int bgdate[BACKGROUNDTYPE];
@@ -56,7 +59,6 @@ ConsoleWindow g_cWin;
 // --- プレイヤー
 Player player[2];
 Player* g_Chara[2];
-
 
 
 // --- カメラ
@@ -269,8 +271,6 @@ int StageMap[MAP_Y][MAP_X] = {
 void AnimationInit();
 void AnimationPlayer(int);
 void AnimationEnemy(int);
-
-
 
 // --- カメラの移動
 void CameraMove();

@@ -195,7 +195,6 @@ extern Player* g_Chara[2];
 // --- 武器
 
 
-
 // --- カメラ
 extern VECTOR cpos;
 extern VECTOR ctgt;
@@ -221,10 +220,13 @@ extern HITRESULT_LINE LineBlock;
 // キャラがヒットした床のポリゴン表示の座標
 extern float MaxY;
 
-// 足場ブロック
+// モデル
 extern int StageMap[MAP_Y][MAP_X];
 extern Block m_block[MAX_BLOCK];
 extern int blockcnt;
+extern int moon;
+extern int castle;
+
 
 // 背景
 extern int bgdate[BACKGROUNDTYPE];

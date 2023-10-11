@@ -43,6 +43,7 @@ int Player::init( )
 	Width = PLAYER_SIZE_W;					// プレイヤーサイズ幅
 	Height = PLAYER_SIZE_H ;				// プレイヤーサイズ高さ
 	hp = 4 ;
+	RevivalTime = 0;
 
 	return( false ) ;
 }
@@ -159,8 +160,8 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 
 	if ( AllowKey( ) == (int)true ){
 		pp1->SetAct_Mode( eCharaMove ) ;
-//		pp1->SetMotion( pp1->GetAnimation_Data( ).run ) ;
-//		ChangeAnimation(pp1, pp1->GetAnimation_Data().run);	// アニメーション切り替え
+		pp1->SetMotion( pp1->GetAnimation_Data( ).run ) ;
+		ChangeAnimation(pp1, pp1->GetAnimation_Data().run);	// アニメーション切り替え
 	}
 	Block_HitCheck(pp1);
 
@@ -208,7 +209,7 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 	pp1->SetX_Spd(0.0f);
 	// アニメーション
 	pp1->AddPlay_Time( 0.5f ) ;
-//	pp1->SetMotion( pp1->GetAnimation_Data( ).run ) ;
+	pp1->SetMotion( pp1->GetAnimation_Data( ).run ) ;
 
 	// 移動量セット(方向転換)
 	pp1->MoveSet( ) ;
@@ -220,10 +221,6 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 
 	// 移動量を加える
 	pp1->SetPosition( VAdd( pp1->GetPosition( ) , pp1->GetSpeed( ) ) ) ;
-
-	// アニメーション
-	pp1->AddPlay_Time(0.5f);
-/*	pp1->SetMotion(pp1->GetAnimation_Data().run);
 
 	// zが押されたら
 	if (key1 & PAD_INPUT_7) {
@@ -241,12 +238,12 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 
 	if (key1 & PAD_INPUT_10) {
 		pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
-		pp1->SetAct_Mode(eCharaJumpInit);
+///		pp1->SetAct_Mode(eCharaJumpInit);
 //		pp1->SetMotion(pp1->GetAnimation_Data().jump);
 //		ChangeAnimation(pp1, pp1->GetAnimation_Data().jump);	// アニメーション切り替え
 	}
 
-*/	// 何も押されていなければ
+	// 何も押されていなければ
 	if (key1 == 0) {
 		pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
 		pp1->SetAct_Mode(eCharaStop);
@@ -455,6 +452,32 @@ void Player::CharaDown(CharaBase* pp1, CharaBase* pp2)
 		}
 	}
 }
+/* ======================================================== +
+ |                    CharaRevival( )                       |
+ |             　     ヒットチェック　                      |
+ |                                                          |
+ + ======================================================== */
+void Player::CharaRevival(CharaBase* pp1, CharaBase* pp2) {
+	pp1->SetRevivalTime(pp1->GetRevivalTime() - 1);
+	pp1->SetPosition(VGet(1500.0f, cpos.y - 1000.0f, 0.0f));
+
+	if (pp1->GetRevivalTime() / 3 == 0) {
+		pp1->SetUse_Flg(TRUE);
+	}
+	else
+	{
+		pp1->SetUse_Flg(FALSE);
+	}
+
+
+	if (pp1->GetRevivalTime() == 0) {
+		pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
+		pp1->SetUse_Flg(TRUE);
+		pp1->SetAct_Mode(eCharaStop);
+		pp1->SetMotion(pp1->GetAnimation_Data().stop);
+		ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
+	}
+}
 
 /* ======================================================== +
  |                    Move_HitCheck( )                      |
@@ -471,7 +494,7 @@ void Player::Move_HitCheck(CharaBase* pp1, CharaBase* pp2)
 }
 
 /* ======================================================== +
- |                    Block_HitCheck( )                      |
+ |                    Block_HitCheck( )                     |
  |             　     ヒットチェック　                      |
  |                                                          |
  + ======================================================== */
@@ -652,7 +675,8 @@ void (Player::* PlayerModeTbl[])(CharaBase* pp1, CharaBase* pp2) =
 	& Player::CharaJump  ,
 	& Player::CharaFall,
 	& Player::CharaDamage,
-	& Player::CharaDown
+	& Player::CharaDown,
+	& Player::CharaRevival
 };
 
 int Player::ActionLoop( CharaBase *pp1 , CharaBase *pp2  )
@@ -662,6 +686,11 @@ int Player::ActionLoop( CharaBase *pp1 , CharaBase *pp2  )
 		key1 = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	if (pp1 == &player[1])
 		key1 = GetJoypadInputState(DX_INPUT_PAD2);
+
+	if ((cpos.y - pp1->GetPosition().y > 2750.0f) && (pp1 == &player[0])) {
+		pp1->SetAct_Mode(eCharaRevival);
+		pp1->SetRevivalTime(100);
+	}
 
 	// アクションループ
 	( this->*PlayerModeTbl[act_mode] )( pp1 , pp2 ) ;

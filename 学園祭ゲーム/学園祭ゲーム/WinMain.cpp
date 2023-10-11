@@ -49,9 +49,11 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 	// プレイヤーの作成
 	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
-	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\白忍者.mv1");
+	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無.mv1");
 
 	player[0].anim.stop = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");		// 立ちアニメ
+	player[0].anim.run = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");		// 走りアニメ	
+	player[1].anim.stop = MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無_待機.mv1");		// 立ちアニメ
 
 	//	Atten0 = 0.3f;
 	//	Atten1 = 0.0f;
@@ -61,12 +63,18 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	//	C_DirectionZ = 0.0f;
 	// スポットライト
 	LHandle_p1 = CreateSpotLightHandle(
-		VGet(player[0].GetPosition().x - 0.0f, player[0].GetPosition().y - 0.0f, player[0].GetPosition().z - 500.0f),
+		VGet(player[1].GetPosition().x, player[1].GetPosition().y + 0.0f, player[1].GetPosition().z - 100.0f),
+		VGet(0.0f, 0.78f, 1.57f),
+		0.24582103f, 6.28318548f,
+		2000.0f,
+		0.3f, 0.0f, 0.0f);
+
+/*		VGet(player[0].GetPosition().x - 0.0f, player[0].GetPosition().y - 0.0f, player[0].GetPosition().z - 500.0f),
 		VGet(0.0f, 45.0f * (DX_PI_F / 180.0f), 90.0f * (DX_PI_F / 180.0f)),
 		0.7f, 0.4f,
 		2000.0f,
 		0.391586f, 0.001662f, 0.0f);
-
+*/
 	LHandle_p2 = CreateSpotLightHandle(
 		VGet(player[1].GetPosition().x, player[1].GetPosition().y + 0.0f, player[1].GetPosition().z - 100.0f),
 		VGet(0.0f, 0.78f, 1.57f),
@@ -129,6 +137,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				gamemode = eSceneTitle;
 				DrawLimit = 0;
+				continuous_limit = 0;
 				break;
 
 			case eSceneTitle:
@@ -262,7 +271,11 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 			case eScenePlay :
 				g_Chara[0]->ActionLoop(g_Chara[0], g_Chara[1]);
-//				PlayerMove();
+				g_Chara[1]->ActionLoop(g_Chara[1], g_Chara[0]);
+				g_Chara[0]->Animation(g_Chara[0]);
+				g_Chara[1]->Animation(g_Chara[1]);
+
+				// スクリーンクリアー
 				ClearDrawScreen() ;
 				// カメラの視点操作
 				CameraMove();
@@ -280,8 +293,10 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				if (DrawLimit < 0)
 					DrawLimit = 0;
 
+				MV1SetRotationXYZ(player[0].anim.model, VGet(0.0f, 1.57f * player[0].GetDirection(), 0.0f));
 				MV1SetRotationXYZ(player[1].anim.model, VGet(0.0f, 1.57f * player[1].GetDirection(), 0.0f));
 				// モデルの移動(配置)
+				MV1SetPosition(player[0].anim.model, player[0].GetPosition());
 				MV1SetPosition(player[1].anim.model ,player[1].GetPosition());
 
 				MV1SetPosition(skydate, skypos);

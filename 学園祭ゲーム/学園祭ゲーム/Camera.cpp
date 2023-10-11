@@ -26,7 +26,7 @@ void CameraMove() {
 	}
 
 	// カメラのスクロール
-//	cpos.y += 3.5f;
+	cpos.y += 3.5f;
 
 	// カメラの注視点操作
 	ctgt.x = cpos.x;

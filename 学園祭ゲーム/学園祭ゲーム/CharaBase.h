@@ -11,7 +11,8 @@ enum CharaMode {
 	eCharaJump,			// ジャンプ
 	eCharaFall,			// 落下
 	eCharaDamage,		// ダメージ
-	eCharaDown			// ダウン
+	eCharaDown,			// ダウン
+	eCharaRevival		// 復活
 } ;
 
 enum Direction {
@@ -39,6 +40,7 @@ class CharaBase {
 		float Height ;			// プレイヤーサイズ高さ(ヒットチェック用)
 		int hp ;
 		int number;				// プレイヤー番号
+		int RevivalTime;
 
 	public :
 		CharaBase( ) ;			// コンストラクタ
@@ -195,5 +197,14 @@ class CharaBase {
 		void SetNumber(int set_number) {
 			number = set_number;
 		}
+
+		// 復活までの時間
+		void SetRevivalTime(int set_RevivalTime) {
+			RevivalTime = set_RevivalTime;
+		}
+		int GetRevivalTime() {
+			return RevivalTime;
+		}
+
 } ;
 

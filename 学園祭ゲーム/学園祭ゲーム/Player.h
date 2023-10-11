@@ -12,6 +12,7 @@ class Player : public CharaBase {
 		int Draw( CharaBase *pp1 ) ;	// 描画
 		int AllowKey( ) ;			// 矢印キーが押されてるか
 
+
 		// アニメーション関数
 		int AnimationInit( ) ;				// アニメーション初期セット
 		int Animation( CharaBase *pp1 ) ;	// アニメーション再生
@@ -24,8 +25,9 @@ class Player : public CharaBase {
 		void CharaAttack( CharaBase *pp1 , CharaBase* pp2 ) ;	// 攻撃
 		void CharaDamage( CharaBase *pp1 , CharaBase* pp2 ) ;	// ダメージ
 		void CharaDown( CharaBase* pp1, CharaBase* pp2);		// ダウン
-		void CharaJump( CharaBase* pp1, CharaBase* pp2);	// ジャンプ初期設定
-		void CharaFall(CharaBase* pp1, CharaBase* pp2);		// 落下
+		void CharaJump( CharaBase* pp1, CharaBase* pp2);		// ジャンプ初期設定
+		void CharaFall(CharaBase* pp1, CharaBase* pp2);			// 落下
+		void CharaRevival(CharaBase* pp1, CharaBase* pp2);		// 復活
 
 		void Move_HitCheck(CharaBase* pp1, CharaBase* pp2);
 		void Block_HitCheck(CharaBase* pp1);

@@ -8,8 +8,8 @@ void AnimationInit() {
 	// -------------------------------- // 
 	//		アニメーションの読み込み	//
 	// -------------------------------- //
-	player[0].anim.stop = MV1LoadModel("..\\Data\\Player\\Anim_Neutral.mv1");		// 立ちアニメ
-	player[0].anim.run = MV1LoadModel("..\\Data\\Player\\Anim_Run.mv1");			// 走りアニメ	
+	player[0].anim.stop = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");		// 立ちアニメ
+	player[0].anim.run = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");		// 走りアニメ	
 	player[0].anim.jimp_in = MV1LoadModel("..\\Data\\Player\\Anim_Jump_In.mv1");	// ジャンプ入り始めアニメ
 	player[0].anim.jump = MV1LoadModel("..\\Data\\Player\\Anim_Jump_Loop.mv1");		// ジャンプループアニメ
 	player[0].anim.jump_out = MV1LoadModel("..\\Data\\Player\\Anim_Jump_Out.mv1");	// ジャンプ着地アニメ

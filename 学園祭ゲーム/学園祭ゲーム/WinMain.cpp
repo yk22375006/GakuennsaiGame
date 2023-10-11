@@ -230,14 +230,11 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				SetCameraPositionAndTargetAndUpVec(cpos,ctgt,VGet(0.0f,1.0f,0.0f)) ;
 
 				// モデルの回転
-				MV1SetRotationXYZ(player[0].anim.model,VGet(0.0f,1.57f * player[0].GetDirection(),0.0f)) ;
-				// モデルの移動(配置)
-				MV1SetPosition(player[0].anim.model,player[0].GetPosition());
-
-				// モデルの回転
+				MV1SetRotationXYZ(player[0].anim.model, VGet(0.0f, 1.57f * player[0].GetDirection(), 0.0f));
 				MV1SetRotationXYZ(player[1].anim.model, VGet(0.0f, 1.57f * player[1].GetDirection(), 0.0f));
 				// モデルの移動(配置)
-				MV1SetPosition(player[1].anim.model ,player[1].GetPosition());
+				MV1SetPosition(player[0].anim.model, player[0].GetPosition());
+				MV1SetPosition(player[1].anim.model, player[1].GetPosition());
 
 				MV1SetPosition(skydate, skypos);
 

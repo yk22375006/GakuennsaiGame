@@ -6,6 +6,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	int ScreenHandle;
 	int Gauss = 0;			//ガウスフィルタ大きさ
 
+	int BmpDate[6];
+
 	float camera_direction = 0.0f;
 	
 	// 全体的なゲームの管理
@@ -168,14 +170,13 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	MV1SetPosition(castle, VGet(3000.0f, 170.0f, 3000.0f));
 	MV1SetRotationXYZ(castle, VGet(0.0f, 1.57f * 1.3f, 0.0f));
 
-	// ＢＭＰ画像のメモリへの読みこみ
-	static int GHandle[6];
-	GHandle[0] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト1.png");
-	GHandle[1] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト2.png");
-	GHandle[2] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト3.png");
-	GHandle[3] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト4.png");
-	GHandle[4] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト5.png");
-	GHandle[5] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト6.png");
+	//画像の読み込み
+	BmpDate[0] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト1.png");
+	BmpDate[1] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト2.png");
+	BmpDate[2] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト3.png");
+	BmpDate[3] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト4.png");
+	BmpDate[4] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト5.png");
+	BmpDate[5] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト6.png");
 
 
 	/* ------------------------------------------------------------------------------------------------
@@ -183,6 +184,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	 ----------------------------------------------------------------------------------------------- */
 	while(ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		static int x = 0;
+		static int x1 = 0;
+		static BOOL GamemodeChenge_flg = 0;
 
 		MV1SetUseZBuffer(skydate, false);
 
@@ -210,15 +213,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				MV1DrawModel(moon);
 				MV1DrawModel(castle);
 
-				// BMP画像の表示
-				LoadGraphScreen(0, 0, "..\\Data\\Stage\\金箔雲エフェクト1.png", TRUE);
-				LoadGraphScreen(0, 360, "..\\Data\\Stage\\金箔雲エフェクト2.png", TRUE);
-				LoadGraphScreen(0, 690, "..\\Data\\Stage\\金箔雲エフェクト3.png", TRUE);
-				LoadGraphScreen(1000, 0, "..\\Data\\Stage\\金箔雲エフェクト4.png", TRUE);
-				LoadGraphScreen(1000, 360, "..\\Data\\Stage\\金箔雲エフェクト5.png", TRUE);
-				LoadGraphScreen(1000, 690, "..\\Data\\Stage\\金箔雲エフェクト6.png", TRUE);
 
-				ScreenFlip();
+				ScreenFlip();  
 				if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
 					gamemode = eSceneChoice;
 				}
@@ -280,15 +276,64 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				// 通常の描画結果を描画する
 				DrawGraph(0, 0, ScreenHandle, FALSE);
 
+				if (GamemodeChenge_flg == 1) {
+
+					if (x >= 2000) {
+					}
+
+					if (x <= 3000) {
+						x += 30;
+						x1 += 20;
+					}
+					if (x >= 6000) {
+						player[0].SetPosition(VGet(200.0f, 1800.0f, 0.0f));
+						player[1].SetPosition(VGet(2800.0f, 1800.0f, 0.0f));
+						cpos = VGet(1484.0f, 2360.0f, -1860.0f);
+						ctgt = VGet(0.0f, 1000.0f, 0.0f);
+						gamemode = eScenePlay;
+					}
+
+					// BMP画像の表示
+					//左から第一陣
+					DrawGraph(-1000 +  x,   0, BmpDate[0], TRUE);
+					DrawGraph(-1000 +  x, 360, BmpDate[1], TRUE);
+					DrawGraph(-1000 +  x, 690, BmpDate[2], TRUE);
+					DrawGraph(-1000 + x1, 180, BmpDate[3], TRUE);
+					DrawGraph(-1000 + x1, 540, BmpDate[4], TRUE);
+					DrawGraph(-1000 + x1, 900, BmpDate[5], TRUE);
+					//左から第二陣
+					DrawGraph(-1500 +  x,   0, BmpDate[0], TRUE);
+					DrawGraph(-1500 +  x, 360, BmpDate[1], TRUE);
+					DrawGraph(-1500 +  x, 690, BmpDate[2], TRUE);
+					DrawGraph(-1500 + x1, 180, BmpDate[3], TRUE);
+					DrawGraph(-1500 + x1, 540, BmpDate[4], TRUE);
+					DrawGraph(-1500 + x1, 900, BmpDate[5], TRUE);
+					//右から第一陣
+					DrawGraph(2000 -  x,   0, BmpDate[0], TRUE);
+					DrawGraph(2000 -  x, 360, BmpDate[1], TRUE);
+					DrawGraph(2000 -  x, 690, BmpDate[2], TRUE);
+					DrawGraph(2000 - x1, 180, BmpDate[3], TRUE);
+					DrawGraph(2000 - x1, 540, BmpDate[4], TRUE);
+					DrawGraph(2000 - x1, 900, BmpDate[5], TRUE);
+					//右から第二陣
+					DrawGraph(2500 -  x,   0, BmpDate[0], TRUE);
+					DrawGraph(2500 -  x, 360, BmpDate[1], TRUE);
+					DrawGraph(2500 -  x, 690, BmpDate[2], TRUE);
+					DrawGraph(2500 - x1, 180, BmpDate[3], TRUE);
+					DrawGraph(2500 - x1, 540, BmpDate[4], TRUE);
+					DrawGraph(2500 - x1, 900, BmpDate[5], TRUE);
+
+				}
+
+
 				ScreenFlip();
 
-				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
-					player[0].SetPosition(VGet(200.0f, 1800.0f, 0.0f));
-					player[1].SetPosition(VGet(2800.0f, 1800.0f, 0.0f));
-					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
-					ctgt = VGet(0.0f, 1000.0f, 0.0f);
-					gamemode = eScenePlay;
+				if (CheckHitKey(KEY_INPUT_RETURN) == 1 && GamemodeChenge_flg == 0) {
+					GamemodeChenge_flg = 1;
+					x = 0;
+					x1 = 0;
 				}
+
 				break;
 
 			case eScenePlay :
@@ -328,6 +373,14 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				break ;
 		}
 	}
+
+	//画像ハンドルの削除
+	DeleteGraph(BmpDate[0]);
+	DeleteGraph(BmpDate[1]);
+	DeleteGraph(BmpDate[2]);
+	DeleteGraph(BmpDate[3]);
+	DeleteGraph(BmpDate[4]); 
+	DeleteGraph(BmpDate[5]);
 
 	// ライトハンドルの削除
 	DeleteLightHandle(LHandle_p1);

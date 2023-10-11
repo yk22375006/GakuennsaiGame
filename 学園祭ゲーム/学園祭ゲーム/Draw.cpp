@@ -46,8 +46,10 @@ void Draw() {
 
 
 	// モデルの描画
-	MV1DrawModel(player[0].anim.model);
-	MV1DrawModel(player[1].anim.model);
+	if (player[0].GetUse_Flg() == TRUE)
+		MV1DrawModel(player[0].anim.model);
+	if (player[1].GetUse_Flg() == TRUE)
+		MV1DrawModel(player[1].anim.model);
 
 	// 描画に使用するシャドウマップの設定を解除
 	SetUseShadowMap(0, -1);

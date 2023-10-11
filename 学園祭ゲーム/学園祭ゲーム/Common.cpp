@@ -64,15 +64,23 @@ VECTOR cpos;
 VECTOR ctgt;
 VECTOR cadd;
 
-// --- カメラの移動
-void CameraMove();
+// 連打制限
+int continuous_limit;
+int DrawLimit;
 
-// --- 描画
-void Draw();
+// ライト
+int LHandle_p1;
+int LHandle_p2;
+
+float Range;
+float OutAngle;
+float InAngle;
+float C_DirectionX;
+float C_DirectionY;
+float C_DirectionZ;
 
 // 床
 float MaxY;
-int DrawLimit;
 int StageMap[MAP_Y][MAP_X] = {
 	{ 6 , 0 , 0 , 0 , 0 , 5 , 7 , 7 , 7 , 7 , 5 , 0 , 0 , 0 , 0 , 6 },	//		17
 	{ 6 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 6 },	// 09
@@ -277,18 +285,6 @@ void CameraMove();
 
 // --- 描画
 void Draw();
-
-// ライト
-int LHandle_p1;
-int LHandle_p2;
-
-float Range;
-float OutAngle;
-float InAngle;
-float C_DirectionX;
-float C_DirectionY;
-float C_DirectionZ;
-
 
 
 

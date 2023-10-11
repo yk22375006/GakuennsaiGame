@@ -118,8 +118,8 @@ void Block::init() {
 		}
 	}
 	MV1SetPosition(m_block[27].b_model, VGet(1500.0f, 100.0f + (6 * 1000.0f), 300.0f));
-	m_block[27].b_posi = VGet(1500.0f, 100.0f + (6 * 1000.0f), 300.0f);
-	m_block[27].b_first_posi = VGet(1500.0f, 100.0f + (6 * 1000.0f), 300.0f);
+//	m_block[27].b_posi = VGet(1500.0f, 100.0f + (6 * 1000.0f), 300.0f);
+//	m_block[27].b_first_posi = VGet(1500.0f, 100.0f + (6 * 1000.0f), 300.0f);
 }
 
 /* ======================================================== +

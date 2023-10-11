@@ -233,6 +233,10 @@ extern int bg_tatami[BACKGROUNDFLOOR];
 // マトリックス
 extern MATRIX WeaponMatrix;
 
+// 連打制限
+extern int continuous_limit;
+extern int DrawLimit;
+
 // ライト
 extern int LHandle_p1;
 extern int LHandle_p2;
@@ -243,7 +247,6 @@ extern float C_DirectionX;
 extern float C_DirectionY;
 extern float C_DirectionZ;
 
-extern int DrawLimit;
 
 
 

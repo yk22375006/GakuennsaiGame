@@ -54,9 +54,11 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	blockdate[MOVE_BLOCK_X] = MV1LoadModel("..\\Data\\Stage\\移動床.mv1");
 	// プレイヤーの作成
 	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
-	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\白忍者.mv1");
+	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無.mv1");
 
 	player[0].anim.stop = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");		// 立ちアニメ
+	player[0].anim.run = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");		// 走りアニメ	
+	player[1].anim.stop = MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無_待機.mv1");		// 立ちアニメ
 
 	//	Atten0 = 0.3f;
 	//	Atten1 = 0.0f;
@@ -66,12 +68,18 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	//	C_DirectionZ = 0.0f;
 	// スポットライト
 	LHandle_p1 = CreateSpotLightHandle(
-		VGet(player[0].GetPosition().x - 0.0f, player[0].GetPosition().y - 0.0f, player[0].GetPosition().z - 500.0f),
+		VGet(player[1].GetPosition().x, player[1].GetPosition().y + 0.0f, player[1].GetPosition().z - 100.0f),
+		VGet(0.0f, 0.78f, 1.57f),
+		0.24582103f, 6.28318548f,
+		2000.0f,
+		0.3f, 0.0f, 0.0f);
+
+/*		VGet(player[0].GetPosition().x - 0.0f, player[0].GetPosition().y - 0.0f, player[0].GetPosition().z - 500.0f),
 		VGet(0.0f, 45.0f * (DX_PI_F / 180.0f), 90.0f * (DX_PI_F / 180.0f)),
 		0.7f, 0.4f,
 		2000.0f,
 		0.391586f, 0.001662f, 0.0f);
-
+*/
 	LHandle_p2 = CreateSpotLightHandle(
 		VGet(player[1].GetPosition().x, player[1].GetPosition().y + 0.0f, player[1].GetPosition().z - 100.0f),
 		VGet(0.0f, 0.78f, 1.57f),
@@ -109,6 +117,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				g_Chara[0] = &player[0];
 				g_Chara[1] = &player[1];
 				DrawLimit = 0;
+				continuous_limit = 0;
 				break;
 
 			case eSceneTitle:
@@ -193,8 +202,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
 					player[0].SetPosition(VGet(200.0f, 2200.0f, 0.0f));
-//					player[1].SetPosition(VGet(2800.0f, 2200.0f, 0.0f));
-					player[1].SetPosition(VGet(1500.0f, 150.0f + (6 * 1000.0f), 300.0f));
+					player[1].SetPosition(VGet(2800.0f, 2200.0f, 0.0f));
+//					player[1].SetPosition(VGet(1500.0f, 150.0f + (6 * 1000.0f), 300.0f));
 					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
 //					cpos = VGet(1484.0f, 2360.0f, -1060.0f);
 
@@ -206,6 +215,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				g_Chara[0]->ActionLoop(g_Chara[0], g_Chara[1]);
 				g_Chara[1]->ActionLoop(g_Chara[1], g_Chara[0]);
 				g_Chara[0]->Animation(g_Chara[0]);
+				g_Chara[1]->Animation(g_Chara[1]);
 
 				// スクリーンクリアー
 				ClearDrawScreen() ;

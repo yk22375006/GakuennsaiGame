@@ -38,9 +38,9 @@ class CharaBase {
 		int rootflm ;			// アニメーション+移動可能にする
 		float Width ;			// プレイヤーサイズ幅(ヒットチェック用)
 		float Height ;			// プレイヤーサイズ高さ(ヒットチェック用)
-		int hp ;
 		int number;				// プレイヤー番号
-		int RevivalTime;
+		int RevivalTime;		// 復活までの時間
+		int type;				// キャラのタイプ
 
 	public :
 		CharaBase( ) ;			// コンストラクタ

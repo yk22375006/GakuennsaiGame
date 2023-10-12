@@ -16,7 +16,9 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	VECTOR stagepos = VGet(0.0f,0.0f,0.0f) ;
 	VECTOR skypos = VGet(0.0f, 0.0f, 0.0f);
 		
-	ChangeWindowMode(FALSE);
+//	ChangeWindowMode(TRUE);
+//	SetGraphMode(1280, 720, 32);
+	ChangeWindowMode(TRUE);
 	SetGraphMode(1920, 1080, 32);
 
 	// DXライブラリの初期化				DXライブラリースタート
@@ -52,9 +54,15 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
 	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無.mv1");
 
-	player[0].anim.stop = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");		// 立ちアニメ
-	player[0].anim.run = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");		// 走りアニメ	
-	player[1].anim.stop = MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無_待機.mv1");		// 立ちアニメ
+	player[0].anim.stop		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");			// 立ちアニメ
+	player[0].anim.run		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");			// 走りアニメ
+	player[0].anim.jump_in	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1");	// ジャンプ入り始めアニメ
+	player[0].anim.jump		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ中.mv1");	// ジャンプループアニメ
+	player[0].anim.fall		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_落下.mv1");			// ジャンプループアニメ
+	player[0].anim.attack	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_攻撃.mv1");			// 攻撃アニメ
+	player[0].anim.damage	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ダメージ.mv1");		// 被ダメージアニメ
+	player[1].anim.stop		= MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無_待機.mv1");		// 立ちアニメ
+
 
 	//	Atten0 = 0.3f;
 	//	Atten1 = 0.0f;
@@ -98,6 +106,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	// ブロックの初期セット
 	m_block->init();
 
 	//月 初期セット
@@ -154,17 +163,40 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				ScreenFlip();
 				if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
 					gamemode = eSceneChoice;
-					player[0].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
+					player[1].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
+					player[0].ChangeAnimation(g_Chara[0], player[0].anim.stop);
+					player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
+				}
+				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
+					player[0].SetPosition(VGet(200.0f, 2200.0f, 0.0f));
+					player[1].SetPosition(VGet(2800.0f, 2200.0f, 0.0f));
+					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
+					ctgt = VGet(0.0f, 1000.0f, 0.0f);
+					gamemode = eScenePlay;
 				}
 				break;
 
 			case eSceneChoice:
-				if (player[0].GetPosition().x >= 1930) {
-					player[0].SetPosition(VGet(2400.0f - x, 150.0f, 500.0f));
-					player[1].SetPosition(VGet(800.0f + x, 150.0f, 500.0f));
+				if (player[1].GetPosition().x >= 1930) {
+					player[0].SetPosition(VGet(800.0f + x, 150.0f, 500.0f));
+					player[1].SetPosition(VGet(2400.0f - x, 150.0f, 500.0f));
 					x += 20;
 					Gauss += 20;
+					player1_roll = 0.0f;
+					player2_roll = 360.0f;
 				}
+				if (CheckHitKey(KEY_INPUT_RETURN) == 1 && GamemodeChenge_flg == 0) {
+					GamemodeChenge_flg = 1;
+					x = 0;
+					x1 = 0;
+				}
+				player1_roll += 1.0f;
+				player2_roll -= 1.0f;
+				if (player1_roll > 360.0f)
+					player1_roll = 0.0f;
+				if (player2_roll < 0.0f)
+					player2_roll = 360.0f;
+
 				SetDrawScreen(ScreenHandle);
 
 				// 画面をクリア
@@ -173,9 +205,17 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				//カメラ情報の反映
 				SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
 
+				// アニメーション
+				g_Chara[0]->AddPlay_Time(0.5f);
+				g_Chara[1]->AddPlay_Time(0.5f);
+				g_Chara[0]->Animation(g_Chara[0]);
+				g_Chara[1]->Animation(g_Chara[1]);
+
 				// モデルの移動(配置)
 				MV1SetPosition(player[0].anim.model, player[0].GetPosition());
 				MV1SetPosition(player[1].anim.model, player[1].GetPosition());
+				MV1SetRotationXYZ(player[0].anim.model, VGet(0.0f, player1_roll * (DX_PI_F / 180.0f), 0.0f));
+				MV1SetRotationXYZ(player[1].anim.model, VGet(0.0f, player2_roll * (DX_PI_F / 180.0f), 0.0f));
 
 				// 地面(配置)＆描画
 				MV1DrawModel(skydate);
@@ -260,14 +300,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				}
 
-
 				ScreenFlip();
-
-				if (CheckHitKey(KEY_INPUT_RETURN) == 1 && GamemodeChenge_flg == 0) {
-					GamemodeChenge_flg = 1;
-					x = 0;
-					x1 = 0;
-				}
 				break;
 
 			case eScenePlay :
@@ -294,6 +327,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				// モデルの移動(配置)
 				MV1SetPosition(player[0].anim.model, player[0].GetPosition());
 				MV1SetPosition(player[1].anim.model, player[1].GetPosition());
+
 
 				MV1SetPosition(skydate, skypos);
 

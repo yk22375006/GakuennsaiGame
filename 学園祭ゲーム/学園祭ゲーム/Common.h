@@ -41,7 +41,12 @@
 
 // プレイヤーモデルのサイズ
 #define PLAYER_SIZE_H	425.0f
-#define PLAYER_SIZE_W	100.0f
+#define PLAYER_SIZE_W	200.0f
+
+//	プレイヤーのタイプ
+#define SPEEDMODE	1
+#define BALANCEMODE	2
+#define POWERMODE	3
 
 // プレイヤーの移動速度
 #define PLAYER_SPEED 12.0f
@@ -98,8 +103,9 @@ typedef struct
 	int damage;		// ダメージ中
 	int down;		// ダウン
 	int jump;		// ジャンプ
-	int jimp_in;	// ジャンプ入り
+	int jump_in;	// ジャンプ入り
 	int jump_out;	// ジャンプ終わり
+	int fall;
 } AnimationDate;
 
 /* -----------------------------------------------------------------------------------------
@@ -192,8 +198,9 @@ extern ConsoleWindow g_cWin ;
 extern Player player[2];
 extern Player* g_Chara[2];
 
-// --- 武器
-
+//　キャラの回転
+extern float player1_roll;
+extern float player2_roll;
 
 // --- カメラ
 extern VECTOR cpos;
@@ -212,7 +219,6 @@ extern int stagedate;
 extern int skydate;
 extern int blockdate[BLOCK_TYPE];
 
-
 // ステージコリジョン情報
 extern int HitFlag;						// ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
 extern HITRESULT_LINE LineBlock;
@@ -226,7 +232,6 @@ extern Block m_block[MAX_BLOCK];
 extern int blockcnt;
 extern int moon;
 extern int castle;
-
 
 // 背景
 extern int bgdate[BACKGROUNDTYPE];

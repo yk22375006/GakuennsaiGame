@@ -33,8 +33,6 @@ int stagedate;
 int skydate;
 int blockdate[BLOCK_TYPE];
 
-// ステージコリジョン情報
-
 // 当たり判定
 int HitFlag = FALSE;							// ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
 HITRESULT_LINE LineBlock;
@@ -44,7 +42,6 @@ Block m_block[MAX_BLOCK];
 int blockcnt;
 int moon;
 int castle;
-
 
 // 背景
 int bgdate[BACKGROUNDTYPE];
@@ -60,6 +57,9 @@ ConsoleWindow g_cWin;
 Player player[2];
 Player* g_Chara[2];
 
+//　キャラの回転
+float player1_roll;
+float player2_roll;
 
 // --- カメラ
 VECTOR cpos;

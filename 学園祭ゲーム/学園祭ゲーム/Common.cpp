@@ -56,10 +56,7 @@ ConsoleWindow g_cWin;
 // --- プレイヤー
 Player player[2];
 Player* g_Chara[2];
-
-//　キャラの回転
-float player1_roll;
-float player2_roll;
+int chara_type;
 
 // --- カメラ
 VECTOR cpos;

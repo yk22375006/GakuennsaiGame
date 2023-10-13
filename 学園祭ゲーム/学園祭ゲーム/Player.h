@@ -17,6 +17,8 @@ class Player : public CharaBase {
 		int AnimationInit( ) ;				// アニメーション初期セット
 		int Animation( CharaBase *pp1 ) ;	// アニメーション再生
 		int ChangeAnimation( CharaBase *pp1 , int set_anim ) ;	// アニメーション切り替え
+		int AnimationType(CharaBase* pp1);						// タイプ別アニメーション再生
+		int ChangeAnimationType(CharaBase* pp1, int set_anim);	// タイプ別アニメーション切り替え
 
 		// アクションモード関数
 		int ActionLoop( CharaBase *pp1 , CharaBase *pp2 ) ;		// アクションループ

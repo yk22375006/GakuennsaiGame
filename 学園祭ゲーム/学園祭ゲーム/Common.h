@@ -105,7 +105,9 @@ typedef struct
 	int jump;		// ジャンプ
 	int jump_in;	// ジャンプ入り
 	int jump_out;	// ジャンプ終わり
-	int fall;
+	int fall;		// 落下
+	int type[3];	// キャラタイプ別
+	int typestop[3];// キャラ別待機モーション
 } AnimationDate;
 
 /* -----------------------------------------------------------------------------------------
@@ -176,7 +178,6 @@ enum EnemyMode
 + --------------------------------------------------------------------------------------- */
 // --- アニメーション
 extern void AnimationPlayer(int);
-extern void AnimationEnemy(int);
 
 // --- プレイヤー
 
@@ -197,10 +198,7 @@ extern ConsoleWindow g_cWin ;
 // --- プレイヤー
 extern Player player[2];
 extern Player* g_Chara[2];
-
-//　キャラの回転
-extern float player1_roll;
-extern float player2_roll;
+extern int chara_type;
 
 // --- カメラ
 extern VECTOR cpos;

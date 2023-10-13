@@ -198,6 +198,7 @@ extern ConsoleWindow g_cWin ;
 // --- ƒvƒŒƒCƒ„[
 extern Player player[2];
 extern Player* g_Chara[2];
+extern AnimationDate Original[3];
 extern int chara_type1;
 extern int chara_type2;
 

@@ -56,6 +56,7 @@ ConsoleWindow g_cWin;
 // --- ƒvƒŒƒCƒ„[
 Player player[2];
 Player* g_Chara[2];
+AnimationDate Original[3];
 int chara_type1;
 int chara_type2;
 

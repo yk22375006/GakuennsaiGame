@@ -167,11 +167,11 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				ScreenFlip();
 				if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
-					gamemode = eSceneChoice;
 					chara_type = 0;
 					player[1].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
 					player[0].ChangeAnimationType(g_Chara[0], player[0].anim.typestop[chara_type]);
 					player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
+					gamemode = eSceneChoice;
 				}
 				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
 					player[0].SetPosition(VGet(200.0f, 2200.0f, 0.0f));
@@ -183,89 +183,111 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				break;
 
 			case eSceneChoice:
-				if (MV1GetPosition(player[1].anim.model).x >= 1930) {
-					player[0].SetPosition(VGet(800.0f + x, 150.0f, 500.0f));
-					player[1].SetPosition(VGet(2400.0f - x, 150.0f, 500.0f));
-					x += 20;
-					Gauss += 20;
-				}
-				if (CheckHitKey(KEY_INPUT_RETURN) == 1 && GamemodeChenge_flg == 0) {
-					GamemodeChenge_flg = 1;
-					x = 0;
-					x1 = 0;
-					player[0].ChangeAnimation(g_Chara[0], player[0].anim.stop);
-					player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
-				}
+					if (MV1GetPosition(player[1].anim.model).x >= 1930) {
+						player[0].SetPosition(VGet(800.0f + x, 150.0f, 500.0f));
+						player[1].SetPosition(VGet(2400.0f - x, 150.0f, 500.0f));
+						Gauss += 20;
+						if (GamemodeChenge_flg != 1)
+							x += 20;
+					}
+					if (CheckHitKey(KEY_INPUT_RETURN) == 1 && GamemodeChenge_flg != 1) {
+						GamemodeChenge_flg = 1;
+						x = 0;
+						x1 = 0;
+						player[0].ChangeAnimation(g_Chara[0], player[0].anim.stop);
+						player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
+					}
 
-				SetDrawScreen(ScreenHandle);
+					SetDrawScreen(ScreenHandle);
 
-				// 画面をクリア
-				ClearDrawScreen();
+					// 画面をクリア
+					ClearDrawScreen();
 
-				//カメラ情報の反映
-				SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
+					//カメラ情報の反映
+					SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
 
-				// アニメーション
-				g_Chara[0]->AddPlay_Time(0.5f);
-				g_Chara[1]->AddPlay_Time(0.5f);
-				g_Chara[0]->AnimationType(g_Chara[0]);
-				g_Chara[1]->Animation(g_Chara[1]);
+					// アニメーション
+					g_Chara[0]->AddPlay_Time(0.5f);
+					g_Chara[1]->AddPlay_Time(0.5f);
+					g_Chara[0]->AnimationType(g_Chara[0]);
+					g_Chara[1]->Animation(g_Chara[1]);
 
-				// モデルの移動(配置)
-				MV1SetPosition(player[0].anim.type[chara_type], player[0].GetPosition());
-				MV1SetPosition(player[1].anim.model, player[1].GetPosition());
+					// モデルの移動(配置)
+					MV1SetPosition(player[0].anim.type[chara_type], player[0].GetPosition());
+					MV1SetPosition(player[1].anim.model, player[1].GetPosition());
 
-				// 地面(配置)＆描画
-				MV1DrawModel(skydate);
-				MV1DrawModel(stagedate);
-				MV1DrawModel(moon);
-				MV1DrawModel(castle);
+					// 地面(配置)＆描画
+					MV1DrawModel(skydate);
+					MV1DrawModel(stagedate);
+					MV1DrawModel(moon);
+					MV1DrawModel(castle);
 
-				SetLightAngleHandle(LHandle_p1, 0.24582103f, 6.28318548f);
-				SetLightPositionHandle(LHandle_p1, VGet(player[0].GetPosition().x, player[0].GetPosition().y + 100.0f, player[0].GetPosition().z - 500.0f)); // ライトの位置
-				SetLightPositionHandle(LHandle_p2, VGet(player[1].GetPosition().x, player[1].GetPosition().y + 100.0f, player[1].GetPosition().z - 500.0f)); // ライトの位置
+					SetLightAngleHandle(LHandle_p1, 0.24582103f, 6.28318548f);
+					SetLightPositionHandle(LHandle_p1, VGet(player[0].GetPosition().x, player[0].GetPosition().y + 100.0f, player[0].GetPosition().z - 500.0f)); // ライトの位置
+					SetLightPositionHandle(LHandle_p2, VGet(player[1].GetPosition().x, player[1].GetPosition().y + 100.0f, player[1].GetPosition().z - 500.0f)); // ライトの位置
 
-				// ８分の１に縮小した画像をガウスフィルタでぼかす
-				GraphFilter(ScreenHandle, DX_GRAPH_FILTER_GAUSS, 32, Gauss);
+					// ８分の１に縮小した画像をガウスフィルタでぼかす
+					GraphFilter(ScreenHandle, DX_GRAPH_FILTER_GAUSS, 32, Gauss);
 
-				// モデルの描画
-				MV1DrawModel(player[0].anim.type[chara_type]);
-				MV1DrawModel(player[1].anim.model);
+					// モデルの描画
+					MV1DrawModel(player[0].anim.type[chara_type]);
+					MV1DrawModel(player[1].anim.model);
 
-				if (player[0].GetPosition().x <= 1930) {
-					SetFontSize(128);
-					ChangeFont("HGS行書体");
-					DrawString(130, 70, "プレイヤー１", GetColor(252, 252, 252));
-					DrawString(1030, 70, "プレイヤー２", GetColor(252, 252, 252));
+					if (player[0].GetPosition().x <= 1930) {
+						SetFontSize(128);
+						ChangeFont("HGS行書体");
+						DrawString(130, 70, "プレイヤー１", GetColor(252, 252, 252));
+						DrawString(1030, 70, "プレイヤー２", GetColor(252, 252, 252));
 
-					DrawString(100, 380, "<", GetColor(252, 0, 0));
-					DrawString(830, 380, ">", GetColor(252, 0, 0));
+						DrawString(100, 380, "<", GetColor(252, 0, 0));
+						DrawString(830, 380, ">", GetColor(252, 0, 0));
 
-					DrawString(1000, 380, "<", GetColor(252, 0, 0));
-					DrawString(1730, 380, ">", GetColor(252, 0, 0));
-				}
+						DrawString(1000, 380, "<", GetColor(252, 0, 0));
+						DrawString(1730, 380, ">", GetColor(252, 0, 0));
+					}
 
-				// 描画対象を裏画面にする
-				SetDrawScreen(DX_SCREEN_BACK);
+					// 描画対象を裏画面にする
+					SetDrawScreen(DX_SCREEN_BACK);
 
-				// 通常の描画結果を描画する
-				DrawGraph(0, 0, ScreenHandle, FALSE);
-
+					// 通常の描画結果を描画する
+					DrawGraph(0, 0, ScreenHandle, FALSE);
 				if (GamemodeChenge_flg == 1) {
+
 					x += 30;
 					x1 += 20;
 
-					if (x >= 00) {
+					if (x >= 1500 && x <= 3000) {
 						DrawBox(0, 0, 1920, 1080, GetColor(0, 0, 0), TRUE);
 					}
-					if (x >= 5500) {
-						player[0].SetPosition(VGet(200.0f, 2200.0f, 0.0f));
-						player[1].SetPosition(VGet(2800.0f, 2200.0f, 0.0f));
+					if (x >= 2000) {
+						player[0].SetPosition(VGet(800.0f, 2200.0f, 0.0f));
+						player[1].SetPosition(VGet(2200.0f, 2200.0f, 0.0f));
 						cpos = VGet(1484.0f, 2360.0f, -1860.0f);
-						ctgt = VGet(0.0f, 1000.0f, 0.0f);
+						ctgt = VGet(1484.0f, 2160.0f, -860.0f);
+						// 背景(空)の操作
+						skypos.x = cpos.x;
+						skypos.y = cpos.y - 3000.0f;
+						skypos.z = cpos.z;
+
+						SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
+
+						// モデルの回転
+						MV1SetRotationXYZ(player[0].anim.model, VGet(0.0f, 1.57f * player[0].GetDirection(), 0.0f));
+						MV1SetRotationXYZ(player[1].anim.model, VGet(0.0f, 1.57f * player[1].GetDirection(), 0.0f));
+						// モデルの移動(配置)
+						MV1SetPosition(player[0].anim.model, player[0].GetPosition());
+						MV1SetPosition(player[1].anim.model, player[1].GetPosition());
+
+						MV1SetPosition(skydate, skypos);
+
+						// 画面をクリア
+						ClearDrawScreen();
+						// 描画
+						Draw();
+					}
+					if (x >= 4500) {
 						gamemode = eScenePlay;
 					}
-
 					// BMP画像の表示
 					//左から第一陣
 					DrawGraph(-1000 + x, 0, BmpDate[0], TRUE);
@@ -278,9 +300,9 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					DrawGraph(-1500 + x, 0, BmpDate[0], TRUE);
 					DrawGraph(-1500 + x, 360, BmpDate[1], TRUE);
 					DrawGraph(-1500 + x, 690, BmpDate[2], TRUE);
-					DrawGraph(-1500 + x1, 180, BmpDate[3], TRUE);
-					DrawGraph(-1500 + x1, 540, BmpDate[4], TRUE);
-					DrawGraph(-1500 + x1, 900, BmpDate[5], TRUE);
+					DrawGraph(-1500 + x, 180, BmpDate[3], TRUE);
+					DrawGraph(-1500 + x, 540, BmpDate[4], TRUE);
+					DrawGraph(-1500 + x, 900, BmpDate[5], TRUE);
 					//右から第一陣
 					DrawGraph(2000 - x, 0, BmpDate[0], TRUE);
 					DrawGraph(2000 - x, 360, BmpDate[1], TRUE);
@@ -292,10 +314,9 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					DrawGraph(2500 - x, 0, BmpDate[0], TRUE);
 					DrawGraph(2500 - x, 360, BmpDate[1], TRUE);
 					DrawGraph(2500 - x, 690, BmpDate[2], TRUE);
-					DrawGraph(2500 - x1, 180, BmpDate[3], TRUE);
-					DrawGraph(2500 - x1, 540, BmpDate[4], TRUE);
-					DrawGraph(2500 - x1, 900, BmpDate[5], TRUE);
-
+					DrawGraph(2500 - x, 180, BmpDate[3], TRUE);
+					DrawGraph(2500 - x, 540, BmpDate[4], TRUE);
+					DrawGraph(2500 - x, 900, BmpDate[5], TRUE);
 				}
 
 				ScreenFlip();

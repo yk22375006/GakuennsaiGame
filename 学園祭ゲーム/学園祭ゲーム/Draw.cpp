@@ -7,6 +7,8 @@
 void Draw() {
 	// シャドウマップへの描画の準備
 	ShadowMap_DrawSetup(ShadowMapHandle);
+	// 描画に使用するシャドウマップを設定
+	SetUseShadowMap(0, ShadowMapHandle);
 
 	// モデルの描画 - 影の描画
 	MV1DrawModel(player[0].anim.model);
@@ -15,8 +17,6 @@ void Draw() {
 	// シャドウマップへの描画を終了
 	ShadowMap_DrawEnd();
 
-	// 描画に使用するシャドウマップを設定
-	SetUseShadowMap(0, ShadowMapHandle);
 	// 地面(配置)＆描画
 	MV1DrawModel(skydate);
 	MV1DrawModel(stagedate);

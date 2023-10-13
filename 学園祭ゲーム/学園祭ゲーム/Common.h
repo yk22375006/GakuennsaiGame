@@ -86,9 +86,16 @@
 // カメラの回転量
 #define CAMERA_ROTATE 200.0f
 
+// 吹っ飛び方向の指定
+#define NONBLOW		0
+#define BLOWRIGHT	1
+#define BLOWLEFT	2
+
 // マップ
 #define MAP_Y 181
 #define MAP_X 16
+#define MIN_X 70.0f	// マップ上で最も左の座標
+#define MAX_X 2930.0f	// マップ上で最も右の座標
 /* -----------------------------------------------------------------------------------------
 |
 |       構造体宣言

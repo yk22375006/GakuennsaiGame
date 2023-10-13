@@ -41,6 +41,10 @@ class CharaBase {
 		int number;				// プレイヤー番号
 		int RevivalTime;		// 復活までの時間
 		int type;				// キャラのタイプ
+		int blowdirection;		// 吹っ飛び方向の指定
+		bool selectflg;			// キャラの選択
+		bool damageflg;			// ダメージを食らっている
+		bool falldamageflg;		// 落下中にダメージを負った
 
 	public :
 		CharaBase( ) ;			// コンストラクタ
@@ -206,5 +210,40 @@ class CharaBase {
 			return RevivalTime;
 		}
 
+		// 吹っ飛び方向
+		int GetBlowDirection() {
+			return blowdirection;
+		}
+
+		void SetBlowDirection(int set_blowdirection) {
+			blowdirection = set_blowdirection;
+		}
+
+		// キャラ選択
+		bool GetSelectFlg() {
+			return selectflg;
+		}
+
+		void SetSelectFlg(bool set_selectflg) {
+			selectflg = set_selectflg;
+		}
+
+		// 被ダメージのフラグ
+		bool GetDamageFlg() {
+			return damageflg;
+		}
+
+		void SetDamageFlg(bool set_damageflg) {
+			damageflg = set_damageflg;
+		}
+
+		// 落下中にダメージを負ったかのフラグ
+		bool GetFallDamageFlg() {
+			return falldamageflg;
+		}
+
+		void SetFallDamageFlg(bool set_falldamageflg) {
+			falldamageflg = set_falldamageflg;
+		}
 } ;
 

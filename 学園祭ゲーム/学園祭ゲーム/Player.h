@@ -12,7 +12,6 @@ class Player : public CharaBase {
 		int Draw( CharaBase *pp1 ) ;	// 描画
 		int AllowKey( ) ;			// 矢印キーが押されてるか
 
-
 		// アニメーション関数
 		int LoadAnimation( CharaBase* pp1 ) ;				// アニメーション読み込み
 		int AnimationInit( ) ;				// アニメーション初期セット
@@ -37,5 +36,6 @@ class Player : public CharaBase {
 
 		void Move_HitCheck(CharaBase* pp1, CharaBase* pp2);
 		void Block_HitCheck(CharaBase* pp1);
+
 } ;
 

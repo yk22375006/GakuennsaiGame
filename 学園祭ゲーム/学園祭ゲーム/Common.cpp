@@ -56,7 +56,8 @@ ConsoleWindow g_cWin;
 // --- プレイヤー
 Player player[2];
 Player* g_Chara[2];
-int chara_type;
+int chara_type1;
+int chara_type2;
 
 // --- カメラ
 VECTOR cpos;
@@ -275,7 +276,6 @@ int StageMap[MAP_Y][MAP_X] = {
 // --- アニメーション
 void AnimationInit();
 void AnimationPlayer(int);
-void AnimationEnemy(int);
 
 // --- カメラの移動
 void CameraMove();

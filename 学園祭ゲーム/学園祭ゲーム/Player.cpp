@@ -82,6 +82,38 @@ int Player::AllowKey( )
 
 	return( false ) ;
 }
+/* ======================================================== +
+ |                      LoadAnimation( )                    |
+ |                   アニメーション読み込み               |
+ |                                                          |
+ + ======================================================== */
+int Player::LoadAnimation(CharaBase* pp1) {
+	switch (chara_type1)
+	{
+		case SPEEDMODE :
+			pp1->anim.model		= MV1DuplicateModel(pp1->anim.type[SPEEDMODE]);
+			pp1->anim.stop		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");			// 立ちアニメ
+			pp1->anim.run		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");			// 走りアニメ
+			pp1->anim.jump_in	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1");	// ジャンプ入り始めアニメ
+			pp1->anim.jump		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ中.mv1");	// ジャンプループアニメ
+			pp1->anim.fall		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_落下.mv1");			// ジャンプループアニメ
+			pp1->anim.attack	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_攻撃.mv1");			// 攻撃アニメ
+			pp1->anim.damage	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ダメージ.mv1");		// 被ダメージアニメ
+			break;
+
+		case BALANCEMODE:
+			pp1->anim.model		= MV1DuplicateModel(pp1->anim.type[BALANCEMODE]);
+			pp1->anim.stop		= MV1LoadModel("..\\Data\\Ninja\\忍者待機_バランス.mv1");			// 立ちアニメ
+			pp1->anim.run		= MV1LoadModel("..\\Data\\Ninja\\忍者走り_バランス.mv1");		// 走りアニメ
+			pp1->anim.jump_in	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1");	// ジャンプ入り始めアニメ
+			pp1->anim.jump		= MV1LoadModel("..\\Data\\Ninja\\忍者ジャンプ_バランス.mv1");	// ジャンプループアニメ
+			pp1->anim.fall		= MV1LoadModel("..\\Data\\Ninja\\忍者落下_バランス.mv1");			// ジャンプループアニメ
+			pp1->anim.attack	= MV1LoadModel("..\\Data\\Ninja\\忍者攻撃_バランス.mv1");		// 攻撃アニメ
+			pp1->anim.damage	= MV1LoadModel("..\\Data\\Ninja\\忍者ダメージ_バランス.mv1");	// 被ダメージアニメ
+			break;
+	}
+
+}
 
 /* ======================================================== +
  |                      AnimationInit( )                    |
@@ -153,8 +185,13 @@ int Player::AnimationType(CharaBase* pp1)
 	if (pp1->GetPlay_Time() > pp1->GetAnim_Time()) {
 		pp1->SetPlay_Time(0.0f);
 	}
-	// アニメーション再生時間と同期させる
-	MV1SetAttachAnimTime(pp1->GetAnimation_Data().type[chara_type], pp1->GetAnim_Attach(), pp1->GetPlay_Time());
+	if (pp1 == &player[0])
+		// アニメーション再生時間と同期させる
+		MV1SetAttachAnimTime(pp1->GetAnimation_Data().type[chara_type1], pp1->GetAnim_Attach(), pp1->GetPlay_Time());
+
+	if (pp1 == &player[1])
+		// アニメーション再生時間と同期させる
+		MV1SetAttachAnimTime(pp1->GetAnimation_Data().type[chara_type2], pp1->GetAnim_Attach(), pp1->GetPlay_Time());
 
 	return(false);
 }
@@ -166,19 +203,85 @@ int Player::AnimationType(CharaBase* pp1)
  + ======================================================== */
 int Player::ChangeAnimationType(CharaBase* pp1, int set_anim)
 {
-	// アニメーションをデタッチする
-	MV1DetachAnim(pp1->GetAnimation_Data().type[chara_type], pp1->GetAnim_Attach());
+	if (pp1 == &player[0]) {
+		// アニメーションをデタッチする
+		MV1DetachAnim(pp1->GetAnimation_Data().type[chara_type1], pp1->GetAnim_Attach());
 
-	// アニメーションセット(切り替え)
-	pp1->SetAnim_Attach(MV1AttachAnim(pp1->GetAnimation_Data().type[chara_type], 0, set_anim));
-	pp1->SetAnim_Time(MV1GetAttachAnimTotalTime(pp1->GetAnimation_Data().type[chara_type], pp1->GetAnim_Attach()));
+		// アニメーションセット(切り替え)
+		pp1->SetAnim_Attach(MV1AttachAnim(pp1->GetAnimation_Data().type[chara_type1], 0, set_anim));
+		pp1->SetAnim_Time(MV1GetAttachAnimTotalTime(pp1->GetAnimation_Data().type[chara_type1], pp1->GetAnim_Attach()));
 
-	// アニメーションして動いてもその場で動いてるような状態にする
-	pp1->SetRootFlm(MV1SearchFrame(pp1->GetAnimation_Data().type[chara_type], "root"));
-	MV1SetFrameUserLocalMatrix(pp1->GetAnimation_Data().type[chara_type], pp1->GetRootFlm(), MGetIdent());
-	pp1->SetPlay_Time(0.0f);
+		// アニメーションして動いてもその場で動いてるような状態にする
+		pp1->SetRootFlm(MV1SearchFrame(pp1->GetAnimation_Data().type[chara_type1], "root"));
+		MV1SetFrameUserLocalMatrix(pp1->GetAnimation_Data().type[chara_type1], pp1->GetRootFlm(), MGetIdent());
+		pp1->SetPlay_Time(0.0f);
+	}
+	if (pp1 == &player[1]) {
+		// アニメーションをデタッチする
+		MV1DetachAnim(pp1->GetAnimation_Data().type[chara_type2], pp1->GetAnim_Attach());
+
+		// アニメーションセット(切り替え)
+		pp1->SetAnim_Attach(MV1AttachAnim(pp1->GetAnimation_Data().type[chara_type2], 0, set_anim));
+		pp1->SetAnim_Time(MV1GetAttachAnimTotalTime(pp1->GetAnimation_Data().type[chara_type2], pp1->GetAnim_Attach()));
+
+		// アニメーションして動いてもその場で動いてるような状態にする
+		pp1->SetRootFlm(MV1SearchFrame(pp1->GetAnimation_Data().type[chara_type2], "root"));
+		MV1SetFrameUserLocalMatrix(pp1->GetAnimation_Data().type[chara_type2], pp1->GetRootFlm(), MGetIdent());
+		pp1->SetPlay_Time(0.0f);
+	}
 
 	return(false);
+}
+/* ############################################################################################### */
+/* ======================================================== +
+ |						CharaChoice( )						|
+ |						キャラ選択							|
+ |                                                          |
+ + ======================================================== */
+void Player::CharaChoice(CharaBase* pp1) {
+	if (pp1 == &player[0])
+		key1 = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+	if (pp1 == &player[1])
+		key1 = GetJoypadInputState(DX_INPUT_PAD2);
+
+	if (continuous_limit == 0) {
+		if (key1 & PAD_INPUT_RIGHT) {
+			if (pp1 == &player[0]) {
+				chara_type1++;
+				continuous_limit = 15;
+				if (chara_type1 > BALANCEMODE)
+					chara_type1 = SPEEDMODE;
+			}
+			if (pp1 == &player[1]) {
+				chara_type2++;
+				continuous_limit = 15;
+				if (chara_type2 > BALANCEMODE)
+					chara_type2 = SPEEDMODE;
+			}
+		}
+		if (key1 & PAD_INPUT_LEFT) {
+			if (pp1 == &player[0]) {
+				chara_type1--;
+				continuous_limit = 15;
+				if (chara_type1 < SPEEDMODE)
+					chara_type1 = BALANCEMODE;
+			}
+			if (pp1 == &player[1]) {
+				chara_type2--;
+				continuous_limit = 15;
+				if (chara_type2 < SPEEDMODE)
+					chara_type2 = BALANCEMODE;
+			}
+		}
+		if ((key1 & PAD_INPUT_LEFT) || (key1 & PAD_INPUT_RIGHT)) {
+			if (pp1 == &player[0]) {
+				ChangeAnimationType(pp1, pp1->anim.typestop[chara_type1]);
+			}
+			if (pp1 == &player[1]) {
+				ChangeAnimationType(pp1, pp1->anim.typestop[chara_type2]);
+			}
+		}
+	}
 }
 
 /* ############################################################################################### */

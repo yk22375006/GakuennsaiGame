@@ -248,5 +248,6 @@ void CameraMove();
 void Draw();
 
 // ƒ‰ƒCƒg
-int LHandle;
+int LHandle_p1;
+int LHandle_p2;;
 

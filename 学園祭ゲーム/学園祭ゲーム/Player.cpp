@@ -90,7 +90,7 @@ int Player::AllowKey( )
  + ======================================================== */
 int Player::AnimationInit()
 {
-//	g_Chara[0]->SetMotion(anim.stop);
+	g_Chara[0]->SetMotion(anim.stop);
 //	g_Chara[1]->SetMotion(anim.stop);
 
 	// アニメーションセット
@@ -129,15 +129,15 @@ int Player::Animation(CharaBase* pp1)
 int Player::ChangeAnimation(CharaBase* pp1, int set_anim)
 {
 	// アニメーションをデタッチする
-//	MV1DetachAnim(pp1->GetAnimation_Data().model, pp1->GetAnim_Attach());
+	MV1DetachAnim(pp1->GetAnimation_Data().model, pp1->GetAnim_Attach());
 
 	// アニメーションセット(切り替え)
-//	pp1->SetAnim_Attach(MV1AttachAnim(pp1->GetAnimation_Data().model, 0, set_anim));
-//	pp1->SetAnim_Time(MV1GetAttachAnimTotalTime(pp1->GetAnimation_Data().model, pp1->GetAnim_Attach()));
+	pp1->SetAnim_Attach(MV1AttachAnim(pp1->GetAnimation_Data().model, 0, set_anim));
+	pp1->SetAnim_Time(MV1GetAttachAnimTotalTime(pp1->GetAnimation_Data().model, pp1->GetAnim_Attach()));
 
 	// アニメーションして動いてもその場で動いてるような状態にする
-//	pp1->SetRootFlm(MV1SearchFrame(pp1->GetAnimation_Data().model, "root"));
-//	MV1SetFrameUserLocalMatrix(pp1->GetAnimation_Data().model, pp1->GetRootFlm(), MGetIdent());
+	pp1->SetRootFlm(MV1SearchFrame(pp1->GetAnimation_Data().model, "root"));
+	MV1SetFrameUserLocalMatrix(pp1->GetAnimation_Data().model, pp1->GetRootFlm(), MGetIdent());
 	pp1->SetPlay_Time(0.0f);
 
 	return(false);
@@ -153,16 +153,16 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 {
 	// アニメーション
 	pp1->AddPlay_Time( 0.5f ) ;
-//	pp1->SetMotion( pp1->GetAnimation_Data( ).stop ) ;
+	pp1->SetMotion( pp1->GetAnimation_Data( ).stop ) ;
 
 	if ( AllowKey( ) == (int)true ){
 		pp1->SetAct_Mode( eCharaMove ) ;
-//		pp1->SetMotion( pp1->GetAnimation_Data( ).run ) ;
-//		ChangeAnimation(pp1, pp1->GetAnimation_Data().run);	// アニメーション切り替え
+		pp1->SetMotion( pp1->GetAnimation_Data( ).run ) ;
+		ChangeAnimation(pp1, pp1->GetAnimation_Data().run);	// アニメーション切り替え
 	}
 
 	// 移動量セット
-//	pp1->MoveSet( ) ;
+	//pp1->MoveSet( ) ;
 
 	// zが押されたら
 	if (key1 & PAD_INPUT_7) {
@@ -201,7 +201,7 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 {
 	// アニメーション
 	pp1->AddPlay_Time( 0.5f ) ;
-//	pp1->SetMotion( pp1->GetAnimation_Data( ).run ) ;
+	pp1->SetMotion( pp1->GetAnimation_Data( ).run ) ;
 
 	// 移動量セット(方向転換)
 	pp1->MoveSet( ) ;
@@ -215,10 +215,10 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 	pp1->SetPosition( VAdd( pp1->GetPosition( ) , pp1->GetSpeed( ) ) ) ;
 
 	// アニメーション
-/*	pp1->AddPlay_Time(0.5f);
-//	pp1->SetMotion(pp1->GetAnimation_Data().run);
+	pp1->AddPlay_Time(0.5f);
+	pp1->SetMotion(pp1->GetAnimation_Data().run);
 
-	// zが押されたら
+	/*	// zが押されたら
 	if (key1 & PAD_INPUT_7) {
 		pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
 //		pp1->SetAct_Mode(eCharaAttack);

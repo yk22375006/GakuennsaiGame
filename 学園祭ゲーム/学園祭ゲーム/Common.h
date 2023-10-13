@@ -106,7 +106,7 @@ typedef struct
 + --------------------------------------------------------------------------------------- */
 #include <DxLib.h>
 #include "CharaBase.h"
-#include "stagedate.h"
+#include "StageDate.h"
 #include "Animation.h"
 #include "Block.h"
 #include "Player.h"
@@ -234,4 +234,8 @@ extern int bg_tatami[BACKGROUNDFLOOR];
 extern MATRIX WeaponMatrix;
 
 // ƒ‰ƒCƒg
-extern int LHandle;
+extern int LHandle_p1;
+extern int LHandle_p2;
+
+
+

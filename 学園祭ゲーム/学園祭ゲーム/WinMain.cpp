@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	blockdate[NEEDLE_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\棘.mv1");
 	blockdate[WOOD_BLOCK]		= MV1LoadModel("..\\Data\\Stage\\柱.mv1");
 	// プレイヤーの作成
-	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_sub.mv1");
+	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者 バランス.mv1");
 	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_sub.mv1");
 
 	// ライトの方向を設定
@@ -64,11 +64,14 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	ShadowMapHandle = MakeShadowMap( 1024, 1024 ) ;
 
 	// ライトの色　黒
-	SetLightDifColor(GetColorF(0.5f, 0.5f, 0.5f, 1.0f));
+	SetLightDifColor(GetColorF(0.3f, 0.3f, 0.3f, 1.0f));
 
 	// スポットライト
-	LHandle = CreateSpotLightHandle(VGet(player[0].GetPosition().x,player[0].GetPosition().y + 0.0f, player[0].GetPosition().z - 100.0f)
-		, VGet(0.0f, 0.78f, 1.57f), 0.78f, 0.5f, 1500.0f, 0.3f, 0.0f, 0.0f);
+	LHandle_p1 = CreateSpotLightHandle(VGet(player[0].GetPosition().x, player[0].GetPosition().y, player[0].GetPosition().z - 100.0f)
+		, VGet(0.0f, 0.5f, 1.05f), 0.78f, 0.5f, 2500.0f, 0.1f, 0.0001f, 0.0000001f);
+
+	LHandle_p2 = CreateSpotLightHandle(VGet(player[1].GetPosition().x, player[1].GetPosition().y, player[1].GetPosition().z - 100.0f)
+		, VGet(0.0f, 0.0f, 1.05f), 0.78f, 0.5f, 2500.0f, 0.3f, 0.0f, 0.0f);
 
 	// シャドウマップが想定するライトの方向もセット
 	SetShadowMapLightDirection( ShadowMapHandle, VGet( 0.5f, -0.5f, 0.5f ) ) ;
@@ -121,7 +124,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
 					player[0].SetPosition(VGet(200.0f, 1800.0f, 0.0f));
-					player[1].SetPosition(VGet(1200.0f, 1800.0f, 0.0f));
+					player[1].SetPosition(VGet(2200.0f, 1800.0f, 0.0f));
 					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
 
 					for (int i = 0; i < BACKGROUNDFLOOR; i++) {
@@ -205,8 +208,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				g_Chara[1]->ActionLoop(g_Chara[1], g_Chara[0]);
 
 				// アニメーションの反映
-//				MV1SetAttachAnimTime(player[0].anim.model, player[0].GetAnim_Attach(), player[0].GetAnim_Time());
-//				MV1SetAttachAnimTime(player[1].anim.model, player[1].GetAnim_Attach(), player[1].GetAnim_Time());
+				MV1SetAttachAnimTime(player[0].anim.model, player[0].GetAnim_Attach(), player[0].GetAnim_Time());
+				MV1SetAttachAnimTime(player[1].anim.model, player[1].GetAnim_Attach(), player[1].GetAnim_Time());
 //				PlayerMove();
 				ClearDrawScreen() ;
 				// カメラの視点操作
@@ -243,7 +246,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	}
 
 	// ライトハンドルの削除
-	DeleteLightHandle(LHandle);
+	DeleteLightHandle(LHandle_p1);
+	DeleteLightHandle(LHandle_p2);
 	// シャドウマップの削除
 	DeleteShadowMap(ShadowMapHandle);
 	// キャラクターモデルの削除

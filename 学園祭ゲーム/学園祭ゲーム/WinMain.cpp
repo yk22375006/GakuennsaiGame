@@ -51,10 +51,10 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	castle = MV1LoadModel("..\\Data\\japanese-castle\\source\\japanese castle 2.mv1");
 
 	// プレイヤーの作成
-	player[0].anim.type[0] = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
-	player[0].anim.typestop[0] = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");
-	player[0].anim.type[1] = MV1LoadModel("..\\Data\\Ninja\\忍者_バランス.mv1");
-	player[1].anim.typestop[1] = MV1LoadModel("..\\Data\\Ninja\\忍者待機_バランス.mv1");
+	player[0].anim.type[SPEEDMODE]			= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
+	player[0].anim.typestop[SPEEDMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");
+	player[0].anim.type[BALANCEMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者_バランス.mv1");
+	player[0].anim.typestop[BALANCEMODE]	= MV1LoadModel("..\\Data\\Ninja\\忍者待機_バランス.mv1");
 
 	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
 	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無.mv1");
@@ -167,11 +167,12 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 				ScreenFlip();
 				if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
-					chara_type = 0;
-					player[1].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
-					player[0].ChangeAnimationType(g_Chara[0], player[0].anim.typestop[chara_type]);
-					player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
 					gamemode = eSceneChoice;
+					chara_type1 = SPEEDMODE;
+					chara_type2 = SPEEDMODE;
+					player[1].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
+					player[0].ChangeAnimationType(g_Chara[0], player[0].anim.typestop[chara_type1]);
+					player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
 				}
 				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
 					player[0].SetPosition(VGet(200.0f, 2200.0f, 0.0f));
@@ -183,38 +184,47 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				break;
 
 			case eSceneChoice:
-					if (MV1GetPosition(player[1].anim.model).x >= 1930) {
-						player[0].SetPosition(VGet(800.0f + x, 150.0f, 500.0f));
-						player[1].SetPosition(VGet(2400.0f - x, 150.0f, 500.0f));
-						Gauss += 20;
-						if (GamemodeChenge_flg != 1)
-							x += 20;
-					}
-					if (CheckHitKey(KEY_INPUT_RETURN) == 1 && GamemodeChenge_flg != 1) {
-						GamemodeChenge_flg = 1;
-						x = 0;
-						x1 = 0;
-						player[0].ChangeAnimation(g_Chara[0], player[0].anim.stop);
-						player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
-					}
+				if (MV1GetPosition(player[1].anim.model).x >= 1930) {
+					player[0].SetPosition(VGet(800.0f + x, 150.0f, 500.0f));
+					player[1].SetPosition(VGet(2400.0f - x, 150.0f, 500.0f));
+					Gauss += 20;
+					if (GamemodeChenge_flg != 1)
+						x += 20;
+				}
+				if (CheckHitKey(KEY_INPUT_RETURN) == 1 && GamemodeChenge_flg != 1) {
+					GamemodeChenge_flg = 1;
+					x = 0;
+					x1 = 0;
+					player[0].ChangeAnimation(g_Chara[0], player[0].anim.stop);
+					player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
+				}
+				g_Chara[0]->CharaChoice(g_Chara[0]);
 
-					SetDrawScreen(ScreenHandle);
+				if (continuous_limit > 0) {
+					continuous_limit--;
+				}
+				if (continuous_limit < 0) {
+					continuous_limit = 0;
+				}
 
-					// 画面をクリア
-					ClearDrawScreen();
+				SetDrawScreen(ScreenHandle);
 
-					//カメラ情報の反映
-					SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
+				// 画面をクリア
+				ClearDrawScreen();
 
-					// アニメーション
-					g_Chara[0]->AddPlay_Time(0.5f);
-					g_Chara[1]->AddPlay_Time(0.5f);
-					g_Chara[0]->AnimationType(g_Chara[0]);
-					g_Chara[1]->Animation(g_Chara[1]);
+				//カメラ情報の反映
+				SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
 
-					// モデルの移動(配置)
-					MV1SetPosition(player[0].anim.type[chara_type], player[0].GetPosition());
-					MV1SetPosition(player[1].anim.model, player[1].GetPosition());
+				// アニメーション
+				g_Chara[0]->AddPlay_Time(0.5f);
+				g_Chara[1]->AddPlay_Time(0.5f);
+				g_Chara[0]->AnimationType(g_Chara[0]);
+				g_Chara[1]->Animation(g_Chara[1]);
+
+
+				// モデルの移動(配置)
+				MV1SetPosition(player[0].anim.type[chara_type1], player[0].GetPosition());
+				MV1SetPosition(player[1].anim.model, player[1].GetPosition());
 
 					// 地面(配置)＆描画
 					MV1DrawModel(skydate);
@@ -230,7 +240,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					GraphFilter(ScreenHandle, DX_GRAPH_FILTER_GAUSS, 32, Gauss);
 
 					// モデルの描画
-					MV1DrawModel(player[0].anim.type[chara_type]);
+					MV1DrawModel(player[0].anim.type[chara_type1]);
 					MV1DrawModel(player[1].anim.model);
 
 					if (player[0].GetPosition().x <= 1930) {

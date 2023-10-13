@@ -48,16 +48,17 @@ int CharaBase::init( )
  + ======================================================== */
 int CharaBase::MoveSet( )
 {
-	switch ( key1 & (PAD_INPUT_LEFT + PAD_INPUT_RIGHT + PAD_INPUT_DOWN + PAD_INPUT_UP) )
+	switch ( key1 & (PAD_INPUT_LEFT + PAD_INPUT_RIGHT + PAD_INPUT_DOWN + PAD_INPUT_UP + PAD_INPUT_C) )
 	{
 		case PAD_INPUT_UP:
+		case PAD_INPUT_C :
 			if (act_mode != eCharaFall) {
 				act_mode = eCharaJump;
 			}
 			break ;
 
 		case PAD_INPUT_DOWN:
-			direction = DOWN;
+//			direction = DOWN;
 			break;
 
 		case PAD_INPUT_LEFT:
@@ -73,6 +74,7 @@ int CharaBase::MoveSet( )
 			break ;
 
 		case (PAD_INPUT_LEFT + PAD_INPUT_UP) :
+		case (PAD_INPUT_LEFT + PAD_INPUT_C):
 			spd.x = -PLAYER_SPEED; // 右を押下 右に移動
 			if (act_mode != eCharaFall) {
 				posi.y = posi.y + 11.0f;
@@ -82,6 +84,7 @@ int CharaBase::MoveSet( )
 			break ;
 
 		case (PAD_INPUT_RIGHT + PAD_INPUT_UP) :
+		case (PAD_INPUT_RIGHT + PAD_INPUT_C):
 			spd.x = PLAYER_SPEED; // 右を押下 右に移動
 			if (act_mode != eCharaFall) {
 				posi.y = posi.y + 11.0f;

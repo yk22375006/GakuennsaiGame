@@ -75,12 +75,75 @@ int Player::AllowKey( )
 {
 	// 移動キーが押されたら
 	if ( (key1 & PAD_INPUT_DOWN) || (key1 & PAD_INPUT_UP) ||
-				(key1 & PAD_INPUT_LEFT) || (key1 & PAD_INPUT_RIGHT) )
+				(key1 & PAD_INPUT_LEFT) || (key1 & PAD_INPUT_RIGHT) ||
+					key1 & PAD_INPUT_C)
 	{
 		return( true ) ;
 	}
 
 	return( false ) ;
+}
+/* ======================================================== +
+ |                      LoadAnimation( )                    |
+ |                   アニメーション読み込み               |
+ |                                                          |
+ + ======================================================== */
+int Player::LoadAnimation(CharaBase* pp1) {
+
+	if (pp1 == &player[0]) {
+		switch (chara_type1)
+		{
+			case SPEEDMODE:
+			case POWERMODE:
+				pp1->anim.model		= MV1DuplicateModel(Original[0].model);
+				pp1->anim.stop		= MV1DuplicateModel(Original[0].stop);		// 立ちアニメ
+				pp1->anim.run		= MV1DuplicateModel(Original[0].run);		// 走りアニメ
+				pp1->anim.jump_in	= MV1DuplicateModel(Original[0].jump_in);	// ジャンプ入り始めアニメ
+				pp1->anim.jump		= MV1DuplicateModel(Original[0].jump);		// ジャンプループアニメ
+				pp1->anim.fall		= MV1DuplicateModel(Original[0].fall);		// ジャンプループアニメ
+				pp1->anim.attack	= MV1DuplicateModel(Original[0].attack);	// 攻撃アニメ
+				pp1->anim.damage	= MV1DuplicateModel(Original[0].damage);	// 被ダメージアニメ
+				break;
+
+			case BALANCEMODE:
+				pp1->anim.model		= MV1DuplicateModel(Original[0].model);
+				pp1->anim.stop		= MV1DuplicateModel(Original[0].stop);		// 立ちアニメ
+				pp1->anim.run		= MV1DuplicateModel(Original[0].run);		// 走りアニメ
+				pp1->anim.jump_in	= MV1DuplicateModel(Original[0].jump_in);	// ジャンプ入り始めアニメ
+				pp1->anim.jump		= MV1DuplicateModel(Original[0].jump);		// ジャンプループアニメ
+				pp1->anim.fall		= MV1DuplicateModel(Original[0].fall);		// ジャンプループアニメ
+				pp1->anim.attack	= MV1DuplicateModel(Original[0].attack);	// 攻撃アニメ
+				pp1->anim.damage	= MV1DuplicateModel(Original[0].damage);	// 被ダメージアニメ
+				break;
+		}
+	}
+	if (pp1 == &player[1]) {
+		switch (chara_type2) {
+			case SPEEDMODE:
+			case POWERMODE:
+				pp1->anim.model		= MV1DuplicateModel(Original[1].type[SPEEDMODE]);
+				pp1->anim.stop		= MV1DuplicateModel(Original[0].stop);		// 立ちアニメ 
+				pp1->anim.run		= MV1DuplicateModel(Original[0].run);		// 走りアニメ
+				pp1->anim.jump_in	= MV1DuplicateModel(Original[0].jump_in);	// ジャンプ入り始めアニメ
+				pp1->anim.jump		= MV1DuplicateModel(Original[0].jump);		// ジャンプループアニメ
+				pp1->anim.fall		= MV1DuplicateModel(Original[0].fall);		// ジャンプループアニメ
+				pp1->anim.attack	= MV1DuplicateModel(Original[0].attack);	// 攻撃アニメ
+				pp1->anim.damage	= MV1DuplicateModel(Original[0].damage);	// 被ダメージアニメ
+				break;
+
+			case BALANCEMODE:
+				pp1->anim.model		= MV1DuplicateModel(Original[1].model);
+				pp1->anim.stop		= MV1DuplicateModel(Original[1].stop);		// 立ちアニメ
+				pp1->anim.run		= MV1DuplicateModel(Original[1].run);		// 走りアニメ
+				pp1->anim.jump_in	= MV1DuplicateModel(Original[1].jump_in);	// ジャンプ入り始めアニメ
+				pp1->anim.jump		= MV1DuplicateModel(Original[1].jump);		// ジャンプループアニメ
+				pp1->anim.fall		= MV1DuplicateModel(Original[1].fall);		// ジャンプループアニメ
+				pp1->anim.attack	= MV1DuplicateModel(Original[1].attack);	// 攻撃アニメ
+				pp1->anim.damage	= MV1DuplicateModel(Original[1].damage);	// 被ダメージアニメ
+				break;
+		}
+	}
+	return (false);
 }
 
 /* ======================================================== +
@@ -153,8 +216,13 @@ int Player::AnimationType(CharaBase* pp1)
 	if (pp1->GetPlay_Time() > pp1->GetAnim_Time()) {
 		pp1->SetPlay_Time(0.0f);
 	}
-	// アニメーション再生時間と同期させる
-	MV1SetAttachAnimTime(pp1->GetAnimation_Data().type[chara_type], pp1->GetAnim_Attach(), pp1->GetPlay_Time());
+	if (pp1 == &player[0])
+		// アニメーション再生時間と同期させる
+		MV1SetAttachAnimTime(pp1->GetAnimation_Data().type[chara_type1], pp1->GetAnim_Attach(), pp1->GetPlay_Time());
+
+	if (pp1 == &player[1])
+		// アニメーション再生時間と同期させる
+		MV1SetAttachAnimTime(pp1->GetAnimation_Data().type[chara_type2], pp1->GetAnim_Attach(), pp1->GetPlay_Time());
 
 	return(false);
 }
@@ -166,19 +234,85 @@ int Player::AnimationType(CharaBase* pp1)
  + ======================================================== */
 int Player::ChangeAnimationType(CharaBase* pp1, int set_anim)
 {
-	// アニメーションをデタッチする
-	MV1DetachAnim(pp1->GetAnimation_Data().type[chara_type], pp1->GetAnim_Attach());
+	if (pp1 == &player[0]) {
+		// アニメーションをデタッチする
+		MV1DetachAnim(pp1->GetAnimation_Data().type[chara_type1], pp1->GetAnim_Attach());
 
-	// アニメーションセット(切り替え)
-	pp1->SetAnim_Attach(MV1AttachAnim(pp1->GetAnimation_Data().type[chara_type], 0, set_anim));
-	pp1->SetAnim_Time(MV1GetAttachAnimTotalTime(pp1->GetAnimation_Data().type[chara_type], pp1->GetAnim_Attach()));
+		// アニメーションセット(切り替え)
+		pp1->SetAnim_Attach(MV1AttachAnim(pp1->GetAnimation_Data().type[chara_type1], 0, set_anim));
+		pp1->SetAnim_Time(MV1GetAttachAnimTotalTime(pp1->GetAnimation_Data().type[chara_type1], pp1->GetAnim_Attach()));
 
-	// アニメーションして動いてもその場で動いてるような状態にする
-	pp1->SetRootFlm(MV1SearchFrame(pp1->GetAnimation_Data().type[chara_type], "root"));
-	MV1SetFrameUserLocalMatrix(pp1->GetAnimation_Data().type[chara_type], pp1->GetRootFlm(), MGetIdent());
-	pp1->SetPlay_Time(0.0f);
+		// アニメーションして動いてもその場で動いてるような状態にする
+		pp1->SetRootFlm(MV1SearchFrame(pp1->GetAnimation_Data().type[chara_type1], "root"));
+		MV1SetFrameUserLocalMatrix(pp1->GetAnimation_Data().type[chara_type1], pp1->GetRootFlm(), MGetIdent());
+		pp1->SetPlay_Time(0.0f);
+	}
+	if (pp1 == &player[1]) {
+		// アニメーションをデタッチする
+		MV1DetachAnim(pp1->GetAnimation_Data().type[chara_type2], pp1->GetAnim_Attach());
+
+		// アニメーションセット(切り替え)
+		pp1->SetAnim_Attach(MV1AttachAnim(pp1->GetAnimation_Data().type[chara_type2], 0, set_anim));
+		pp1->SetAnim_Time(MV1GetAttachAnimTotalTime(pp1->GetAnimation_Data().type[chara_type2], pp1->GetAnim_Attach()));
+
+		// アニメーションして動いてもその場で動いてるような状態にする
+		pp1->SetRootFlm(MV1SearchFrame(pp1->GetAnimation_Data().type[chara_type2], "root"));
+		MV1SetFrameUserLocalMatrix(pp1->GetAnimation_Data().type[chara_type2], pp1->GetRootFlm(), MGetIdent());
+		pp1->SetPlay_Time(0.0f);
+	}
 
 	return(false);
+}
+/* ############################################################################################### */
+/* ======================================================== +
+ |						CharaChoice( )						|
+ |						キャラ選択							|
+ |                                                          |
+ + ======================================================== */
+void Player::CharaChoice(CharaBase* pp1) {
+	if (pp1 == &player[0])
+		key1 = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+	if (pp1 == &player[1])
+		key1 = GetJoypadInputState(DX_INPUT_PAD2);
+
+	if (continuous_limit == 0) {
+		if (key1 & PAD_INPUT_RIGHT) {
+			if (pp1 == &player[0]) {
+				chara_type1++;
+				continuous_limit = 15;
+				if (chara_type1 > POWERMODE)
+					chara_type1 = SPEEDMODE;
+			}
+			if (pp1 == &player[1]) {
+				chara_type2++;
+				continuous_limit = 15;
+				if (chara_type2 > POWERMODE)
+					chara_type2 = SPEEDMODE;
+			}
+		}
+		if (key1 & PAD_INPUT_LEFT) {
+			if (pp1 == &player[0]) {
+				chara_type1--;
+				continuous_limit = 15;
+				if (chara_type1 < SPEEDMODE)
+					chara_type1 = POWERMODE;
+			}
+			if (pp1 == &player[1]) {
+				chara_type2--;
+				continuous_limit = 15;
+				if (chara_type2 < SPEEDMODE)
+					chara_type2 = POWERMODE;
+			}
+		}
+		if ((key1 & PAD_INPUT_LEFT) || (key1 & PAD_INPUT_RIGHT)) {
+			if (pp1 == &player[0]) {
+				ChangeAnimationType(pp1, pp1->anim.typestop[chara_type1]);
+			}
+			if (pp1 == &player[1]) {
+				ChangeAnimationType(pp1, pp1->anim.typestop[chara_type2]);
+			}
+		}
+	}
 }
 
 /* ############################################################################################### */
@@ -196,7 +330,7 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 	pp1->SetMotion( pp1->GetAnimation_Data( ).stop ) ;
 
 	if ( AllowKey( ) == (int)true ){
-		if (key1 & PAD_INPUT_UP){
+		if (key1 & PAD_INPUT_UP || key1 & PAD_INPUT_C){
 			pp1->MoveSet( );
 		}
 		else {
@@ -218,13 +352,13 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 	// Cが×
 	// Xが□
 	// ○が押されたら
-	if (key1 & PAD_INPUT_C) {
+	if (key1 & PAD_INPUT_B) {
 		pp1->SetAct_Mode(eCharaAttack);
 		pp1->SetMotion(pp1->GetAnimation_Data().attack);
 		ChangeAnimation(pp1, pp1->GetAnimation_Data().attack);	// アニメーション切り替え
 	}
 
-	// xが押されたら
+/*	// xが押されたら
 	if (key1 & PAD_INPUT_2) {
 //		pp1->SetAct_Mode(eCharaDown);
 //		pp1->SetMotion(pp1->GetAnimation_Data().down);
@@ -242,7 +376,7 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 //		pp1->SetAct_Mode(eCharaJump);
 //		pp1->SetMotion(pp1->GetAnimation_Data().jump);
 //		ChangeAnimation(pp1, pp1->GetAnimation_Data().jump);	// アニメーション切り替え
-	}
+	}*/
 }
 
 /* ======================================================== +
@@ -269,14 +403,14 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 	pp1->SetPosition( VAdd( pp1->GetPosition( ) , pp1->GetSpeed( ) ) ) ;
 
 	// ○が押されたら
-	if (key1 & PAD_INPUT_C) {
+	if (key1 & PAD_INPUT_B) {
 		pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
 		pp1->SetAct_Mode(eCharaAttack);
 		ChangeAnimation(pp1, pp1->GetAnimation_Data().attack);	// アニメーション切り替え
 	}
 
 	// xが押されたら
-	if (key1 & PAD_INPUT_2) {
+/*	if (key1 & PAD_INPUT_2) {
 //		pp1->SetAct_Mode(eCharaDown);
 //		pp1->SetMotion(pp1->GetAnimation_Data().down);
 //		ChangeAnimation(pp1, pp1->GetAnimation_Data().down);	// アニメーション切り替え
@@ -289,6 +423,13 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 //		ChangeAnimation(pp1, pp1->GetAnimation_Data().jump);	// アニメーション切り替え
 	}
 
+
+//	if (key1 & PAD_INPUT_3) {
+//		pp1->SetAct_Mode(eCharaDamage);
+//		pp1->SetMotion(pp1->GetAnimation_Data().damage);
+//		ChangeAnimation(pp1, pp1->GetAnimation_Data().damage);	// アニメーション切り替え
+//	}
+*/
 	// 何も押されていなければ
 	if (key1 == 0) {
 		pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
@@ -296,12 +437,6 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 		pp1->SetMotion(pp1->GetAnimation_Data().stop);
 		ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
 	}
-
-//	if (key1 & PAD_INPUT_3) {
-//		pp1->SetAct_Mode(eCharaDamage);
-//		pp1->SetMotion(pp1->GetAnimation_Data().damage);
-//		ChangeAnimation(pp1, pp1->GetAnimation_Data().damage);	// アニメーション切り替え
-//	}
 
 }
 /* ======================================================== +
@@ -467,7 +602,11 @@ void Player::CharaDown(CharaBase* pp1, CharaBase* pp2)
  + ======================================================== */
 void Player::CharaRevival(CharaBase* pp1, CharaBase* pp2) {
 	pp1->SetRevivalTime(pp1->GetRevivalTime() - 1);
-	pp1->SetPosition(VGet(1500.0f, cpos.y - 1000.0f, 0.0f));
+	if (pp1 == &player[0])
+		pp1->SetPosition(VGet(300.0f, cpos.y - 500.0f, 0.0f));
+
+	if (pp1 == &player[1])
+		pp1->SetPosition(VGet(2700.0f, cpos.y - 500.0f, 0.0f));
 
 	if (pp1->GetRevivalTime() % 3 == 0) {
 		pp1->SetUse_Flg(FALSE);
@@ -712,7 +851,11 @@ int Player::ActionLoop( CharaBase *pp1 , CharaBase *pp2  )
 	if (pp1 == &player[1])
 		key1 = GetJoypadInputState(DX_INPUT_PAD2);
 
-	if ((cpos.y - pp1->GetPosition().y > 2750.0f) && (pp1 == &player[0])) {
+	if ((cpos.y - pp1->GetPosition().y > 2050.0f) && (pp1 == &player[0])) {
+		pp1->SetAct_Mode(eCharaRevival);
+		pp1->SetRevivalTime(100);
+	}
+	if ((cpos.y - pp1->GetPosition().y > 2050.0f) && (pp1 == &player[1])) {
 		pp1->SetAct_Mode(eCharaRevival);
 		pp1->SetRevivalTime(100);
 	}

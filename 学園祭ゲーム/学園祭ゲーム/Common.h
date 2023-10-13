@@ -44,9 +44,9 @@
 #define PLAYER_SIZE_W	200.0f
 
 //	プレイヤーのタイプ
-#define SPEEDMODE	1
-#define BALANCEMODE	2
-#define POWERMODE	3
+#define SPEEDMODE	0
+#define BALANCEMODE	1
+#define POWERMODE	2
 
 // プレイヤーの移動速度
 #define PLAYER_SPEED 12.0f
@@ -199,7 +199,9 @@ extern ConsoleWindow g_cWin ;
 // --- プレイヤー
 extern Player player[2];
 extern Player* g_Chara[2];
-extern int chara_type;
+extern AnimationDate Original[3];
+extern int chara_type1;
+extern int chara_type2;
 
 // --- カメラ
 extern VECTOR cpos;

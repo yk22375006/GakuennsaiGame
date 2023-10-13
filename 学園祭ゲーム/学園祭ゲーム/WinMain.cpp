@@ -18,7 +18,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 		
 //	ChangeWindowMode(TRUE);
 //	SetGraphMode(1280, 720, 32);
-	ChangeWindowMode(TRUE);
+	ChangeWindowMode(FALSE);
 	SetGraphMode(1920, 1080, 32);
 
 	// DXライブラリの初期化				DXライブラリースタート
@@ -50,14 +50,55 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	//城モデルの読み込み
 	castle = MV1LoadModel("..\\Data\\japanese-castle\\source\\japanese castle 2.mv1");
 
-	// プレイヤーの作成
-	player[0].anim.type[0] = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
-	player[0].anim.typestop[0] = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");
-	player[0].anim.type[1] = MV1LoadModel("..\\Data\\Ninja\\忍者_バランス.mv1");
-	player[1].anim.typestop[1] = MV1LoadModel("..\\Data\\Ninja\\忍者待機_バランス.mv1");
+	Original[0].type[SPEEDMODE]			= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
+	Original[0].typestop[SPEEDMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");
+	Original[0].type[BALANCEMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者_バランス.mv1");
+	Original[0].typestop[BALANCEMODE]	= MV1LoadModel("..\\Data\\Ninja\\忍者待機_バランス.mv1");
+	Original[0].type[POWERMODE]			= MV1LoadModel("..\\Data\\Ninja\\忍者パワー.mv1");
+	Original[0].typestop[POWERMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者待機_パワー.mv1");
 
-	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
-	player[1].anim.model = MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無.mv1");
+	Original[1].type[SPEEDMODE]			= MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無.mv1");
+	Original[1].typestop[SPEEDMODE]		= MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無_待機.mv1");
+	Original[1].type[BALANCEMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者_バランス.mv1");
+	Original[1].typestop[BALANCEMODE]	= MV1LoadModel("..\\Data\\Ninja\\忍者待機_バランス.mv1");
+	Original[1].type[POWERMODE]			= MV1LoadModel("..\\Data\\Ninja\\白忍者パワー.mv1");
+	Original[1].typestop[POWERMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者待機_パワー.mv1");
+
+	Original[0].model	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
+	Original[0].stop	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");			// 立ちアニメ
+	Original[0].run		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");			// 走りアニメ
+	Original[0].jump_in	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1");	// ジャンプ入り始めアニメ
+	Original[0].jump	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ中.mv1");	// ジャンプループアニメ
+	Original[0].fall	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_落下.mv1");			// ジャンプループアニメ
+	Original[0].attack	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_攻撃.mv1");			// 攻撃アニメ
+	Original[0].damage	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ダメージ.mv1");		// 被ダメージアニメ
+
+	Original[1].model	= MV1LoadModel("..\\Data\\Ninja\\忍者_バランス.mv1");
+	Original[1].stop	= MV1LoadModel("..\\Data\\Ninja\\忍者待機_バランス.mv1");		// 立ちアニメ
+	Original[1].run		= MV1LoadModel("..\\Data\\Ninja\\忍者走り_バランス.mv1");		// 走りアニメ
+	Original[1].jump_in	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1");	// ジャンプ入り始めアニメ
+	Original[1].jump	= MV1LoadModel("..\\Data\\Ninja\\忍者ジャンプ_バランス.mv1");	// ジャンプループアニメ
+	Original[1].fall	= MV1LoadModel("..\\Data\\Ninja\\忍者落下_バランス.mv1");		// ジャンプループアニメ
+	Original[1].attack	= MV1LoadModel("..\\Data\\Ninja\\忍者攻撃_バランス.mv1");		// 攻撃アニメ
+	Original[1].damage	= MV1LoadModel("..\\Data\\Ninja\\忍者ダメージ_バランス.mv1");	// 被ダメージアニメ
+
+	// プレイヤーの作成
+	player[0].anim.type[SPEEDMODE]			= MV1DuplicateModel(Original[0].type[SPEEDMODE]);
+	player[0].anim.typestop[SPEEDMODE]		= MV1DuplicateModel(Original[0].typestop[SPEEDMODE]);
+	player[0].anim.type[BALANCEMODE]		= MV1DuplicateModel(Original[0].type[BALANCEMODE]);
+	player[0].anim.typestop[BALANCEMODE]	= MV1DuplicateModel(Original[0].typestop[BALANCEMODE]);
+	player[0].anim.type[POWERMODE]			= MV1DuplicateModel(Original[0].type[POWERMODE]);
+	player[0].anim.typestop[POWERMODE]		= MV1DuplicateModel(Original[0].typestop[POWERMODE]);
+
+	player[1].anim.type[SPEEDMODE]			= MV1DuplicateModel(Original[1].type[SPEEDMODE]);
+	player[1].anim.typestop[SPEEDMODE]		= MV1DuplicateModel(Original[1].typestop[SPEEDMODE]);;
+	player[1].anim.type[BALANCEMODE]		= MV1DuplicateModel(Original[1].type[BALANCEMODE]);
+	player[1].anim.typestop[BALANCEMODE]	= MV1DuplicateModel(Original[1].typestop[BALANCEMODE]);
+	player[1].anim.type[POWERMODE]			= MV1DuplicateModel(Original[1].type[POWERMODE]);
+	player[1].anim.typestop[POWERMODE]		= MV1DuplicateModel(Original[1].typestop[POWERMODE]);
+
+
+/*	player[0].anim.model = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
 
 	player[0].anim.stop		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");			// 立ちアニメ
 	player[0].anim.run		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");			// 走りアニメ
@@ -66,8 +107,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	player[0].anim.fall		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_落下.mv1");			// ジャンプループアニメ
 	player[0].anim.attack	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_攻撃.mv1");			// 攻撃アニメ
 	player[0].anim.damage	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ダメージ.mv1");		// 被ダメージアニメ
-	player[1].anim.stop		= MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無_待機.mv1");		// 立ちアニメ
-
+*/
 
 	//	Atten0 = 0.3f;
 	//	Atten1 = 0.0f;
@@ -166,91 +206,106 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				MV1DrawModel(castle);
 
 				ScreenFlip();
-				if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
-					chara_type = 0;
-					player[1].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
-					player[0].ChangeAnimationType(g_Chara[0], player[0].anim.typestop[chara_type]);
-					player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
+				key1 = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+				if (key1 & PAD_INPUT_A) {
 					gamemode = eSceneChoice;
+					chara_type1 = SPEEDMODE;
+					chara_type2 = SPEEDMODE;
+					player[1].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
+					player[0].ChangeAnimationType(g_Chara[0], player[0].anim.typestop[chara_type1]);
+					player[1].ChangeAnimationType(g_Chara[1], player[1].anim.typestop[chara_type2]);
 				}
-				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
+/*				if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
 					player[0].SetPosition(VGet(200.0f, 2200.0f, 0.0f));
 					player[1].SetPosition(VGet(2800.0f, 2200.0f, 0.0f));
 					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
 					ctgt = VGet(0.0f, 1000.0f, 0.0f);
 					gamemode = eScenePlay1;
 				}
-				break;
+*/				break;
 
 			case eSceneChoice:
-					if (MV1GetPosition(player[1].anim.model).x >= 1930) {
-						player[0].SetPosition(VGet(800.0f + x, 150.0f, 500.0f));
-						player[1].SetPosition(VGet(2400.0f - x, 150.0f, 500.0f));
-						Gauss += 20;
-						if (GamemodeChenge_flg != 1)
-							x += 20;
-					}
-					if (CheckHitKey(KEY_INPUT_RETURN) == 1 && GamemodeChenge_flg != 1) {
-						GamemodeChenge_flg = 1;
-						x = 0;
-						x1 = 0;
-						player[0].ChangeAnimation(g_Chara[0], player[0].anim.stop);
-						player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
-					}
+				if (player[1].GetPosition().x >= 1930) {
+					player[0].SetPosition(VGet(800.0f + x, 150.0f, 500.0f));
+					player[1].SetPosition(VGet(2400.0f - x, 150.0f, 500.0f));
+					Gauss += 20;
+					if (GamemodeChenge_flg != 1)
+						x += 20;
+				}
+				key1 = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+				if (key1 & PAD_INPUT_B && GamemodeChenge_flg != 1) {
+					GamemodeChenge_flg = 1;
+					x = 0;
+					x1 = 0;
+					player[0].LoadAnimation(g_Chara[0]);
+					player[1].LoadAnimation(g_Chara[1]);
+					player[0].ChangeAnimation(g_Chara[0], player[0].anim.stop);
+					player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
+				}
+				g_Chara[0]->CharaChoice(g_Chara[0]);
+				g_Chara[1]->CharaChoice(g_Chara[1]);
 
-					SetDrawScreen(ScreenHandle);
+				if (continuous_limit > 0) {
+					continuous_limit--;
+				}
+				if (continuous_limit < 0) {
+					continuous_limit = 0;
+				}
 
-					// 画面をクリア
-					ClearDrawScreen();
+				SetDrawScreen(ScreenHandle);
 
-					//カメラ情報の反映
-					SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
+				// 画面をクリア
+				ClearDrawScreen();
 
-					// アニメーション
-					g_Chara[0]->AddPlay_Time(0.5f);
-					g_Chara[1]->AddPlay_Time(0.5f);
-					g_Chara[0]->AnimationType(g_Chara[0]);
-					g_Chara[1]->Animation(g_Chara[1]);
+				//カメラ情報の反映
+				SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
 
-					// モデルの移動(配置)
-					MV1SetPosition(player[0].anim.type[chara_type], player[0].GetPosition());
-					MV1SetPosition(player[1].anim.model, player[1].GetPosition());
+				// アニメーション
+				g_Chara[0]->AddPlay_Time(0.5f);
+				g_Chara[1]->AddPlay_Time(0.5f);
+				g_Chara[0]->AnimationType(g_Chara[0]);
+				g_Chara[1]->AnimationType(g_Chara[1]);
 
-					// 地面(配置)＆描画
-					MV1DrawModel(skydate);
-					MV1DrawModel(stagedate);
-					MV1DrawModel(moon);
-					MV1DrawModel(castle);
 
-					SetLightAngleHandle(LHandle_p1, 0.24582103f, 6.28318548f);
-					SetLightPositionHandle(LHandle_p1, VGet(player[0].GetPosition().x, player[0].GetPosition().y + 100.0f, player[0].GetPosition().z - 500.0f)); // ライトの位置
-					SetLightPositionHandle(LHandle_p2, VGet(player[1].GetPosition().x, player[1].GetPosition().y + 100.0f, player[1].GetPosition().z - 500.0f)); // ライトの位置
+				// モデルの移動(配置)
+				MV1SetPosition(player[0].anim.type[chara_type1], player[0].GetPosition());
+				MV1SetPosition(player[1].anim.type[chara_type2], player[1].GetPosition());
 
-					// ８分の１に縮小した画像をガウスフィルタでぼかす
-					GraphFilter(ScreenHandle, DX_GRAPH_FILTER_GAUSS, 32, Gauss);
+				// 地面(配置)＆描画
+				MV1DrawModel(skydate);
+				MV1DrawModel(stagedate);
+				MV1DrawModel(moon);
+				MV1DrawModel(castle);
 
-					// モデルの描画
-					MV1DrawModel(player[0].anim.type[chara_type]);
-					MV1DrawModel(player[1].anim.model);
+				SetLightAngleHandle(LHandle_p1, 0.24582103f, 6.28318548f);
+				SetLightPositionHandle(LHandle_p1, VGet(player[0].GetPosition().x, player[0].GetPosition().y + 100.0f, player[0].GetPosition().z - 500.0f)); // ライトの位置
+				SetLightPositionHandle(LHandle_p2, VGet(player[1].GetPosition().x, player[1].GetPosition().y + 100.0f, player[1].GetPosition().z - 500.0f)); // ライトの位置
 
-					if (player[0].GetPosition().x <= 1930) {
-						SetFontSize(128);
-						ChangeFont("HGS行書体");
-						DrawString(130, 70, "プレイヤー１", GetColor(252, 252, 252));
-						DrawString(1030, 70, "プレイヤー２", GetColor(252, 252, 252));
+				// ８分の１に縮小した画像をガウスフィルタでぼかす
+				GraphFilter(ScreenHandle, DX_GRAPH_FILTER_GAUSS, 32, Gauss);
 
-						DrawString(100, 380, "<", GetColor(252, 0, 0));
-						DrawString(830, 380, ">", GetColor(252, 0, 0));
+				// モデルの描画
+				MV1DrawModel(player[0].anim.type[chara_type1]);
+				MV1DrawModel(player[1].anim.type[chara_type2]);
 
-						DrawString(1000, 380, "<", GetColor(252, 0, 0));
-						DrawString(1730, 380, ">", GetColor(252, 0, 0));
-					}
+				if (player[0].GetPosition().x <= 1930) {
+					SetFontSize(128);
+					ChangeFont("HGS行書体");
+					DrawString(130, 70, "プレイヤー１", GetColor(252, 252, 252));
+					DrawString(1030, 70, "プレイヤー２", GetColor(252, 252, 252));
 
-					// 描画対象を裏画面にする
-					SetDrawScreen(DX_SCREEN_BACK);
+					DrawString(100, 380, "<", GetColor(252, 0, 0));
+					DrawString(830, 380, ">", GetColor(252, 0, 0));
 
-					// 通常の描画結果を描画する
-					DrawGraph(0, 0, ScreenHandle, FALSE);
+					DrawString(1000, 380, "<", GetColor(252, 0, 0));
+					DrawString(1730, 380, ">", GetColor(252, 0, 0));
+				}
+
+				// 描画対象を裏画面にする
+				SetDrawScreen(DX_SCREEN_BACK);
+
+				// 通常の描画結果を描画する
+				DrawGraph(0, 0, ScreenHandle, FALSE);
 				if (GamemodeChenge_flg == 1) {
 
 					x += 30;

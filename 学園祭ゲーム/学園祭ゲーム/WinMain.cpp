@@ -178,7 +178,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					player[1].SetPosition(VGet(2800.0f, 2200.0f, 0.0f));
 					cpos = VGet(1484.0f, 2360.0f, -1860.0f);
 					ctgt = VGet(0.0f, 1000.0f, 0.0f);
-					gamemode = eScenePlay;
+					gamemode = eScenePlay1;
 				}
 				break;
 
@@ -286,7 +286,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 						Draw();
 					}
 					if (x >= 4500) {
-						gamemode = eScenePlay;
+						gamemode = eScenePlay1;
 					}
 					// BMP画像の表示
 					//左から第一陣
@@ -322,7 +322,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				ScreenFlip();
 				break;
 
-			case eScenePlay :
+			case eScenePlay1 :
 				g_Chara[0]->ActionLoop(g_Chara[0], g_Chara[1]);
 				g_Chara[1]->ActionLoop(g_Chara[1], g_Chara[0]);
 				g_Chara[0]->Animation(g_Chara[0]);
@@ -360,7 +360,20 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					DrawLimit = 0;
 
 				ScreenFlip() ;
+
+				if (cpos.y >= 18500 || CheckHitKey(KEY_INPUT_RETURN) == 1) {
+					gamemode = eScenePlay2;
+				}
 				break ;
+
+			case eScenePlay2:		
+				// スクリーンクリア
+				ClearDrawScreen();
+
+				DrawBox(0, 0, 1920, 1080, GetColor(0, 0, 252), TRUE);
+
+				ScreenFlip();
+				break;
 
 			case eSceneClear :
 				break ;

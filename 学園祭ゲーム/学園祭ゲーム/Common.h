@@ -141,7 +141,8 @@ enum SceneName
 	eSceneBlank = -1 ,
 	eSceneTitle ,
 	eSceneChoice , 
-	eScenePlay ,
+	eScenePlay1 ,
+	eScenePlay2 ,
 	eSceneClear ,
 	eSceneOver ,
 } ;

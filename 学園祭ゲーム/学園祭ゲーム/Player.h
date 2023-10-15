@@ -34,8 +34,10 @@ class Player : public CharaBase {
 		void CharaFall(CharaBase* pp1, CharaBase* pp2);			// 落下
 		void CharaRevival(CharaBase* pp1, CharaBase* pp2);		// 復活
 
+		// ヒットチェック
 		void Move_HitCheck(CharaBase* pp1, CharaBase* pp2);
 		void Block_HitCheck(CharaBase* pp1);
+		void Revival_HitCheck(CharaBase* pp1);
 
 } ;
 

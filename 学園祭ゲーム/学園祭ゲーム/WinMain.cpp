@@ -48,7 +48,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	//月モデルの読み込み
 	moon = MV1LoadModel("..\\Data\\Stage\\moon.mv1");
 	//城モデルの読み込み
-//	castle = MV1LoadModel("..\\Data\\japanese-castle\\source\\japanese castle 2.mv1");
+	castle = MV1LoadModel("..\\Data\\japanese-castle\\source\\japanese castle 2.mv1");
 
 	// 
 	Original[0].type[SPEEDMODE]			= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
@@ -96,12 +96,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	Original[1].damage	= MV1LoadModel("..\\Data\\Ninja\\忍者ダメージ_バランス.mv1");	// 被ダメージアニメ
 
 																			
-	//	Atten0 = 0.3f;
-	//	Atten1 = 0.0f;
-	//	Atten2 = 0.0f;
-	//	C_DirectionX = 0.0f * (DX_PI_F / 180.0f);
-	//	C_DirectionY = 270.0f * (DX_PI_F / 180.0f);
-	//	C_DirectionZ = 0.0f;
 	// スポットライト
 	LHandle_p1 = CreateSpotLightHandle(
 		VGet(player[1].GetPosition().x, player[1].GetPosition().y + 0.0f, player[1].GetPosition().z - 100.0f),
@@ -110,12 +104,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 		2000.0f,
 		0.3f, 0.0f, 0.0f);
 
-/*		VGet(player[0].GetPosition().x - 0.0f, player[0].GetPosition().y - 0.0f, player[0].GetPosition().z - 500.0f),
-		VGet(0.0f, 45.0f * (DX_PI_F / 180.0f), 90.0f * (DX_PI_F / 180.0f)),
-		0.7f, 0.4f,
-		2000.0f,
-		0.391586f, 0.001662f, 0.0f);
-*/
 	LHandle_p2 = CreateSpotLightHandle(
 		VGet(player[1].GetPosition().x, player[1].GetPosition().y + 0.0f, player[1].GetPosition().z - 100.0f),
 		VGet(0.0f, 0.78f, 1.57f),
@@ -144,8 +132,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	//月 初期セット
 	MV1SetPosition(moon, VGet(600.0f, 1000.0f, 1000.0f));
 	//城 初期セット
-//	MV1SetPosition(castle, VGet(3000.0f, 170.0f, 3000.0f));
-//	MV1SetRotationXYZ(castle, VGet(0.0f, 1.57f * 1.3f, 0.0f));
+	MV1SetPosition(castle, VGet(3000.0f, 170.0f, 3000.0f));
+	MV1SetRotationXYZ(castle, VGet(0.0f, 1.57f * 1.3f, 0.0f));
 
 	//画像の読み込み
 	BmpDate[0] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト1.png");
@@ -190,25 +178,25 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				MV1DrawModel(skydate);
 				MV1DrawModel(stagedate);
 				MV1DrawModel(moon);
-//				MV1DrawModel(castle);
+				MV1DrawModel(castle);
 
 				ScreenFlip();
 				key1 = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 				if (key1 & PAD_INPUT_A) {
 					gamemode = eSceneChoice;
-					chara_type1 = SPEEDMODE;
-					chara_type2 = SPEEDMODE;
+					player[0].SetType(SPEEDMODE);
+					player[1].SetType(SPEEDMODE);
 					player[1].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
-					player[0].ChangeAnimationType(g_Chara[0], player[0].anim.typestop[chara_type1]);
-					player[1].ChangeAnimationType(g_Chara[1], player[1].anim.typestop[chara_type2]);
+					player[0].ChangeAnimationType(g_Chara[0], player[0].anim.typestop[player[0].GetType()]);
+					player[1].ChangeAnimationType(g_Chara[1], player[1].anim.typestop[player[1].GetType()]);
 				}
 				if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
 					gamemode = eSceneChoice;
-					chara_type1 = SPEEDMODE;
-					chara_type2 = SPEEDMODE;
+					player[0].SetType(SPEEDMODE);
+					player[1].SetType(SPEEDMODE);
 					player[1].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
-					player[0].ChangeAnimationType(g_Chara[0], player[0].anim.typestop[chara_type1]);
-					player[1].ChangeAnimationType(g_Chara[1], player[1].anim.typestop[chara_type2]);
+					player[0].ChangeAnimationType(g_Chara[0], player[0].anim.typestop[player[0].GetType()]);
+					player[1].ChangeAnimationType(g_Chara[1], player[1].anim.typestop[player[1].GetType()]);
 				}
 				break;
 
@@ -231,6 +219,50 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					player[1].LoadAnimation(g_Chara[1]);
 					player[0].ChangeAnimation(g_Chara[0], player[0].anim.stop);
 					player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
+					switch (player[0].GetType()) {
+						case SPEEDMODE :
+							player[0].SetAttackMiddleRange(SPEED_ATTACK_MIDDLE_RANGE);
+							player[0].SetAttackRange(SPEED_ATTACK_RANGE);
+							player[0].SetMoveSpeed(SPEEDPLAYER_SPEED);
+							CharaIcon[0] = LoadGraph("..\\Data\\Icon\\スピードやられ.png");
+							break;
+
+						case BALANCEMODE :
+							player[0].SetAttackMiddleRange(BLANCE_ATTACK_MIDDLE_RANGE);
+							player[0].SetAttackRange(BLANCE_ATTACK_RANGE);
+							player[0].SetMoveSpeed(BALANCEPLAYER_SPEED);
+							CharaIcon[0] = LoadGraph("..\\Data\\Icon\\バランスやられ.png");
+							break;
+
+						case POWERMODE :
+							player[0].SetAttackMiddleRange(POWER_ATTACK_MIDDLE_RANGE);
+							player[0].SetAttackRange(POWER_ATTACK_RANGE);
+							player[0].SetMoveSpeed(POWERPLAYER_SPEED);
+							CharaIcon[0] = LoadGraph("..\\Data\\Icon\\パワーやられ.png");
+							break;
+					}
+					switch (player[1].GetType()) {
+						case SPEEDMODE:
+							player[1].SetAttackMiddleRange(SPEED_ATTACK_MIDDLE_RANGE);
+							player[1].SetAttackRange(SPEED_ATTACK_RANGE);
+							player[1].SetMoveSpeed(SPEEDPLAYER_SPEED);
+							CharaIcon[1] = LoadGraph("..\\Data\\Icon\\白スピードやられ.png");
+							break;
+
+						case BALANCEMODE:
+							player[1].SetAttackMiddleRange(BLANCE_ATTACK_MIDDLE_RANGE);
+							player[1].SetAttackRange(BLANCE_ATTACK_RANGE);
+							player[1].SetMoveSpeed(BALANCEPLAYER_SPEED);
+							CharaIcon[1] = LoadGraph("..\\Data\\Icon\\白バランスやられ.png");
+							break;
+
+						case POWERMODE:
+							player[1].SetAttackMiddleRange(POWER_ATTACK_MIDDLE_RANGE);
+							player[1].SetAttackRange(POWER_ATTACK_RANGE);
+							player[1].SetMoveSpeed(POWERPLAYER_SPEED);
+							CharaIcon[1] = LoadGraph("..\\Data\\Icon\\白パワーやられ.png");
+							break;
+					}
 				}
 				if (CheckHitKey(KEY_INPUT_I) == 1 || key1 & PAD_INPUT_B)
 					player[0].SetSelectFlg(TRUE);
@@ -270,14 +302,14 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 
 				// モデルの移動(配置)
-				MV1SetPosition(player[0].anim.type[chara_type1], player[0].GetPosition());
-				MV1SetPosition(player[1].anim.type[chara_type2], player[1].GetPosition());
+				MV1SetPosition(player[0].anim.type[player[0].GetType()], player[0].GetPosition());
+				MV1SetPosition(player[1].anim.type[player[0].GetType()], player[1].GetPosition());
 
 				// 地面(配置)＆描画
 				MV1DrawModel(skydate);
 				MV1DrawModel(stagedate);
 				MV1DrawModel(moon);
-//				MV1DrawModel(castle);
+				MV1DrawModel(castle);
 
 				SetLightAngleHandle(LHandle_p1, 0.24582103f, 6.28318548f);
 				SetLightPositionHandle(LHandle_p1, VGet(player[0].GetPosition().x, player[0].GetPosition().y + 100.0f, player[0].GetPosition().z - 500.0f)); // ライトの位置
@@ -287,8 +319,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				GraphFilter(ScreenHandle, DX_GRAPH_FILTER_GAUSS, 32, Gauss);
 
 				// モデルの描画
-				MV1DrawModel(player[0].anim.type[chara_type1]);
-				MV1DrawModel(player[1].anim.type[chara_type2]);
+				MV1DrawModel(player[0].anim.type[player[0].GetType()]);
+				MV1DrawModel(player[1].anim.type[player[1].GetType()]);
 
 				if (player[0].GetPosition().x <= 1930) {
 					SetFontSize(128);
@@ -320,7 +352,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 
 					x += 30;
 					x1 += 20;
-
 					if (x >= 1500 && x <= 3000) {
 						DrawBox(0, 0, 1920, 1080, GetColor(0, 0, 0), TRUE);
 					}
@@ -355,28 +386,28 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					}
 					// BMP画像の表示
 					//左から第一陣
-					DrawGraph(-1000 + x, 0, BmpDate[0], TRUE);
-					DrawGraph(-1000 + x, 360, BmpDate[1], TRUE);
-					DrawGraph(-1000 + x, 690, BmpDate[2], TRUE);
+					DrawGraph(-1000 + x,    0, BmpDate[0], TRUE);
+					DrawGraph(-1000 + x,  360, BmpDate[1], TRUE);
+					DrawGraph(-1000 + x,  690, BmpDate[2], TRUE);
 					DrawGraph(-1000 + x1, 180, BmpDate[3], TRUE);
 					DrawGraph(-1000 + x1, 540, BmpDate[4], TRUE);
 					DrawGraph(-1000 + x1, 900, BmpDate[5], TRUE);
 					//左から第二陣
-					DrawGraph(-1500 + x, 0, BmpDate[0], TRUE);
+					DrawGraph(-1500 + x,   0, BmpDate[0], TRUE);
 					DrawGraph(-1500 + x, 360, BmpDate[1], TRUE);
 					DrawGraph(-1500 + x, 690, BmpDate[2], TRUE);
 					DrawGraph(-1500 + x, 180, BmpDate[3], TRUE);
 					DrawGraph(-1500 + x, 540, BmpDate[4], TRUE);
 					DrawGraph(-1500 + x, 900, BmpDate[5], TRUE);
 					//右から第一陣
-					DrawGraph(2000 - x, 0, BmpDate[0], TRUE);
-					DrawGraph(2000 - x, 360, BmpDate[1], TRUE);
-					DrawGraph(2000 - x, 690, BmpDate[2], TRUE);
+					DrawGraph(2000 - x,    0, BmpDate[0], TRUE);
+					DrawGraph(2000 - x,  360, BmpDate[1], TRUE);
+					DrawGraph(2000 - x,  690, BmpDate[2], TRUE);
 					DrawGraph(2000 - x1, 180, BmpDate[3], TRUE);
 					DrawGraph(2000 - x1, 540, BmpDate[4], TRUE);
 					DrawGraph(2000 - x1, 900, BmpDate[5], TRUE);
 					//右から第二陣
-					DrawGraph(2500 - x, 0, BmpDate[0], TRUE);
+					DrawGraph(2500 - x,   0, BmpDate[0], TRUE);
 					DrawGraph(2500 - x, 360, BmpDate[1], TRUE);
 					DrawGraph(2500 - x, 690, BmpDate[2], TRUE);
 					DrawGraph(2500 - x, 180, BmpDate[3], TRUE);

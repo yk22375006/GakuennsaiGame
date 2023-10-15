@@ -42,40 +42,49 @@
 // プレイヤーモデルのサイズ
 #define PLAYER_SIZE_H	425.0f
 #define PLAYER_SIZE_W	200.0f
+#define SPEED_ATTACK_RANGE			100.0f	// スピードタイプの攻撃範囲
+#define SPEED_ATTACK_MIDDLE_RANGE	130.0f	// スピードタイプの攻撃範囲の中間
+#define BLANCE_ATTACK_RANGE			100.0f	// バランスタイプの攻撃範囲
+#define BLANCE_ATTACK_MIDDLE_RANGE	130.0f	// バランスタイプの攻撃範囲の中間
+#define POWER_ATTACK_RANGE			100.0f	// パワータイプの攻撃範囲
+#define POWER_ATTACK_MIDDLE_RANGE	130.0f	// パワータイプの攻撃範囲の中間
 
 //	プレイヤーのタイプ
-#define SPEEDMODE	0
-#define BALANCEMODE	1
-#define POWERMODE	2
+#define SPEEDMODE	0	// スピードタイプ
+#define BALANCEMODE	1	// バランスタイプ
+#define POWERMODE	2	// パワータイプ
 
 // プレイヤーの移動速度
-#define PLAYER_SPEED 12.0f
-#define PLAYER_JUMP_SPEED 63.0f
-#define PLAYER_FALL_SPEED 1.5f
+#define PLAYER_SPEED		12.0f	// 横軸の移動スピード
+#define PLAYER_JUMP_SPEED	63.0f	// ジャンプの初速
+#define PLAYER_FALL_SPEED	1.5f	// 落下速度
+#define SPEEDPLAYER_SPEED	24.0f	// スピードキャラの移動速度
+#define BALANCEPLAYER_SPEED	18.0f	// バランスキャラの移動速度
+#define POWERPLAYER_SPEED	12.0f	// パワーキャラの移動速度
 
 // ブロック
-#define MAX_BLOCK			640
-#define BLOCK_TYPE			10
-#define BLOCK_TOP			100.0f
-#define BLOCK_X_SIZE		125.0f
-#define TATAMI_BLOCK		1
-#define BREAK_BLOCK			2
-#define FALL_BLOCK			3
-#define INVINCIBLE_BLOCK	4
-#define NEEDLE_BLOCK		5
-#define WOOD_BLOCK			6
-#define MOVE_BLOCK_X		7
-#define MOVE_BLOCK_Y		8
-#define MOVE_BLOCK_Z		9
-#define BLOCK_MOVE_SPD		2.5f
+#define MAX_BLOCK			640		// ブロックの最大数
+#define BLOCK_TYPE			10		// ブロックの種類
+#define BLOCK_TOP			100.0f	// ブロックの高さ
+#define BLOCK_X_SIZE		125.0f	// ブロックの横幅二分の一
+#define TATAMI_BLOCK		1		// 畳ブロック
+#define BREAK_BLOCK			2		// 壊せるブロック
+#define FALL_BLOCK			3		// 崩れるブロック
+#define INVINCIBLE_BLOCK	4		// 壊れないブロック
+#define NEEDLE_BLOCK		5		// 針ブロック
+#define WOOD_BLOCK			6		// 壁ブロック
+#define MOVE_BLOCK_X		7		// 
+#define MOVE_BLOCK_Y		8		//  
+#define MOVE_BLOCK_Z		9		// 
+#define BLOCK_MOVE_SPD		2.5f	// 
 
 #define WEAPON_HEIGHT 110.0f
 #define WEAPON_WIDTH 6.0f
 
 // 背景
-#define BACKGROUNDTYPE		5
-#define BACKGROUNDTATAMI	0
-#define BACKGROUNDFLOOR		18
+#define BACKGROUNDTYPE		5	// 
+#define BACKGROUNDTATAMI	0	// 
+#define BACKGROUNDFLOOR		18	// 背景のブロックの種類階層数
 
 // プレイヤーの移動攻撃時の加速
 #define Player_ATTACK_SPEED 16.0f
@@ -87,14 +96,14 @@
 #define CAMERA_ROTATE 200.0f
 
 // 吹っ飛び方向の指定
-#define NONBLOW		0
-#define BLOWRIGHT	1
-#define BLOWLEFT	2
+#define NONBLOW		0	// 吹っ飛ばない
+#define BLOWRIGHT	1	// 右に吹っ飛ぶ
+#define BLOWLEFT	2	// 左に吹っ飛ぶ
 
 // マップ
-#define MAP_Y 181
-#define MAP_X 16
-#define MIN_X 70.0f	// マップ上で最も左の座標
+#define MAP_Y 181		// ブロックの縦の数
+#define MAP_X 16		// ブロックの横の数
+#define MIN_X 70.0f		// マップ上で最も左の座標
 #define MAX_X 2930.0f	// マップ上で最も右の座標
 /* -----------------------------------------------------------------------------------------
 |
@@ -206,8 +215,7 @@ extern ConsoleWindow g_cWin ;
 extern Player player[2];
 extern Player* g_Chara[2];
 extern AnimationDate Original[3];
-extern int chara_type1;
-extern int chara_type2;
+extern int CharaIcon[2];
 
 // --- カメラ
 extern VECTOR cpos;

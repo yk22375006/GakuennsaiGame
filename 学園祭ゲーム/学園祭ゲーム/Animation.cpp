@@ -8,7 +8,7 @@ void AnimationInit() {
 	// -------------------------------- // 
 	//		アニメーションの読み込み	//
 	// -------------------------------- //
-	if (chara_type1 == SPEEDMODE) {
+/*	if (chara_type1 == SPEEDMODE) {
 		player[0].anim.stop = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");			// 立ちアニメ
 		player[0].anim.run = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");			// 走りアニメ
 		player[0].anim.jump_in = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1");	// ジャンプ入り始めアニメ
@@ -16,7 +16,7 @@ void AnimationInit() {
 		player[0].anim.fall = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_落下.mv1");			// ジャンプループアニメ
 		player[0].anim.attack = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_攻撃.mv1");			// 攻撃アニメ
 		player[0].anim.damage = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ダメージ.mv1");		// 被ダメージアニメ
-	}
+	}*/
 }
 
 // ------------------------------------------------------------------------ //

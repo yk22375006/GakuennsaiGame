@@ -26,28 +26,36 @@ enum Direction {
 
 class CharaBase {
 	protected :
-		VECTOR posi ;			// 位置情報
-		VECTOR spd ;			// スピード
-		int use_flg ;			// 使用フラグ
-		int act_mode ;			// アクションモード
-		float direction ;		// 方向
-		int motion ;			// 現在のアニメモーション
-		int anim_attach ;		// 現在のアニメーションを格納
-		float anim_time ;		// アニメーションの総時間を格納
-		float play_time ;		// アニメーションの再生時間
-		int rootflm ;			// アニメーション+移動可能にする
-		float Width ;			// プレイヤーサイズ幅(ヒットチェック用)
-		float Height ;			// プレイヤーサイズ高さ(ヒットチェック用)
-		int number;				// プレイヤー番号
-		int RevivalTime;		// 復活までの時間
-		int type;				// キャラのタイプ
+		VECTOR posi ;				// 位置情報
+		VECTOR spd ;				// スピード
+		float move_spd;				// 移動速度
+		int use_flg ;				// 使用フラグ
+		int act_mode ;				// アクションモード
+		float direction ;			// 方向
+		int motion ;				// 現在のアニメモーション
+		int anim_attach ;			// 現在のアニメーションを格納
+		float anim_time ;			// アニメーションの総時間を格納
+		float play_time ;			// アニメーションの再生時間
+		int rootflm ;				// アニメーション+移動可能にする
+		float Width ;				// プレイヤーサイズ幅(ヒットチェック用)
+		float Height ;				// プレイヤーサイズ高さ(ヒットチェック用)
+		int number;					// プレイヤー番号
+		int RevivalTime;			// 復活までの時間
+		int type;					// キャラのタイプ
+		int blowdirection;			// 吹っ飛び方向の指定
+		int score;					// 死亡回数
+		float attack_middle_range;	// 攻撃の中間距離
+		float attack_range;			// 攻撃の距離
+		bool selectflg;				// キャラの選択
+		bool damageflg;				// ダメージを食らっている
+		bool falldamageflg;			// 落下中にダメージを負った
 
 	public :
-		CharaBase( ) ;			// コンストラクタ
-		~CharaBase( ) ;			// デストラクタ
-		int init( ) ;			// 初期セット
-		int MoveSet( ) ;		// 移動量をセット
-		AnimationDate anim ;	// アニメーションデータ
+		CharaBase( ) ;				// コンストラクタ
+		~CharaBase( ) ;				// デストラクタ
+		int init( ) ;				// 初期セット
+		int MoveSet(CharaBase* pp1) ;			// 移動量をセット
+		AnimationDate anim ;		// アニメーションデータ
 
 		// --- インライン関数 ---
 		// 使用フラグ取得セット
@@ -93,6 +101,15 @@ class CharaBase {
 			spd.x = set_spd;
 		}
 
+		// 移動速度
+		float GetMoveSpeed() {
+			return move_spd;
+		}
+
+		void SetMoveSpeed(float set_move_spd) {
+			move_spd = set_move_spd;
+		}
+
 		// アクションモード
 		int GetAct_Mode( ) {
 			return act_mode ;
@@ -107,7 +124,7 @@ class CharaBase {
 			return direction ;
 		}
 
-		void SetDiection( float set_direction ) {
+		void SetDirection( float set_direction ) {
 			direction = set_direction ;
 		}
 
@@ -206,5 +223,75 @@ class CharaBase {
 			return RevivalTime;
 		}
 
+		// キャラの種類
+		void SetType(int set_type) {
+			type = set_type;
+		}
+
+		int GetType() {
+			return type;
+		}
+
+		// 吹っ飛び方向
+		int GetBlowDirection() {
+			return blowdirection;
+		}
+
+		void SetBlowDirection(int set_blowdirection) {
+			blowdirection = set_blowdirection;
+		}
+
+		// キャラ選択
+		bool GetSelectFlg() {
+			return selectflg;
+		}
+
+		void SetSelectFlg(bool set_selectflg) {
+			selectflg = set_selectflg;
+		}
+		// 死亡回数
+		int GetScore() {
+			return score;
+		}
+
+		void AddScore() {
+			score++;
+		}
+
+		// 攻撃の中間距離
+		float GetAttackMiddleRange() {
+			return attack_middle_range;
+		}
+
+		void SetAttackMiddleRange(float set_attack_middle_range) {
+			attack_middle_range = set_attack_middle_range;
+		}
+
+		// 攻撃距離
+		float GetAttackRange() {
+			return attack_range;
+		}
+
+		void SetAttackRange(float set_attack_range) {
+			attack_range = set_attack_range;
+		}
+
+		// 被ダメージのフラグ
+		bool GetDamageFlg() {
+			return damageflg;
+		}
+
+		void SetDamageFlg(bool set_damageflg) {
+			damageflg = set_damageflg;
+		}
+
+		// 落下中にダメージを負ったかのフラグ
+		bool GetFallDamageFlg() {
+			return falldamageflg;
+		}
+
+		void SetFallDamageFlg(bool set_falldamageflg) {
+			falldamageflg = set_falldamageflg;
+		}
 } ;
 

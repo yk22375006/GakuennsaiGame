@@ -117,6 +117,36 @@ void Block::init() {
 			}
 		}
 	}
+
+	blockcnt = 0;
+	// マップデータを反映
+	for (int y = MAP_Y2; y >= 0; y--) {
+		for (int x = 0; x < MAP_X; x++) {
+			if (StageMap2[y][x] != 0) {
+				m_block2[blockcnt].b_model = MV1DuplicateModel(blockdate[INVINCIBLE_BLOCK]);
+				m_block2[blockcnt].b_type = INVINCIBLE_BLOCK;
+				m_block2[blockcnt].b_Map.y = y;
+				m_block2[blockcnt].b_Map.x = x;
+				m_block2[blockcnt].b_use_flg = FALSE;
+				m_block2[blockcnt].b_move_flg = FALSE;
+				m_block2[blockcnt].b_number = blockcnt;
+				blockcnt++;
+			}
+		}
+	}
+	blockcnt = 0;
+
+	// 座標の配置
+	for (int y = MAP_Y2; y >= 0; y--) {
+		for (int x = 0; x < MAP_X; x++) {
+			if (StageMap2[y][x] != 0) {
+				MV1SetPosition(m_block2[blockcnt].b_model, VGet((x * 200.0f), ((MAP_Y2 - y) * 100.0f) +1000.0f , 0.0f));
+				m_block2[blockcnt].SetBlockPosition(VGet((x * 200.0f), ((MAP_Y2- y) * 100.0f) + 1000.0f, 0.0f));
+				m_block2[blockcnt].SetBlockFirstPosition(VGet((x * 200.0f), ((MAP_Y2 - y) * 100.0f) + 1000.0f, 0.0f));
+				blockcnt++;
+			}
+		}
+	}
 }
 
 /* ======================================================== +

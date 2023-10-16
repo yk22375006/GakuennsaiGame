@@ -89,6 +89,9 @@
 // マップ
 #define MAP_Y 181
 #define MAP_X 16
+
+#define MAP_Y2 13
+
 /* -----------------------------------------------------------------------------------------
 |
 |       構造体宣言
@@ -118,7 +121,6 @@ typedef struct
 #include <DxLib.h>
 #include "CharaBase.h"
 #include "StageDate.h"
-#include "Animation.h"
 #include "Block.h"
 #include "Player.h"
 
@@ -193,6 +195,8 @@ extern void Draw();
 |       外部参照宣言
 |
 + --------------------------------------------------------------------------------------- */
+extern int gamemode;
+
 // --- コンソールウィンドウ
 extern ConsoleWindow g_cWin ;	
 
@@ -229,10 +233,16 @@ extern float MaxY;
 
 // モデル
 extern int StageMap[MAP_Y][MAP_X];
+extern int StageMap2[MAP_Y2][MAP_X];
+
 extern Block m_block[MAX_BLOCK];
+extern Block m_block2[MAX_BLOCK];
+
 extern int blockcnt;
-extern int moon;
-extern int castle;
+
+extern int moon;	// 月
+extern int castle;	// 城
+extern int roof;	// 屋根
 
 // 背景
 extern int bgdate[BACKGROUNDTYPE];

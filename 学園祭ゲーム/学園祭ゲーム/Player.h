@@ -37,5 +37,6 @@ class Player : public CharaBase {
 
 		void Move_HitCheck(CharaBase* pp1, CharaBase* pp2);
 		void Block_HitCheck(CharaBase* pp1);
+		void Block_HitCheck2(CharaBase* pp1);
 } ;
 

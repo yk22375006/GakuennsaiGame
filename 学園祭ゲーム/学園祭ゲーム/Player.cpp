@@ -340,6 +340,8 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 		}
 	}
 	Block_HitCheck(pp1);
+	if( gamemode == eScenePlay2 )
+		Block_HitCheck2(pp1);
 
 	// 移動量を加える
 	pp1->SetPosition(VAdd(pp1->GetPosition(), pp1->GetSpeed()));
@@ -398,6 +400,8 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 	Move_HitCheck( pp1 , pp2) ;
 
 	Block_HitCheck(pp1);
+	if (gamemode == eScenePlay2)
+		Block_HitCheck2(pp1);
 
 	// 移動量を加える
 	pp1->SetPosition( VAdd( pp1->GetPosition( ) , pp1->GetSpeed( ) ) ) ;
@@ -458,6 +462,7 @@ void Player::CharaAttack(CharaBase* pp1, CharaBase* pp2)
 		pp1->SetMotion(pp1->GetAnimation_Data().stop);
 		ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
 	}
+
 
 
 /*	if (HitCheck_Capsule_Capsule(VAdd(pp1->GetPosition(), pp1->GetSpeed()), VAdd(pp1->GetPosition(), pp1->GetSpeed()), pp1->GetWidth() / 2,
@@ -563,6 +568,8 @@ void Player::CharaFall(CharaBase* pp1, CharaBase* pp2) {
 		}
 	}
 	Block_HitCheck(pp1);
+	if (gamemode == eScenePlay2)
+		Block_HitCheck2(pp1);
 
 	pp1->SetPosition(VAdd(pp1->GetPosition(), pp1->GetSpeed()));
 }
@@ -619,6 +626,9 @@ void Player::CharaRevival(CharaBase* pp1, CharaBase* pp2) {
 
 	if (pp1->GetRevivalTime() == 0) {
 		Block_HitCheck(pp1);
+		if (gamemode == eScenePlay2)
+			Block_HitCheck2(pp1);
+
 		pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
 		pp1->SetUse_Flg(TRUE);
 		pp1->SetAct_Mode(eCharaStop);
@@ -825,7 +835,190 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 		}
 	}
 }
+/* ======================================================== +
+ |                    Block_HitCheck2( )                    |
+ |             　     ヒットチェック2                       |
+ |                                                          |
+ + ======================================================== */
+void Player::Block_HitCheck2(CharaBase* pp1) {
+	HitFlag = 0;
+	MaxY = 0.0f;
+	bool b_damegeflg = FALSE;
+	VECTOR cal_pos1 = VAdd(pp1->GetPosition(), VGet(0.0f, PLAYER_SIZE_H, 0.0f));
+	VECTOR cal_pos2 = VAdd(pp1->GetPosition(), VGet(0.0f, -10.0f, 0.0f));
 
+	for (int i = 0; i < 14; i++) {
+		if (m_block2[i].GetBlockFlag() == TRUE) {
+			switch (m_block2[i].GetBlockType()) {
+			case TATAMI_BLOCK:
+			case BREAK_BLOCK:
+			case FALL_BLOCK:
+			case WOOD_BLOCK:
+			case MOVE_BLOCK_X:
+			case MOVE_BLOCK_Y:
+			case MOVE_BLOCK_Z:
+				LineBlock = HitCheck_Line_Cube(cal_pos1, cal_pos2,
+					VGet(m_block2[i].GetBlockPosition().x - BLOCK_X_SIZE, m_block2[i].GetBlockPosition().y, m_block2[i].GetBlockPosition().z - 100.0f),
+					VGet(m_block2[i].GetBlockPosition().x + BLOCK_X_SIZE, m_block2[i].GetBlockPosition().y + BLOCK_TOP, m_block2[i].GetBlockPosition().z + 100.0f));
+				break;
+
+			case INVINCIBLE_BLOCK:
+			case NEEDLE_BLOCK:
+				LineBlock = HitCheck_Line_Cube(cal_pos1, cal_pos2,
+					VGet(m_block2[i].GetBlockPosition().x - BLOCK_X_SIZE, m_block2[i].GetBlockPosition().y, m_block2[i].GetBlockPosition().z - 100.0f),
+					VGet(m_block2[i].GetBlockPosition().x + BLOCK_X_SIZE, m_block2[i].GetBlockPosition().y + BLOCK_TOP * 2, m_block2[i].GetBlockPosition().z + 100.0f));
+				break;
+			}
+
+			// 当たった場合の処理
+			if (LineBlock.HitFlag == TRUE) {
+				// ポリゴンに当たったフラグを立てる
+				if (pp1->GetSpeed().y > 0) {
+					switch (m_block2[i].GetBlockType()) {
+					case TATAMI_BLOCK:
+					case BREAK_BLOCK:
+					case FALL_BLOCK:
+						// ブロックの底面よりプレイヤーの頭が小さい時の処理
+						if (m_block2[i].GetBlockPosition().y < pp1->GetPosition().y + PLAYER_SIZE_H) {
+							if (m_block2[i].GetBlockPosition().y + BLOCK_TOP > pp1->GetPosition().y + PLAYER_SIZE_H) {
+								pp1->SetY_Spd(pp1->GetSpeed().y * -1);
+								MaxY = m_block2[i].GetBlockPosition().y - PLAYER_SIZE_H;
+								m_block2[i].SetBlockFlag(FALSE);
+							}
+							else {
+								if (m_block2[i].GetBlockPosition().x < pp1->GetPosition().x) {
+									pp1->SetX_Posi(m_block2[i].GetBlockPosition().x + (BLOCK_X_SIZE + PLAYER_SPEED));
+									if (pp1->GetSpeed().x > 0)
+										pp1->SetX_Spd(0.0f);
+								}
+								if (m_block2[i].GetBlockPosition().x > pp1->GetPosition().x) {
+									pp1->SetX_Posi(m_block2[i].GetBlockPosition().x - (BLOCK_X_SIZE + PLAYER_SPEED));
+									if (pp1->GetSpeed().x < 0)
+										pp1->SetX_Spd(0.0f);
+								}
+							}
+						}
+						break;
+
+					case NEEDLE_BLOCK:
+						b_damegeflg = TRUE;
+					case INVINCIBLE_BLOCK:
+					case MOVE_BLOCK_X:
+					case MOVE_BLOCK_Y:
+					case MOVE_BLOCK_Z:
+					case WOOD_BLOCK:
+						if (m_block2[i].GetBlockPosition().y < pp1->GetPosition().y + PLAYER_SIZE_H) {
+							if (m_block2[i].GetBlockPosition().y + BLOCK_TOP > pp1->GetPosition().y + PLAYER_SIZE_H) {
+								pp1->SetY_Spd(pp1->GetSpeed().y * -1);
+								MaxY = pp1->GetPosition().y - 250.0f;
+							}
+							else {
+								if (m_block2[i].GetBlockPosition().x < pp1->GetPosition().x) {
+									pp1->SetX_Posi(m_block2[i].GetBlockPosition().x + (BLOCK_X_SIZE + PLAYER_SPEED));
+									if (pp1->GetSpeed().x > 0)
+										pp1->SetX_Spd(0.0f);
+								}
+								if (m_block2[i].GetBlockPosition().x > pp1->GetPosition().x) {
+									pp1->SetX_Posi(m_block2[i].GetBlockPosition().x - (BLOCK_X_SIZE + PLAYER_SPEED));
+									if (pp1->GetSpeed().x < 0)
+										pp1->SetX_Spd(0.0f);
+								}
+							}
+						}
+						break;
+					}
+				}
+				else {
+					HitFlag = 1;
+					if (m_block2[i].GetBlockType() != INVINCIBLE_BLOCK && m_block2[i].GetBlockType() != NEEDLE_BLOCK) {
+						if (m_block2[i].GetBlockPosition().y + (BLOCK_TOP / 2) <= pp1->GetPosition().y) {
+							// 接触したＹ座標を保存する
+							MaxY = m_block2[i].GetBlockPosition().y + BLOCK_TOP;
+							if (m_block2[i].GetBlockType() == MOVE_BLOCK_X) {
+								pp1->SetX_Spd(pp1->GetSpeed().x + m_block2[i].GetBlockSpeed().x);
+							}
+						}
+						else {
+							MaxY = pp1->GetPosition().y;
+							if (pp1->GetSpeed().y < 0)
+								HitFlag = 0;
+
+							// 横の床への移動の制限
+							if (m_block2[i].GetBlockPosition().x < pp1->GetPosition().x) {
+								pp1->SetX_Posi(m_block2[i].GetBlockPosition().x + (BLOCK_X_SIZE + PLAYER_SPEED));
+								if (pp1->GetSpeed().x > 0)
+									pp1->SetX_Spd(0.0f);
+							}
+							if (m_block2[i].GetBlockPosition().x > pp1->GetPosition().x) {
+								pp1->SetX_Posi(m_block2[i].GetBlockPosition().x - (BLOCK_X_SIZE + PLAYER_SPEED));
+								if (pp1->GetSpeed().x < 0)
+									pp1->SetX_Spd(0.0f);
+							}
+						}
+					}
+					else {
+						if (m_block2[i].GetBlockType() == NEEDLE_BLOCK) {
+							b_damegeflg = TRUE;
+							if (pp1->GetSpeed().y < 0)
+								HitFlag = 0;
+						}
+						if (m_block2[i].GetBlockPosition().y + BLOCK_TOP + (BLOCK_TOP / 2) <= pp1->GetPosition().y) {
+							// 接触したＹ座標を保存する
+							MaxY = m_block2[i].GetBlockPosition().y + BLOCK_TOP * 2;
+						}
+						else {
+							MaxY = pp1->GetPosition().y;
+							if (pp1->GetSpeed().y < 0)
+								HitFlag = 0;
+							if (m_block2[i].GetBlockPosition().x < pp1->GetPosition().x) {
+								pp1->SetX_Posi(m_block2[i].GetBlockPosition().x + (BLOCK_X_SIZE + PLAYER_SPEED));
+								if (pp1->GetSpeed().x > 0)
+									pp1->SetX_Spd(0.0f);
+							}
+							if (m_block2[i].GetBlockPosition().x > pp1->GetPosition().x) {
+								pp1->SetX_Posi(m_block2[i].GetBlockPosition().x - (BLOCK_X_SIZE + PLAYER_SPEED));
+								if (pp1->GetSpeed().x < 0)
+									pp1->SetX_Spd(0.0f);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	// 床ポリゴンに当たったかどうかで処理を分岐
+	if (HitFlag == 1) {
+		if (b_damegeflg == FALSE) {
+			// 接触したポリゴンで一番高いＹ座標をキャラクターのＹ座標にする
+			pp1->SetY_Posi(MaxY);
+			pp1->SetY_Spd(0.0f);
+
+			if (pp1->GetAct_Mode() == eCharaFall) {
+				pp1->SetAct_Mode(eCharaStop);
+				ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);	// アニメーション切り替え
+				pp1->SetAnim_Time(0.0f);
+				pp1->SetSpeed(VGet(0.0f, 0.0f, 0.0f));
+			}
+		}
+		else {
+			pp1->SetAct_Mode(eCharaDamage);
+			ChangeAnimation(pp1, pp1->GetAnimation_Data().damage);	// アニメーション切り替え
+		}
+	}
+	else {
+		if (b_damegeflg == FALSE) {
+			// 宙に浮いた状態
+			if (pp1->GetAct_Mode() != eCharaFall) { // ジャンプ状態じゃない
+				pp1->SetAct_Mode(eCharaFall);
+				ChangeAnimation(pp1, pp1->GetAnimation_Data().jump);
+			}
+		}
+		else {
+			pp1->SetAct_Mode(eCharaDamage);
+			ChangeAnimation(pp1, pp1->GetAnimation_Data().damage);	// アニメーション切り替え
+		}
+	}
+}
 /* ======================================================== +
  |                       ActionLoop( )                      |
  |                     　アクション　                       |

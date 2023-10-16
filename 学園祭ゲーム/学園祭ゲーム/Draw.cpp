@@ -22,6 +22,7 @@ void Draw() {
 	// 地面(配置)＆描画
 	MV1DrawModel(skydate);
 	MV1DrawModel(stagedate);
+	
 	for (int i = 0; i < BACKGROUNDFLOOR; i++) {
 		MV1DrawModel(bg_tatami[i]);
 	}
@@ -30,15 +31,23 @@ void Draw() {
 	for (blockcnt = 0; blockcnt < MAX_BLOCK; blockcnt++) {
 		if (m_block[blockcnt].GetBlockFlag() == TRUE) {
 			switch (m_block[blockcnt].GetBlockType()) {
-				case MOVE_BLOCK_X:
-				case MOVE_BLOCK_Y:
-				case MOVE_BLOCK_Z:
-					m_block[blockcnt].BlockMove(&m_block[blockcnt]);
-					break;
+			case MOVE_BLOCK_X:
+			case MOVE_BLOCK_Y:
+			case MOVE_BLOCK_Z:
+				m_block[blockcnt].BlockMove(&m_block[blockcnt]);
+				break;
 			}
 			MV1DrawModel(m_block[blockcnt].b_model);
 		}
 	}
+
+	for (blockcnt = 0; blockcnt < 10; blockcnt++) {
+		if (m_block2[blockcnt].GetBlockFlag() == TRUE) {
+			MV1DrawModel(m_block2[blockcnt].b_model);
+		}
+	}
+
+
 	SetLightPositionHandle(LHandle_p1, VGet(player[0].GetPosition().x, player[0].GetPosition().y + 100.0f, player[0].GetPosition().z - 500.0f)); // ライトの位置
 	SetLightPositionHandle(LHandle_p2, VGet(player[1].GetPosition().x, player[1].GetPosition().y + 100.0f, player[1].GetPosition().z - 500.0f)); // ライトの位置
 
@@ -97,7 +106,6 @@ void Draw() {
 */
 	// 描画に使用するシャドウマップの設定を解除
 	SetUseShadowMap(0, -1);
-
 }
 
 

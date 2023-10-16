@@ -32,8 +32,6 @@ void CameraMove() {
 	ctgt.x = cpos.x;
 	ctgt.y = cpos.y - 200.0f;
 	ctgt.z = cpos.z + 1000.0f;
-//	ctgt.y = cpos.y - 200.0f ;
-//	ctgt.z = cpos.z + 600.0f;
 }
 
 

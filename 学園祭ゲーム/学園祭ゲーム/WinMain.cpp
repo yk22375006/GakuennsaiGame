@@ -5,18 +5,14 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	
 	int ScreenHandle;
 	int Gauss = 0;			//ガウスフィルタ大きさ
-	int BmpDate[6];			// ＢＭＰ画像のメモリへの読みこみ
+	int BmpDate[7];			// ＢＭＰ画像のメモリへの読みこみ
 
 	float camera_direction = 0.0f;
 	
-	// 全体的なゲームの管理
-	int gamemode = eSceneBlank ;
-
 	//ステージのポジション
 	VECTOR stagepos = VGet(0.0f,0.0f,0.0f) ;
 	VECTOR skypos = VGet(0.0f, 0.0f, 0.0f);
 		
-//	ChangeWindowMode(TRUE);
 //	SetGraphMode(1280, 720, 32);
 	ChangeWindowMode(FALSE);
 	SetGraphMode(1920, 1080, 32);
@@ -49,19 +45,25 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	moon = MV1LoadModel("..\\Data\\Stage\\moon.mv1");
 	//城モデルの読み込み
 	castle = MV1LoadModel("..\\Data\\japanese-castle\\source\\japanese castle 2.mv1");
+	//城モデルの読み込み
+	roof = MV1LoadModel("..\\Data\\Stage\\瓦.mv1");
 
 	// 
 	Original[0].type[SPEEDMODE]			= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無.mv1");
 	Original[0].typestop[SPEEDMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");
+
 	Original[0].type[BALANCEMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者_バランス.mv1");
 	Original[0].typestop[BALANCEMODE]	= MV1LoadModel("..\\Data\\Ninja\\忍者待機_バランス.mv1");
+
 	Original[0].type[POWERMODE]			= MV1LoadModel("..\\Data\\Ninja\\忍者パワー.mv1");
 	Original[0].typestop[POWERMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者待機_パワー.mv1");
 
 	Original[1].type[SPEEDMODE]			= MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無.mv1");
 	Original[1].typestop[SPEEDMODE]		= MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無_待機.mv1");
+	
 	Original[1].type[BALANCEMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者_バランス.mv1");
 	Original[1].typestop[BALANCEMODE]	= MV1LoadModel("..\\Data\\Ninja\\忍者待機_バランス.mv1");
+	
 	Original[1].type[POWERMODE]			= MV1LoadModel("..\\Data\\Ninja\\白忍者パワー.mv1");
 	Original[1].typestop[POWERMODE]		= MV1LoadModel("..\\Data\\Ninja\\忍者待機_パワー.mv1");
 
@@ -80,22 +82,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	player[1].anim.type[POWERMODE]			= MV1DuplicateModel(Original[1].type[POWERMODE]);
 	player[1].anim.typestop[POWERMODE]		= MV1DuplicateModel(Original[1].typestop[POWERMODE]);
 
-	// キャラの元データ
-	Original[0].run		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");			// 走りアニメ
-	Original[0].jump_in = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1");	// ジャンプ入り始めアニメ
-	Original[0].jump	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ中.mv1");	// ジャンプループアニメ
-	Original[0].fall	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_落下.mv1");			// ジャンプループアニメ
-	Original[0].attack	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_攻撃.mv1");			// 攻撃アニメ
-	Original[0].damage	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ダメージ.mv1");		// 被ダメージアニメ
 
-	Original[1].run		= MV1LoadModel("..\\Data\\Ninja\\忍者走り_バランス.mv1");		// 走りアニメ
-	Original[1].jump_in = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1");	// ジャンプ入り始めアニメ
-	Original[1].jump	= MV1LoadModel("..\\Data\\Ninja\\忍者ジャンプ_バランス.mv1");	// ジャンプループアニメ
-	Original[1].fall	= MV1LoadModel("..\\Data\\Ninja\\忍者落下_バランス.mv1");		// ジャンプループアニメ
-	Original[1].attack	= MV1LoadModel("..\\Data\\Ninja\\忍者攻撃_バランス.mv1");		// 攻撃アニメ
-	Original[1].damage	= MV1LoadModel("..\\Data\\Ninja\\忍者ダメージ_バランス.mv1");	// 被ダメージアニメ
 
-																			
 	// スポットライト
 	LHandle_p1 = CreateSpotLightHandle(
 		VGet(player[1].GetPosition().x, player[1].GetPosition().y + 0.0f, player[1].GetPosition().z - 100.0f),
@@ -134,6 +122,8 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	//城 初期セット
 	MV1SetPosition(castle, VGet(3000.0f, 170.0f, 3000.0f));
 	MV1SetRotationXYZ(castle, VGet(0.0f, 1.57f * 1.3f, 0.0f));
+	//屋根 初期セット
+	MV1SetPosition(roof, VGet(1550.0f, -1000.0f, 700.0f));
 
 	//画像の読み込み
 	BmpDate[0] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト1.png");
@@ -142,6 +132,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 	BmpDate[3] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト4.png");
 	BmpDate[4] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト5.png");
 	BmpDate[5] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト6.png");
+	BmpDate[6] = LoadGraph("..\\Data\\Stage\\milky2.jpg");
 
 
 	/* ------------------------------------------------------------------------------------------------
@@ -220,21 +211,21 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					player[0].ChangeAnimation(g_Chara[0], player[0].anim.stop);
 					player[1].ChangeAnimation(g_Chara[1], player[1].anim.stop);
 					switch (player[0].GetType()) {
-						case SPEEDMODE :
+						case SPEEDMODE:
 							player[0].SetAttackMiddleRange(SPEED_ATTACK_MIDDLE_RANGE);
 							player[0].SetAttackRange(SPEED_ATTACK_RANGE);
 							player[0].SetMoveSpeed(SPEEDPLAYER_SPEED);
 							CharaIcon[0] = LoadGraph("..\\Data\\Icon\\スピードやられ.png");
 							break;
 
-						case BALANCEMODE :
+						case BALANCEMODE:
 							player[0].SetAttackMiddleRange(BLANCE_ATTACK_MIDDLE_RANGE);
 							player[0].SetAttackRange(BLANCE_ATTACK_RANGE);
 							player[0].SetMoveSpeed(BALANCEPLAYER_SPEED);
 							CharaIcon[0] = LoadGraph("..\\Data\\Icon\\バランスやられ.png");
 							break;
 
-						case POWERMODE :
+						case POWERMODE:
 							player[0].SetAttackMiddleRange(POWER_ATTACK_MIDDLE_RANGE);
 							player[0].SetAttackRange(POWER_ATTACK_RANGE);
 							player[0].SetMoveSpeed(POWERPLAYER_SPEED);
@@ -382,7 +373,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 						Draw();
 					}
 					if (x >= 4500) {
-						gamemode = eScenePlay;
+						gamemode = eScenePlay1;
 					}
 					// BMP画像の表示
 					//左から第一陣
@@ -418,7 +409,7 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				ScreenFlip();
 				break;
 
-			case eScenePlay :
+			case eScenePlay1 :
 				g_Chara[0]->ActionLoop(g_Chara[0], g_Chara[1]);
 				g_Chara[1]->ActionLoop(g_Chara[1], g_Chara[0]);
 				g_Chara[0]->Animation(g_Chara[0]);
@@ -443,7 +434,6 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 				MV1SetPosition(player[0].anim.model, player[0].GetPosition());
 				MV1SetPosition(player[1].anim.model, player[1].GetPosition());
 
-
 				MV1SetPosition(skydate, skypos);
 
 				// 描画
@@ -456,7 +446,67 @@ int WINAPI WinMain(HINSTANCE hI,HINSTANCE hP,LPSTR lpC,int nC){
 					DrawLimit = 0;
 
 				ScreenFlip() ;
+
+				if (cpos.y >= 18500 || CheckHitKey(KEY_INPUT_RETURN) == 1) {
+					cpos = VGet(1484.0f, 2100.0f, -1700.0f);
+					ctgt = VGet(1484.0f, 2100.0f, -1500.0f);
+					MV1SetPosition(moon, VGet(300.0f, 2700.0f, 0.0f));
+					for (int i = 0; i <= MAX_BLOCK - 1;i++) {
+						m_block[i].SetBlockFlag(FALSE);
+						m_block2[i].SetBlockFlag(TRUE);
+					}
+
+					// ライトの色　黒
+					SetLightDifColor(GetColorF(1.0f, 1.0f, 1.0f, 0.0f));
+
+					gamemode = eScenePlay2;
+				}
 				break ;
+
+			case eScenePlay2:		
+				g_Chara[0]->ActionLoop(g_Chara[0], g_Chara[1]);
+				g_Chara[1]->ActionLoop(g_Chara[1], g_Chara[0]);
+				g_Chara[0]->Animation(g_Chara[0]);
+				g_Chara[1]->Animation(g_Chara[1]);
+
+				// スクリーンクリア
+				ClearDrawScreen();
+
+				//カメラ情報の反映
+				SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
+
+				// 背景(空)の操作
+				skypos.x = cpos.x;
+				skypos.y = cpos.y - 3000.0f;
+				skypos.z = cpos.z;
+				MV1SetPosition(skydate, skypos);
+				
+				// モデルの回転
+				MV1SetRotationXYZ(player[0].anim.model, VGet(0.0f, 1.57f * player[0].GetDirection(), 0.0f));
+				MV1SetRotationXYZ(player[1].anim.model, VGet(0.0f, 1.57f * player[1].GetDirection(), 0.0f));
+				// モデルの移動(配置)
+				MV1SetPosition(player[0].anim.model, player[0].GetPosition());
+				MV1SetPosition(player[1].anim.model, player[1].GetPosition());
+
+				DrawGraph(0, 0, BmpDate[6], TRUE);
+
+				// 描画
+				MV1DrawModel(moon);
+				MV1DrawModel(roof);
+				for (blockcnt = 0; blockcnt < 30; blockcnt++) {
+					if (m_block2[blockcnt].GetBlockFlag() == TRUE) {
+						MV1DrawModel(m_block2[blockcnt].b_model);
+					}
+				}
+
+				// モデルの描画
+				if (player[0].GetUse_Flg() == TRUE)
+					MV1DrawModel(player[0].anim.model);
+				if (player[1].GetUse_Flg() == TRUE)
+					MV1DrawModel(player[1].anim.model);
+
+				ScreenFlip();
+				break;
 
 			case eSceneClear :
 				break ;

@@ -144,12 +144,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CharaBase.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="ConsoleWindow.cpp" />
     <ClCompile Include="Draw.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="HitCheck.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="WinMain.cpp" />

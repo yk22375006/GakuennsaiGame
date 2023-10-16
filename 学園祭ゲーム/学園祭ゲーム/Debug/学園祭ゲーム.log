@@ -1,3 +1,2 @@
-﻿  WinMain.cpp
-C:\Users\koyama\Desktop\学園祭かも\学園祭ゲーム\学園祭ゲーム\WinMain.cpp(9,7): warning C4101: 'str': ローカル変数は 1 度も使われていません。
+﻿  CharaBase.cpp
   学園祭ゲーム.vcxproj -> C:\Users\koyama\Desktop\学園祭かも\学園祭ゲーム\Debug\学園祭ゲーム.exe

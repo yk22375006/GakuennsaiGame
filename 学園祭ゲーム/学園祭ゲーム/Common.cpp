@@ -48,7 +48,6 @@ Block m_block2[MAX_BLOCK];
 int blockcnt;
 int moon;
 int castle;
-int roof;
 
 // 背景
 int bgdate[BACKGROUNDTYPE];
@@ -61,10 +60,11 @@ MATRIX WeaponMatrix;
 ConsoleWindow g_cWin;	
 
 // --- プレイヤー
-Player player[2];
-Player* g_Chara[2];
+Player player[12];
+Player* g_Chara[12];
 AnimationDate Original[3];
-int CharaIcon[2];
+int chara_type1;
+int chara_type2;
 
 // --- カメラ
 VECTOR cpos;

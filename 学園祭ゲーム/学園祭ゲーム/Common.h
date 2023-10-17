@@ -217,10 +217,11 @@ extern int gamemode;
 extern ConsoleWindow g_cWin ;	
 
 // --- プレイヤー
-extern Player player[2];
-extern Player* g_Chara[2];
+extern Player player[12];
+extern Player* g_Chara[12];
 extern AnimationDate Original[3];
-extern int CharaIcon[2];
+extern int chara_type1;
+extern int chara_type2;
 
 // --- カメラ
 extern VECTOR cpos;
@@ -254,10 +255,8 @@ extern Block m_block[MAX_BLOCK];
 extern Block m_block2[MAX_BLOCK];
 
 extern int blockcnt;
-
-extern int moon;	// 月
-extern int castle;	// 城
-extern int roof;	// 屋根
+extern int moon;
+extern int castle;
 
 // 背景
 extern int bgdate[BACKGROUNDTYPE];

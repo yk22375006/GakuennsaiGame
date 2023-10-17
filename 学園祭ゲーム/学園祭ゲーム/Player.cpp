@@ -148,6 +148,37 @@ int Player::LoadAnimation(CharaBase* pp1) {
 				break;
 		}
 	}
+	if (pp1 == &player[2]) {
+		switch (chara_type1) {
+		case SPEEDMODE:
+		case POWERMODE:
+			pp1->anim.model			= MV1DuplicateModel(Original[0].type[SPEEDMODE]);
+			pp1->anim.stop			= MV1DuplicateModel(Original[0].stop);		// 立ちアニメ 
+			break;
+
+		case BALANCEMODE:
+			pp1->anim.model			= MV1DuplicateModel(Original[1].model);
+			pp1->anim.stop			= MV1DuplicateModel(Original[1].stop);		// 立ちアニメ
+			break;
+		}
+	}
+	for ( int i = 3 ; i < 12 ; i++ )
+	{
+		if (pp1 == &player[i]) {
+			switch (chara_type1) {
+			case SPEEDMODE:
+			case POWERMODE:
+				pp1->anim.model = MV1DuplicateModel(Original[0].type[SPEEDMODE]);
+				pp1->anim.stop = MV1DuplicateModel(Original[0].stop);		// 立ちアニメ 				
+				break;
+
+			case BALANCEMODE:
+				pp1->anim.model = MV1DuplicateModel(Original[1].model);
+				pp1->anim.stop = MV1DuplicateModel(Original[1].stop);		// 立ちアニメ
+				break;
+			}
+		}
+	}
 	return (false);
 }
 
@@ -185,9 +216,19 @@ int Player::Animation(CharaBase* pp1)
 	}
 	// アニメーション再生時間と同期させる
 	MV1SetAttachAnimTime(pp1->GetAnimation_Data().model, pp1->GetAnim_Attach(), pp1->GetPlay_Time());
-
+		
 	return(false);
 }
+
+/*int Player::Animation(MOB* pmb) {
+	if (pmb->GetPlay_Time() > pmb->GetAnim_Time()) {
+		pmb->SetPlay_Time(0.0f);
+	}
+	// アニメーション再生時間と同期させる
+	MV1SetAttachAnimTime(pmb->GetAnimation_Data().model, pmb->GetAnim_Attach(), pmb->GetPlay_Time());
+	return ;
+}*/
+
 
 /* ======================================================== +
  |                     ChangeAnimation( )                   |
@@ -280,6 +321,20 @@ void Player::CharaChoice(CharaBase* pp1) {
 	}
 }
 
+void Player::CharaRizarut(CharaBase* pp1) {
+	
+	if (pp1 == &player[0]) {
+		direction = DOWN;
+		ChangeAnimationType(pp1, pp1->anim.typestop[chara_type1]);
+	
+	}
+	if (pp1 == &player[1]) {
+		direction = DOWN;
+		ChangeAnimationType(pp1, pp1->anim.typestop[chara_type2]);
+		
+	}
+
+}
 /* ############################################################################################### */
 /* ======================================================== +
  |                       CharaStop( )                       |
@@ -312,6 +367,9 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 
 	// 移動量を加える
 	pp1->SetPosition(VAdd(pp1->GetPosition(), pp1->GetSpeed()));
+
+	// 移動量セット
+//	pp1->MoveSet( ) ;
 
 	// Aが△
 	// Bが○

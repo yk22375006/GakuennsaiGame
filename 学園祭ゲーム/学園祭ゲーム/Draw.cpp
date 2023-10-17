@@ -49,6 +49,14 @@ void Draw() {
 		MV1DrawModel(player[0].anim.model);
 	if (player[1].GetUse_Flg() == TRUE)
 		MV1DrawModel(player[1].anim.model);
+	if (player[2].GetUse_Flg() == TRUE)
+		MV1DrawModel(player[2].anim.model);
+
+	for (int i = 3; i < 12; i++)
+	{
+		if (player[i].GetUse_Flg() == TRUE)
+			MV1DrawModel(player[i].anim.model);
+	}
 
 
 	DrawGraph(0, 0, CharaIcon[0], TRUE);

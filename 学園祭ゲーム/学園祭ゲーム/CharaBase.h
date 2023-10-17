@@ -11,8 +11,7 @@ enum CharaMode {
 	eCharaJump,			// ジャンプ
 	eCharaFall,			// 落下
 	eCharaDamage,		// ダメージ
-	eCharaDown,			// ダウン
-	eCharaRevival		// 復活
+	eCharaDown			// ダウン
 } ;
 
 enum Direction {
@@ -26,29 +25,21 @@ enum Direction {
 
 class CharaBase {
 	protected :
-		VECTOR posi ;				// 位置情報
-		VECTOR spd ;				// スピード
-		float move_spd;				// 移動速度
-		int use_flg ;				// 使用フラグ
-		int act_mode ;				// アクションモード
-		float direction ;			// 方向
-		int motion ;				// 現在のアニメモーション
-		int anim_attach ;			// 現在のアニメーションを格納
-		float anim_time ;			// アニメーションの総時間を格納
-		float play_time ;			// アニメーションの再生時間
-		int rootflm ;				// アニメーション+移動可能にする
-		float Width ;				// プレイヤーサイズ幅(ヒットチェック用)
-		float Height ;				// プレイヤーサイズ高さ(ヒットチェック用)
-		int number;					// プレイヤー番号
-		int RevivalTime;			// 復活までの時間
-		int type;					// キャラのタイプ
-		int blowdirection;			// 吹っ飛び方向の指定
-		int score;					// 死亡回数
-		float attack_middle_range;	// 攻撃の中間距離
-		float attack_range;			// 攻撃の距離
-		bool selectflg;				// キャラの選択
-		bool damageflg;				// ダメージを食らっている
-		bool falldamageflg;			// 落下中にダメージを負った
+		VECTOR posi ;			// 位置情報
+		VECTOR spd ;			// スピード
+		int use_flg ;			// 使用フラグ
+		int act_mode ;			// アクションモード
+		float direction ;		// 方向
+		int motion ;			// 現在のアニメモーション
+		int anim_attach ;		// 現在のアニメーションを格納
+		float anim_time ;		// アニメーションの総時間を格納
+		float play_time ;		// アニメーションの再生時間
+		int rootflm ;			// アニメーション+移動可能にする
+		float Width ;			// プレイヤーサイズ幅(ヒットチェック用)
+		float Height ;			// プレイヤーサイズ高さ(ヒットチェック用)
+		int number;				// プレイヤー番号
+		int RevivalTime;		// 復活までの時間
+		int type;				// キャラのタイプ
 
 	public :
 		CharaBase( ) ;				// コンストラクタ

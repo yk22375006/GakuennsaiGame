@@ -70,41 +70,5 @@ void AnimationPlayer( int Animation ) {
 	player[0].SetAnim_Time( MV1GetAttachAnimTotalTime(player[0].anim.model, player[0].GetAnim_Attach()));
 }
 
-// ------------------------------------------------------------------------ //
-//						エネミーのアニメーション							//
-// ------------------------------------------------------------------------ //
-void AnimationEnemy(int Animation) {
-/*
-	MV1DetachAnim(player[1].model, player[1].attachidx);
-	switch (Animation) {
-		// 立ち状態の処理
-		case E_STAND:
-			player[1].attachidx = MV1AttachAnim(player[1].model, 0, gobanim_ntural);
-			player[1].mode = E_STAND;
-			break;
-
-		// ダメージを負う開始時の処理
-		case E_BLOWIN :
-			player[1].attachidx = MV1AttachAnim(player[1].model, 0, gobanim_blowin);
-			player[1].mode = E_BLOWIN;
-			break;
-
-
-		// ダメージ中の処理
-		case E_BLOWLOOP :
-			player[1].attachidx = MV1AttachAnim(player[1].model, 0, gobanim_blowloop);
-			player[1].mode = E_BLOWLOOP;
-			break;
-
-		// ダメージ終了時の処理
-		case E_BLOWOUT :
-			player[1].attachidx = MV1AttachAnim(player[1].model, 0, gobanim_blowout);
-			player[1].mode = E_BLOWOUT;
-			break;
-	}
-	player[1].anim_totaltime = MV1GetAttachAnimTotalTime(player[0].model, player[0].attachidx);
-*/
-}
-
 
 

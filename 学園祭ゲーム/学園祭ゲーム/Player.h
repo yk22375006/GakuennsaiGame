@@ -11,7 +11,7 @@ class Player : public CharaBase {
 		int init( ) ;				// 初期セット
 		int Draw( CharaBase *pp1 ) ;	// 描画
 		int AllowKey( ) ;			// 矢印キーが押されてるか
-
+		
 		// アニメーション関数
 		int AnimationInit( ) ;				// アニメーション初期セット
 		int Animation( CharaBase *pp1 ) ;	// アニメーション再生

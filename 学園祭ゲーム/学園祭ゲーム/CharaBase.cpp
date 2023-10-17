@@ -98,3 +98,5 @@ int CharaBase::MoveSet(CharaBase* pp1)
 	return( false ) ;
 }
 
+
+

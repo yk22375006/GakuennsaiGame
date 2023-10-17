@@ -68,7 +68,7 @@ int Player::Draw( CharaBase *pp1 )
 
 	// ƒ‚ƒfƒ‹‚Ì•`‰æ
 	MV1DrawModel( pp1->anim.model ) ;
-
+	
 	return( false ) ;
 }
 

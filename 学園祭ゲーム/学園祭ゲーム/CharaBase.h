@@ -328,7 +328,7 @@ class CharaBase {
 		bool GetFallDamageFlg() {
 			return falldamageflg;
 		}
-
+		 
 		void SetFallDamageFlg(bool set_falldamageflg) {
 			falldamageflg = set_falldamageflg;
 		}

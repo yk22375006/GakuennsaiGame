@@ -263,7 +263,7 @@ extern int StageMap2[MAP_Y2][MAP_X];
 
 extern Block m_block[MAX_BLOCK];
 extern Block m_block2[MAX_BLOCK];
-
+ 
 extern int blockcnt;
 
 extern int moon;	// ŒŽ

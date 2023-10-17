@@ -21,7 +21,7 @@ class ConsoleWindow
 	public:
 		ConsoleWindow( );	// --- コンストラクタ
 		~ConsoleWindow( );	// --- デストラクタ
-
+		
 	private:
 		FILE *m_fIn;
 		FILE *m_fOut;

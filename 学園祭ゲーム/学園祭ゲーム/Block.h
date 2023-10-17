@@ -15,7 +15,7 @@ class Block {
 		int b_number;
 		bool b_use_flg;
 		bool b_move_flg;
-		 
+		  
 	public:
 		int b_model;
 

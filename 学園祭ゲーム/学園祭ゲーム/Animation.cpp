@@ -17,6 +17,7 @@ void AnimationInit() {
 		player[0].anim.attack = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_攻撃.mv1");			// 攻撃アニメ
 		player[0].anim.damage = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ダメージ.mv1");		// 被ダメージアニメ
 	}*/
+
 }
 
 // ------------------------------------------------------------------------ //

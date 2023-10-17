@@ -2,7 +2,7 @@
 #include "Common.h"		// --- 全ファイルでの共通ヘッダー
 
 int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
-
+	
 	int ScreenHandle;
 	int Gauss = 0;			//ガウスフィルタ大きさ
 	int BmpDate[7];			// ＢＭＰ画像のメモリへの読みこみ

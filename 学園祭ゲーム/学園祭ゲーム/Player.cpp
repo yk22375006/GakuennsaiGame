@@ -48,6 +48,7 @@ int Player::init( )
 	damageflg = FALSE;						// 攻撃された
 	falldamageflg = FALSE;					// 落下中にダメージを負った
 	type = SPEEDMODE;
+	block_damage = FALSE;
 	score = 0;
 	return( false ) ;
 }
@@ -99,52 +100,72 @@ int Player::LoadAnimation(CharaBase* pp1) {
 		switch (pp1->GetType())
 		{
 			case SPEEDMODE:
-			case POWERMODE:
 				pp1->anim.model		= MV1DuplicateModel(Original[0].type[SPEEDMODE]);
-				pp1->anim.stop		= MV1DuplicateModel(Original[0].typestop[SPEEDMODE]);		// 立ちアニメ
-				pp1->anim.run		= MV1DuplicateModel(Original[0].run);		// 走りアニメ
-				pp1->anim.jump_in	= MV1DuplicateModel(Original[0].jump_in);	// ジャンプ入り始めアニメ
-				pp1->anim.jump		= MV1DuplicateModel(Original[0].jump);		// ジャンプループアニメ
-				pp1->anim.fall		= MV1DuplicateModel(Original[0].fall);		// ジャンプループアニメ
-				pp1->anim.attack	= MV1DuplicateModel(Original[0].attack);	// 攻撃アニメ
-				pp1->anim.damage	= MV1DuplicateModel(Original[0].damage);	// 被ダメージアニメ
+				pp1->anim.stop		= MV1DuplicateModel(Original[0].typestop[SPEEDMODE]);	// 立ちアニメ
+				pp1->anim.run		= MV1DuplicateModel(Original[0].run);					// 走りアニメ
+				pp1->anim.jump_in	= MV1DuplicateModel(Original[0].jump_in);				// ジャンプ入り始めアニメ
+				pp1->anim.jump		= MV1DuplicateModel(Original[0].jump);					// ジャンプループアニメ
+				pp1->anim.fall		= MV1DuplicateModel(Original[0].fall);					// ジャンプループアニメ
+				pp1->anim.attack	= MV1DuplicateModel(Original[0].attack);				// 攻撃アニメ
+				pp1->anim.damage	= MV1DuplicateModel(Original[0].damage);				// 被ダメージアニメ
 				break;
 
 			case BALANCEMODE:
 				pp1->anim.model		= MV1DuplicateModel(Original[0].type[BALANCEMODE]);
-				pp1->anim.stop		= MV1DuplicateModel(Original[0].typestop[BALANCEMODE]);		// 立ちアニメ
-				pp1->anim.run		= MV1DuplicateModel(Original[0].run);		// 走りアニメ
-				pp1->anim.jump_in	= MV1DuplicateModel(Original[0].jump_in);	// ジャンプ入り始めアニメ
-				pp1->anim.jump		= MV1DuplicateModel(Original[0].jump);		// ジャンプループアニメ
-				pp1->anim.fall		= MV1DuplicateModel(Original[0].fall);		// ジャンプループアニメ
-				pp1->anim.attack	= MV1DuplicateModel(Original[0].attack);	// 攻撃アニメ
-				pp1->anim.damage	= MV1DuplicateModel(Original[0].damage);	// 被ダメージアニメ
+				pp1->anim.stop		= MV1DuplicateModel(Original[0].typestop[BALANCEMODE]);	// 立ちアニメ
+				pp1->anim.run		= MV1DuplicateModel(Original[1].run);					// 走りアニメ
+				pp1->anim.jump_in	= MV1DuplicateModel(Original[1].jump_in);				// ジャンプ入り始めアニメ
+				pp1->anim.jump		= MV1DuplicateModel(Original[1].jump);					// ジャンプループアニメ
+				pp1->anim.fall		= MV1DuplicateModel(Original[1].fall);					// ジャンプループアニメ
+				pp1->anim.attack	= MV1DuplicateModel(Original[1].attack);				// 攻撃アニメ
+				pp1->anim.damage	= MV1DuplicateModel(Original[1].damage);				// 被ダメージアニメ
+				break;
+
+			case POWERMODE:
+				pp1->anim.model		= MV1DuplicateModel(Original[0].type[POWERMODE]);
+				pp1->anim.stop		= MV1DuplicateModel(Original[0].typestop[POWERMODE]);	// 立ちアニメ
+				pp1->anim.run		= MV1DuplicateModel(Original[2].run);					// 走りアニメ
+				pp1->anim.jump_in	= MV1DuplicateModel(Original[2].jump_in);				// ジャンプ入り始めアニメ
+				pp1->anim.jump		= MV1DuplicateModel(Original[2].jump);					// ジャンプループアニメ
+				pp1->anim.fall		= MV1DuplicateModel(Original[2].fall);					// ジャンプループアニメ
+				pp1->anim.attack	= MV1DuplicateModel(Original[2].attack);				// 攻撃アニメ
+				pp1->anim.damage	= MV1DuplicateModel(Original[2].damage);				// 被ダメージアニメ
 				break;
 		}
 	}
 	if (pp1 == &player[1]) {
 		switch (pp1->GetType()) {
 			case SPEEDMODE:
-			case POWERMODE:
 				pp1->anim.model		= MV1DuplicateModel(Original[1].type[SPEEDMODE]);
-				pp1->anim.stop		= MV1DuplicateModel(Original[1].typestop[SPEEDMODE]);		// 立ちアニメ 
-				pp1->anim.run		= MV1DuplicateModel(Original[0].run);		// 走りアニメ
-				pp1->anim.jump_in	= MV1DuplicateModel(Original[0].jump_in);	// ジャンプ入り始めアニメ
-				pp1->anim.jump		= MV1DuplicateModel(Original[0].jump);		// ジャンプループアニメ
-				pp1->anim.fall		= MV1DuplicateModel(Original[0].fall);		// ジャンプループアニメ
-				pp1->anim.attack	= MV1DuplicateModel(Original[0].attack);	// 攻撃アニメ
-				pp1->anim.damage	= MV1DuplicateModel(Original[0].damage);	// 被ダメージアニメ
+				pp1->anim.stop		= MV1DuplicateModel(Original[1].typestop[SPEEDMODE]);	// 立ちアニメ 
+				pp1->anim.run		= MV1DuplicateModel(Original[0].run);					// 走りアニメ
+				pp1->anim.jump_in	= MV1DuplicateModel(Original[0].jump_in);				// ジャンプ入り始めアニメ
+				pp1->anim.jump		= MV1DuplicateModel(Original[0].jump);					// ジャンプループアニメ
+				pp1->anim.fall		= MV1DuplicateModel(Original[0].fall);					// ジャンプループアニメ
+				pp1->anim.attack	= MV1DuplicateModel(Original[0].attack);				// 攻撃アニメ
+				pp1->anim.damage	= MV1DuplicateModel(Original[0].damage);				// 被ダメージアニメ
 				break;
 
 			case BALANCEMODE:
 				pp1->anim.model		= MV1DuplicateModel(Original[1].type[BALANCEMODE]);
-				pp1->anim.stop		= MV1DuplicateModel(Original[1].typestop[BALANCEMODE]);		// 立ちアニメ
-				pp1->anim.run		= MV1DuplicateModel(Original[1].run);		// 走りアニメ
-				pp1->anim.jump_in	= MV1DuplicateModel(Original[1].jump_in);	// ジャンプ入り始めアニメ
-				pp1->anim.jump		= MV1DuplicateModel(Original[1].jump);		// ジャンプループアニメ
-				pp1->anim.fall		= MV1DuplicateModel(Original[1].fall);		// ジャンプループアニメ
-				pp1->anim.attack	= MV1DuplicateModel(Original[1].attack);	// 攻撃アニメ
-				pp1->anim.damage	= MV1DuplicateModel(Original[1].damage);	// 被ダメージアニメ
+				pp1->anim.stop		= MV1DuplicateModel(Original[1].typestop[BALANCEMODE]);	// 立ちアニメ
+				pp1->anim.run		= MV1DuplicateModel(Original[1].run);					// 走りアニメ
+				pp1->anim.jump_in	= MV1DuplicateModel(Original[1].jump_in);				// ジャンプ入り始めアニメ
+				pp1->anim.jump		= MV1DuplicateModel(Original[1].jump);					// ジャンプループアニメ
+				pp1->anim.fall		= MV1DuplicateModel(Original[1].fall);					// ジャンプループアニメ
+				pp1->anim.attack	= MV1DuplicateModel(Original[1].attack);				// 攻撃アニメ
+				pp1->anim.damage	= MV1DuplicateModel(Original[1].damage);				// 被ダメージアニメ
+				break;
+
+			case POWERMODE:
+				pp1->anim.model		= MV1DuplicateModel(Original[1].type[POWERMODE]);
+				pp1->anim.stop		= MV1DuplicateModel(Original[1].typestop[POWERMODE]);	// 立ちアニメ
+				pp1->anim.run		= MV1DuplicateModel(Original[2].run);					// 走りアニメ
+				pp1->anim.jump_in	= MV1DuplicateModel(Original[2].jump_in);				// ジャンプ入り始めアニメ
+				pp1->anim.jump		= MV1DuplicateModel(Original[2].jump);					// ジャンプループアニメ
+				pp1->anim.fall		= MV1DuplicateModel(Original[2].fall);					// ジャンプループアニメ
+				pp1->anim.attack	= MV1DuplicateModel(Original[2].attack);				// 攻撃アニメ
+				pp1->anim.damage	= MV1DuplicateModel(Original[2].damage);				// 被ダメージアニメ
 				break;
 		}
 	}
@@ -303,17 +324,16 @@ void Player::CharaChoice(CharaBase* pp1) {
 
 	if (continuous_limit == 0 && pp1->GetSelectFlg() == FALSE) {
 		if (key1 & PAD_INPUT_RIGHT) {
-			pp1->SetType(pp1->GetType() - 1);
+			pp1->SetType(pp1->GetType() + 1);
 			continuous_limit = 15;
-			if (pp1->GetType() < SPEEDMODE)
-				pp1->SetType(POWERMODE);
+			if (pp1->GetType() > POWERMODE)
+				pp1->SetType(SPEEDMODE);
 		}
 		if (key1 & PAD_INPUT_LEFT) {
 			pp1->SetType(pp1->GetType() - 1);
 			continuous_limit = 15;
 			if (pp1->GetType() < SPEEDMODE)
 				pp1->SetType(POWERMODE) ;
-
 		}
 		if ((key1 & PAD_INPUT_LEFT) || (key1 & PAD_INPUT_RIGHT)) {
 				ChangeAnimationType(pp1, pp1->anim.typestop[pp1->GetType()]);
@@ -424,7 +444,6 @@ void Player::CharaMove( CharaBase *pp1 , CharaBase* pp2)
 		pp1->SetMotion(pp1->GetAnimation_Data().stop);
 		ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
 	}
-
 }
 /* ======================================================== +
  |                       CharaAttack( )                     |
@@ -445,32 +464,48 @@ void Player::CharaAttack(CharaBase* pp1, CharaBase* pp2)
 		pp1->SetMotion(pp1->GetAnimation_Data().stop);
 		ChangeAnimation(pp1, pp1->GetAnimation_Data().stop);				// アニメーション切り替え
 	}
+	pp1->SetSpeed(VGet(0, 0, 0));
 
-	// 攻撃時の当たり判定をモデルの前方に配置
-	VECTOR AttackPosTop;
-	AttackPosTop = player[0].GetPosition();
-	AttackPosTop.x = player[0].GetPosition().x - cosf((player[0].GetDirection() - 1.001f) * 1.57f) * pp1->GetAttackMiddleRange();
-	AttackPosTop.y = player[0].GetPosition().y + (PLAYER_SIZE_H - 100.0f);
+	Block_HitCheck(pp1);
+	if (key1 != 0) {
+		printf("0x%x\n",key1);
+		DrawLimit = 10;
+	}
 
-	VECTOR AttackPosBottom;
-	AttackPosBottom = player[0].GetPosition();
-	AttackPosBottom.x = player[0].GetPosition().x - cosf((player[0].GetDirection() - 1.001f) * 1.57f) * pp1->GetAttackMiddleRange();
-	AttackPosBottom.y = player[0].GetPosition().y + 100.0f;
+	if (pp1->GetAttackTimeStart() <= pp1->GetPlay_Time() && pp1->GetAttackTimeEnd() >= pp1->GetPlay_Time() &&
+		 pp2->GetAct_Mode() != eCharaDamage) {
+		// 攻撃時の当たり判定をモデルの前方に配置
+		VECTOR AttackPosCenter;
+		AttackPosCenter = pp1->GetPosition();
+		AttackPosCenter.x = pp1->GetPosition().x - cosf((pp1->GetDirection() - 1.001f) * 1.57f) * 50.0f;
+		AttackPosCenter.y = pp1->GetPosition().y + (PLAYER_SIZE_H / 2);
 
-	VECTOR pp2_MAX_Y_Pos;
-	pp2_MAX_Y_Pos = pp2->GetPosition();
-	pp2_MAX_Y_Pos.y = pp2->GetPosition().y + PLAYER_SIZE_H;
+		VECTOR AttackPosEnd;
+		AttackPosEnd = pp1->GetPosition();
+		AttackPosEnd.x = pp1->GetPosition().x - cosf((pp1->GetDirection() - 1.001f) * 1.57f) *
+			(pp1->GetAttackMiddleRange() + pp1->GetAttackRange());
+		AttackPosEnd.y = pp1->GetPosition().y + (PLAYER_SIZE_H / 2);
 
-	if (HitCheck_Capsule_Capsule(VAdd(AttackPosTop, pp1->GetSpeed()), VAdd(AttackPosBottom, pp1->GetSpeed()),pp1->GetAttackRange(),
-		VAdd(pp2_MAX_Y_Pos, pp2->GetSpeed()), VAdd(pp2->GetPosition(), pp2->GetSpeed()), pp2->GetWidth() / 2) == TRUE) {
-		if (pp2->GetPosition().x >= pp1->GetPosition().x)
-			pp2->SetBlowDirection(BLOWRIGHT);
-		if (pp2->GetPosition().x < pp1->GetPosition().x)
-			pp2->SetBlowDirection(BLOWLEFT);
-		pp2->SetDamageFlg(TRUE);
-		pp1->SetSpeed(VGet(0, 0, 0));
-		pp2->SetAct_Mode(eCharaDamage);
-		ChangeAnimation(pp2, pp2->GetAnimation_Data().damage);	// アニメーション切り替え
+		VECTOR pp2_MAX_Y_Pos;
+		pp2_MAX_Y_Pos = pp2->GetPosition();
+		pp2_MAX_Y_Pos.y = pp2->GetPosition().y + (PLAYER_SIZE_H - pp2->GetWidth() / 2);
+
+		VECTOR pp2_Bottom_Y_Pos;
+		pp2_Bottom_Y_Pos = pp2->GetPosition();
+		pp2_Bottom_Y_Pos.y = pp2->GetPosition().y + pp2->GetWidth() / 2;
+
+		if (HitCheck_Capsule_Capsule(VAdd(AttackPosCenter, pp1->GetSpeed()), VAdd(AttackPosEnd, pp1->GetSpeed()), 20.0f,
+			VAdd(pp2_MAX_Y_Pos, pp2->GetSpeed()), VAdd(pp2_Bottom_Y_Pos, pp2->GetSpeed()), pp2->GetWidth() / 2) == TRUE) {
+			if (pp2->GetPosition().x >= pp1->GetPosition().x) {
+				pp2->SetBlowDirection(BLOWRIGHT);
+			}
+			if (pp2->GetPosition().x < pp1->GetPosition().x) {
+				pp2->SetBlowDirection(BLOWLEFT);
+			}
+			pp2->SetDamageFlg(TRUE);
+			pp2->SetAct_Mode(eCharaDamage);
+			ChangeAnimation(pp2, pp2->GetAnimation_Data().damage);	// アニメーション切り替え
+		}
 	}
 }
 
@@ -483,7 +518,7 @@ void Player::CharaJump(CharaBase* pp1, CharaBase* pp2)
 {
 	pp1->AddPlay_Time(0.5f);
 	pp1->SetX_Spd(0.0f);
-	pp1->SetY_Posi(posi.y + 11.0f);
+	pp1->SetY_Posi(pp1->GetPosition().y + 11.0f);
 	pp1->SetY_Spd(PLAYER_JUMP_SPEED);
 	pp1->SetAct_Mode(eCharaFall);
 	ChangeAnimation(pp1, pp1->GetAnimation_Data().jump);	// アニメーション切り替え
@@ -541,18 +576,32 @@ void Player::CharaDamage(CharaBase* pp1, CharaBase* pp2)
 
 	// 吹っ飛びの初速
 	if (pp1->GetBlowDirection() == BLOWLEFT && pp1->GetDamageFlg() == TRUE) {
-		pp1->SetX_Spd(-50.0f);
 		pp1->SetDamageFlg(FALSE);
 		pp1->SetDirection(RIGHT);
-		if (pp1->GetSpeed().y <= 0)
+		if (pp1->GetBlockDamage() == FALSE) {
+			pp1->SetX_Spd(-pp2->GetBlowDistance());
+		}
+		else {
+			pp1->SetX_Spd(-50.0f);
+		}
+		if (pp1->GetSpeed().y <= 0) {
 			pp1->SetY_Spd(20.0f);
+			pp1->SetY_Posi(pp1->GetPosition().y + 21.0f);
+		}
 	}
-	if (pp1->GetBlowDirection() == BLOWRIGHT && pp1->GetDamageFlg() == TRUE) {
-		pp1->SetX_Spd(50.0f);
+	else if (pp1->GetBlowDirection() == BLOWRIGHT && pp1->GetDamageFlg() == TRUE) {
 		pp1->SetDamageFlg(FALSE);
 		pp1->SetDirection(LEFT);
-		if (pp1->GetSpeed().y <= 0)
+		if (pp1->GetBlockDamage() == FALSE) {
+			pp1->SetX_Spd(pp2->GetBlowDistance());
+		}
+		else {
+			pp1->SetX_Spd(50.0f);
+		}
+		if (pp1->GetSpeed().y <= 0) {
 			pp1->SetY_Spd(20.0f);
+			pp1->SetY_Posi(pp1->GetPosition().y + 21.0f);
+		}
 	}
 
 	// 減速
@@ -859,6 +908,7 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 		else {
 			pp1->SetDamageFlg(TRUE);
 			pp1->SetAct_Mode(eCharaDamage);
+			pp1->SetBlockDamage(TRUE);
 			ChangeAnimation(pp1, pp1->GetAnimation_Data().damage);	// アニメーション切り替え
 		}
 	}
@@ -874,6 +924,7 @@ void Player::Block_HitCheck(CharaBase* pp1) {
 			pp1->SetFallDamageFlg(TRUE);
 			pp1->SetDamageFlg(TRUE);
 			pp1->SetAct_Mode(eCharaDamage);
+			pp1->SetBlockDamage(TRUE);
 			ChangeAnimation(pp1, pp1->GetAnimation_Data().damage);	// アニメーション切り替え
 		}
 	}

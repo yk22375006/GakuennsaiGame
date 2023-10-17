@@ -81,29 +81,6 @@ void Draw() {
 		DrawString(1700, 150, DrawScore2, GetColor(255, 255, 0));
 	}
 
-
-/*	VECTOR AttackPosTop;
-	AttackPosTop = player[0].GetPosition();
-	AttackPosTop.x = player[0].GetPosition().x - cosf((player[0].GetDirection() - 1.001f) * 1.57f) * player[0].GetAttackMiddleRange();
-	AttackPosTop.y = player[0].GetPosition().y + (PLAYER_SIZE_H - 100.0f);
-
-	VECTOR AttackPosBottom;
-	AttackPosBottom = player[0].GetPosition();
-	AttackPosBottom.x = player[0].GetPosition().x - cosf((player[0].GetDirection() - 1.001f) * 1.57f) * player[0].GetAttackMiddleRange();
-	AttackPosBottom.y = player[0].GetPosition().y +100.0f;
-
-	VECTOR pp2_MAX_Y_Pos;
-	pp2_MAX_Y_Pos = player[1].GetPosition();
-	pp2_MAX_Y_Pos.y = player[1].GetPosition().y + PLAYER_SIZE_H;
-
-	DrawCapsule3D(VAdd(AttackPosTop, player[0].GetSpeed()), VAdd(AttackPosBottom, player[0].GetSpeed()),
-		player[0].GetAttackRange(),
-		8, GetColor(255, 255, 0), GetColor(255, 255, 0), FALSE);
-
-	DrawCapsule3D(VAdd(pp2_MAX_Y_Pos, player[1].GetSpeed()), VAdd(player[1].GetPosition(), player[1].GetSpeed()),
-		player[1].GetWidth() / 2,
-		8, GetColor(0, 0, 255), GetColor(0, 0, 255), FALSE);
-*/
 	// 描画に使用するシャドウマップの設定を解除
 	SetUseShadowMap(0, -1);
 }

@@ -44,10 +44,14 @@ class CharaBase {
 		int type;					// キャラのタイプ
 		int blowdirection;			// 吹っ飛び方向の指定
 		int score;					// 死亡回数
+		float attack_time_start;	// 攻撃開始時間
+		float attack_time_end;		// 攻撃終了時間
 		float attack_middle_range;	// 攻撃の中間距離
 		float attack_range;			// 攻撃の距離
+		float blowdistance;			// 吹っ飛び距離
 		bool selectflg;				// キャラの選択
 		bool damageflg;				// ダメージを食らっている
+		bool block_damage;			// ブロックにあたった
 		bool falldamageflg;			// 落下中にダメージを負った
 
 	public :
@@ -258,6 +262,24 @@ class CharaBase {
 			score++;
 		}
 
+		// 攻撃開始時間
+		float GetAttackTimeStart() {
+			return attack_time_start;
+		}
+
+		void SetAttackTimeStart(float set_attack_time_start) {
+			attack_time_start = set_attack_time_start;
+		}
+
+		// 攻撃終了時間
+		float GetAttackTimeEnd() {
+			return attack_time_end;
+		}
+
+		void SetAttackTimeEnd(float set_attack_time_end) {
+			attack_time_end = set_attack_time_end;
+		}
+
 		// 攻撃の中間距離
 		float GetAttackMiddleRange() {
 			return attack_middle_range;
@@ -276,6 +298,14 @@ class CharaBase {
 			attack_range = set_attack_range;
 		}
 
+		// 吹っ飛び距離
+		float GetBlowDistance() {
+			return blowdistance;
+		}
+		void SetBlowDistance(float set_blowdistance) {
+			blowdistance = set_blowdistance;
+		}
+
 		// 被ダメージのフラグ
 		bool GetDamageFlg() {
 			return damageflg;
@@ -283,6 +313,15 @@ class CharaBase {
 
 		void SetDamageFlg(bool set_damageflg) {
 			damageflg = set_damageflg;
+		}
+
+		// ダメージブロックに接触した
+		bool GetBlockDamage() {
+			return block_damage;
+		}
+
+		void SetBlockDamage(bool set_block_damage) {
+			block_damage = set_block_damage;
 		}
 
 		// 落下中にダメージを負ったかのフラグ

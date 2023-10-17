@@ -44,10 +44,10 @@
 #define PLAYER_SIZE_W	200.0f
 #define SPEED_ATTACK_RANGE			100.0f	// スピードタイプの攻撃範囲
 #define SPEED_ATTACK_MIDDLE_RANGE	130.0f	// スピードタイプの攻撃範囲の中間
-#define BLANCE_ATTACK_RANGE			100.0f	// バランスタイプの攻撃範囲
-#define BLANCE_ATTACK_MIDDLE_RANGE	130.0f	// バランスタイプの攻撃範囲の中間
-#define POWER_ATTACK_RANGE			100.0f	// パワータイプの攻撃範囲
-#define POWER_ATTACK_MIDDLE_RANGE	130.0f	// パワータイプの攻撃範囲の中間
+#define BLANCE_ATTACK_RANGE			170.0f	// バランスタイプの攻撃範囲
+#define BLANCE_ATTACK_MIDDLE_RANGE	200.0f	// バランスタイプの攻撃範囲の中間
+#define POWER_ATTACK_RANGE			200.0f	// パワータイプの攻撃範囲
+#define POWER_ATTACK_MIDDLE_RANGE	250.0f	// パワータイプの攻撃範囲の中間
 
 //	プレイヤーのタイプ
 #define SPEEDMODE	0	// スピードタイプ
@@ -61,6 +61,17 @@
 #define SPEEDPLAYER_SPEED	24.0f	// スピードキャラの移動速度
 #define BALANCEPLAYER_SPEED	18.0f	// バランスキャラの移動速度
 #define POWERPLAYER_SPEED	12.0f	// パワーキャラの移動速度
+#define SPEEDBLOWDISTANCE	50.0f	// スピードキャラの吹っ飛び距離
+#define BALANCEBLOWDISTANCE	75.0f	// バランスキャラの吹っ飛び距離
+#define POWERBLOWDISTANCE	100.0f	// パワーキャラの吹っ飛び距離
+
+// プレイヤーの攻撃時間
+#define SPEED_ATTACK_START		5.5f	// スピードキャラの攻撃開始時間
+#define SPEED_ATTACK_END		8.0f	// スピードキャラの攻撃終了時間
+#define BALANCE_ATTACK_START	18.5	// スピードキャラの攻撃開始時間
+#define BALANCE_ATTACK_END		21.5f	// スピードキャラの攻撃終了時間
+#define POWER_ATTACK_START		12.5f	// スピードキャラの攻撃開始時間
+#define POWER_ATTACK_END		21.0f	// スピードキャラの攻撃終了時間
 
 // ブロック
 #define MAX_BLOCK			640		// ブロックの最大数

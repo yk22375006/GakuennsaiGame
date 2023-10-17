@@ -54,16 +54,16 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 	Original[0].typestop[SPEEDMODE] = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_待機.mv1");
 
 	Original[0].type[BALANCEMODE] = MV1LoadModel("..\\Data\\Ninja\\忍者_バランス.mv1");
-	Original[0].typestop[BALANCEMODE] = MV1LoadModel("..\\Data\\Ninja\\忍者待機_バランス.mv1");
+	Original[0].typestop[BALANCEMODE] = MV1LoadModel("..\\Data\\Ninja\\忍者_バランス_待機.mv1");
 	
 	Original[0].type[POWERMODE] = MV1LoadModel("..\\Data\\Ninja\\忍者パワー.mv1");
-	Original[0].typestop[POWERMODE] = MV1LoadModel("..\\Data\\Ninja\\忍者待機_パワー.mv1");
+	Original[0].typestop[POWERMODE] = MV1LoadModel("..\\Data\\Ninja\\忍者_バランス_待機.mv1");
 
 	Original[1].type[SPEEDMODE] = MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無.mv1");
 	Original[1].typestop[SPEEDMODE] = MV1LoadModel("..\\Data\\Ninja\\白忍者_苦無_待機.mv1");
 
 	Original[1].type[BALANCEMODE] = MV1LoadModel("..\\Data\\Ninja\\忍者_バランス.mv1");
-	Original[1].typestop[BALANCEMODE] = MV1LoadModel("..\\Data\\Ninja\\忍者待機_バランス.mv1");
+	Original[1].typestop[BALANCEMODE] = MV1LoadModel("..\\Data\\Ninja\\忍者_バランス_待機.mv1");
 
 	Original[1].type[POWERMODE] = MV1LoadModel("..\\Data\\Ninja\\白忍者パワー.mv1");
 	Original[1].typestop[POWERMODE] = MV1LoadModel("..\\Data\\Ninja\\忍者待機_パワー.mv1");
@@ -83,19 +83,19 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 	player[1].anim.type[POWERMODE] = MV1DuplicateModel(Original[1].type[POWERMODE]);
 	player[1].anim.typestop[POWERMODE] = MV1DuplicateModel(Original[1].typestop[POWERMODE]);
 
-	Original[0].run = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");
-	Original[0].jump_in = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1.mv1");
-	Original[0].jump = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ中");
-	Original[0].fall = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_落下.mv1");
-	Original[0].attack = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_攻撃.mv1");
-	Original[0].damage = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ダメージ.mv1");
+	Original[0].run		= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_移動.mv1");
+	Original[0].jump_in	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1.mv1");
+	Original[0].jump	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ中");
+	Original[0].fall	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_落下.mv1");
+	Original[0].attack	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_攻撃.mv1");
+	Original[0].damage	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ダメージ.mv1");
 
-	Original[1].run = MV1LoadModel("..\\Data\\Ninja\\忍者走り_バランス.mv1");
-	Original[1].jump_in = MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1.mv1");
-	Original[1].jump = MV1LoadModel("..\\Data\\Ninja\\忍者ジャンプ_バランス");
-	Original[1].fall = MV1LoadModel("..\\Data\\Ninja\\忍者落下_バランス.mv1");
-	Original[1].attack = MV1LoadModel("..\\Data\\Ninja\\忍者攻撃_バランス.mv1");
-	Original[1].damage = MV1LoadModel("..\\Data\\Ninja\\忍者ダメージ_バランス.mv1");
+	Original[1].run		= MV1LoadModel("..\\Data\\Ninja\\忍者_バランス_移動.mv1");
+	Original[1].jump_in	= MV1LoadModel("..\\Data\\Ninja\\忍者_苦無_ジャンプ開始.mv1");
+	Original[1].jump	= MV1LoadModel("..\\Data\\Ninja\\忍者_バランス_ジャンプ中.mv1");
+	Original[1].fall	= MV1LoadModel("..\\Data\\Ninja\\忍者_バランス_落下.mv1");
+	Original[1].attack	= MV1LoadModel("..\\Data\\Ninja\\忍者_バランス_攻撃.mv1");
+	Original[1].damage	= MV1LoadModel("..\\Data\\Ninja\\忍者_バランス_ダメージ.mv1");
 
 	// スポットライト
 	LHandle_p1 = CreateSpotLightHandle(

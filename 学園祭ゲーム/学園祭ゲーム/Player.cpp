@@ -113,12 +113,12 @@ int Player::LoadAnimation(CharaBase* pp1) {
 			case BALANCEMODE:
 				pp1->anim.model		= MV1DuplicateModel(Original[0].type[BALANCEMODE]);
 				pp1->anim.stop		= MV1DuplicateModel(Original[0].typestop[BALANCEMODE]);		// 立ちアニメ
-				pp1->anim.run		= MV1DuplicateModel(Original[0].run);		// 走りアニメ
-				pp1->anim.jump_in	= MV1DuplicateModel(Original[0].jump_in);	// ジャンプ入り始めアニメ
-				pp1->anim.jump		= MV1DuplicateModel(Original[0].jump);		// ジャンプループアニメ
-				pp1->anim.fall		= MV1DuplicateModel(Original[0].fall);		// ジャンプループアニメ
-				pp1->anim.attack	= MV1DuplicateModel(Original[0].attack);	// 攻撃アニメ
-				pp1->anim.damage	= MV1DuplicateModel(Original[0].damage);	// 被ダメージアニメ
+				pp1->anim.run		= MV1DuplicateModel(Original[1].run);		// 走りアニメ
+				pp1->anim.jump_in	= MV1DuplicateModel(Original[1].jump_in);	// ジャンプ入り始めアニメ
+				pp1->anim.jump		= MV1DuplicateModel(Original[1].jump);		// ジャンプループアニメ
+				pp1->anim.fall		= MV1DuplicateModel(Original[1].fall);		// ジャンプループアニメ
+				pp1->anim.attack	= MV1DuplicateModel(Original[1].attack);	// 攻撃アニメ
+				pp1->anim.damage	= MV1DuplicateModel(Original[1].damage);	// 被ダメージアニメ
 				break;
 		}
 	}

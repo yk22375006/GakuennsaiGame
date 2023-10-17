@@ -19,8 +19,6 @@ class Block {
 	public:
 		int b_model;
 
-		void init();
-
 		// 位置情報
 		VECTOR GetBlockPosition() {
 			return b_posi;
@@ -57,12 +55,6 @@ class Block {
 		// マップ座標
 		POINT GetMapPosition() {
 			return b_Map;
-		}
-		int GetMapPositionX() {
-			return b_Map.x;
-		}
-		int GetMapPositionY() {
-			return b_Map.y;
 		}
 		void SetMapPosition(POINT set_b_map) {
 			b_Map = set_b_map;

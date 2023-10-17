@@ -5,8 +5,7 @@
 //								描画関数									//
 // ------------------------------------------------------------------------ //
 void Draw() {
-	char DrawScore1[10];
-	char DrawScore2[10];
+
 	// シャドウマップへの描画の準備
 	ShadowMap_DrawSetup(ShadowMapHandle);
 	// 描画に使用するシャドウマップを設定
@@ -40,13 +39,6 @@ void Draw() {
 			MV1DrawModel(m_block[blockcnt].b_model);
 		}
 	}
-
-	for (blockcnt = 0; blockcnt < 10; blockcnt++) {
-		if (m_block2[blockcnt].GetBlockFlag() == TRUE) {
-			MV1DrawModel(m_block2[blockcnt].b_model);
-		}
-	}
-
 
 	SetLightPositionHandle(LHandle_p1, VGet(player[0].GetPosition().x, player[0].GetPosition().y + 100.0f, player[0].GetPosition().z - 500.0f)); // ライトの位置
 	SetLightPositionHandle(LHandle_p2, VGet(player[1].GetPosition().x, player[1].GetPosition().y + 100.0f, player[1].GetPosition().z - 500.0f)); // ライトの位置

@@ -160,6 +160,7 @@
     <ClInclude Include="CharaBase.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="ConsoleWindow.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="StageData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -120,7 +120,7 @@ void Block::init() {
 
 	blockcnt = 0;
 	// マップデータを反映
-	for (int y = MAP_Y2; y >= 0; y--) {
+	for (int y = MAP_Y2 - 1; y >= 0; y--) {
 		for (int x = 0; x < MAP_X; x++) {
 			if (StageMap2[y][x] != 0) {
 				m_block2[blockcnt].b_model = MV1DuplicateModel(blockdate[INVINCIBLE_BLOCK]);
@@ -137,7 +137,7 @@ void Block::init() {
 	blockcnt = 0;
 
 	// 座標の配置
-	for (int y = MAP_Y2; y >= 0; y--) {
+	for (int y = MAP_Y2 - 1; y >= 0; y--) {
 		for (int x = 0; x < MAP_X; x++) {
 			if (StageMap2[y][x] != 0) {
 				MV1SetPosition(m_block2[blockcnt].b_model, VGet((x * 200.0f), ((MAP_Y2 - y) * 100.0f) +1000.0f , 0.0f));

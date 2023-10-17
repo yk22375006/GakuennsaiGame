@@ -24,14 +24,6 @@ void CameraMove() {
 	if (CheckHitKey(KEY_INPUT_Z) == 1) {
 		cpos.y -= 48.0f;
 	}
-
-	// カメラのスクロール
-//	cpos.y += 3.5f;
-
-	// カメラの注視点操作
-	ctgt.x = cpos.x;
-	ctgt.y = cpos.y - 200.0f;
-	ctgt.z = cpos.z + 1000.0f;
 }
 
 

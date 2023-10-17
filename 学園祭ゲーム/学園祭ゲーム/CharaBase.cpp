@@ -93,11 +93,14 @@ int CharaBase::MoveSet(CharaBase* pp1)
 			}
 			break ;
 	}
-	if (posi.x < (MIN_X + PLAYER_SIZE_W)&& spd.x < 0 )
-		spd.x = 0.0f;
-	if (posi.x > (MAX_X - PLAYER_SIZE_W) && spd.x > 0)
-		spd.x = 0.0f;
 
+	//‰¡‚ÌˆÚ“®§ŒÀ
+	if (gamemode != eScenePlay2) {
+		if (posi.x < (MIN_X + PLAYER_SIZE_W) && spd.x < 0)
+			spd.x = 0.0f;
+		if (posi.x > (MAX_X - PLAYER_SIZE_W) && spd.x > 0)
+			spd.x = 0.0f;
+	}
 	return( false ) ;
 }
 

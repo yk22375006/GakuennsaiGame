@@ -40,16 +40,21 @@
 #define CHOICESTAGE 1
 
 // プレイヤーモデルのサイズ
-#define PLAYER_SIZE_H	340.0f
-#define PLAYER_SIZE_W	80.0f
+#define PLAYER_SIZE_H	425.0f
+#define PLAYER_SIZE_W	200.0f
+
+//	プレイヤーのタイプ
+#define SPEEDMODE	0
+#define BALANCEMODE	1
+#define POWERMODE	2
 
 // プレイヤーの移動速度
 #define PLAYER_SPEED 12.0f
-#define PLAYER_JUMP_SPEED 50.0f
+#define PLAYER_JUMP_SPEED 63.0f
 #define PLAYER_FALL_SPEED 1.5f
 
 // ブロック
-#define MAX_BLOCK			600
+#define MAX_BLOCK			640
 #define BLOCK_TYPE			10
 #define BLOCK_TOP			100.0f
 #define BLOCK_X_SIZE		125.0f
@@ -57,9 +62,12 @@
 #define BREAK_BLOCK			2
 #define FALL_BLOCK			3
 #define INVINCIBLE_BLOCK	4
-#define MOVE_BLOCK			5
-#define NEEDLE_BLOCK		6
-#define WOOD_BLOCK			7
+#define NEEDLE_BLOCK		5
+#define WOOD_BLOCK			6
+#define MOVE_BLOCK_X		7
+#define MOVE_BLOCK_Y		8
+#define MOVE_BLOCK_Z		9
+#define BLOCK_MOVE_SPD		2.5f
 
 #define WEAPON_HEIGHT 110.0f
 #define WEAPON_WIDTH 6.0f
@@ -79,7 +87,7 @@
 #define CAMERA_ROTATE 200.0f
 
 // マップ
-#define MAP_Y 145
+#define MAP_Y 181
 #define MAP_X 16
 /* -----------------------------------------------------------------------------------------
 |
@@ -95,8 +103,11 @@ typedef struct
 	int damage;		// ダメージ中
 	int down;		// ダウン
 	int jump;		// ジャンプ
-	int jimp_in;	// ジャンプ入り
+	int jump_in;	// ジャンプ入り
 	int jump_out;	// ジャンプ終わり
+	int fall;		// 落下
+	int type[3];	// キャラタイプ別
+	int typestop[3];// キャラ別待機モーション
 } AnimationDate;
 
 /* -----------------------------------------------------------------------------------------
@@ -167,12 +178,8 @@ enum EnemyMode
 + --------------------------------------------------------------------------------------- */
 // --- アニメーション
 extern void AnimationPlayer(int);
-extern void AnimationEnemy(int);
 
 // --- プレイヤー
-
-// --- 武器
-extern void WeaponInit();
 
 // --- カメラの移動
 void CameraMove();
@@ -189,12 +196,12 @@ extern void Draw();
 extern ConsoleWindow g_cWin ;	
 
 // --- プレイヤー
-extern Player player[2];
-extern Player* g_Chara[2];
+extern Player player[12];
+extern Player* g_Chara[12];
+extern AnimationDate Original[3];
 
-// --- 武器
-
-
+extern int chara_type1;
+extern int chara_type2;
 
 // --- カメラ
 extern VECTOR cpos;
@@ -213,7 +220,6 @@ extern int stagedate;
 extern int skydate;
 extern int blockdate[BLOCK_TYPE];
 
-
 // ステージコリジョン情報
 extern int HitFlag;						// ブロックに当たったかどうかを記憶しておくのに使う変数( ０:当たっていない  １:当たった )
 extern HITRESULT_LINE LineBlock;
@@ -221,10 +227,13 @@ extern HITRESULT_LINE LineBlock;
 // キャラがヒットした床のポリゴン表示の座標
 extern float MaxY;
 
-// 足場ブロック
+// モデル
 extern int StageMap[MAP_Y][MAP_X];
 extern Block m_block[MAX_BLOCK];
 extern int blockcnt;
+extern int moon;
+extern int castle;
+extern int rizarut;
 
 // 背景
 extern int bgdate[BACKGROUNDTYPE];
@@ -233,9 +242,21 @@ extern int bg_tatami[BACKGROUNDFLOOR];
 // マトリックス
 extern MATRIX WeaponMatrix;
 
+// 連打制限
+extern int continuous_limit;
+extern int DrawLimit;
+
 // ライト
 extern int LHandle_p1;
 extern int LHandle_p2;
+extern float Range;
+extern float OutAngle;
+extern float InAngle;
+extern float C_DirectionX;
+extern float C_DirectionY;
+extern float C_DirectionZ;
+
+
 
 
 

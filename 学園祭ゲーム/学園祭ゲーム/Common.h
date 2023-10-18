@@ -56,8 +56,13 @@
 
 // プレイヤーの移動速度
 #define PLAYER_SPEED		12.0f	// 横軸の移動スピード
-#define PLAYER_JUMP_SPEED	63.0f	// ジャンプの初速
+#define SPEED_JUMP_SPEED	63.0f	// スピードキャラのジャンプの初速
+#define BALANCE_JUMP_SPEED	63.0f	// バランスキャラのジャンプの初速
+#define POWER_JUMP_SPEED	63.0f	// パワーキャラのジャンプの初速
 #define PLAYER_FALL_SPEED	1.5f	// 落下速度
+#define SPEED_FALL_SPEED	1.5f	// スピードキャラの落下速度
+#define BALANCE_FALL_SPEED	1.5f	// バランスキャラの落下速度
+#define POWER_FALL_SPEED	1.5f	// パワーキャラの落下速度
 #define SPEEDPLAYER_SPEED	24.0f	// スピードキャラの移動速度
 #define BALANCEPLAYER_SPEED	18.0f	// バランスキャラの移動速度
 #define POWERPLAYER_SPEED	12.0f	// パワーキャラの移動速度
@@ -68,13 +73,14 @@
 // プレイヤーの攻撃時間
 #define SPEED_ATTACK_START		5.5f	// スピードキャラの攻撃開始時間
 #define SPEED_ATTACK_END		8.0f	// スピードキャラの攻撃終了時間
-#define BALANCE_ATTACK_START	18.5	// スピードキャラの攻撃開始時間
-#define BALANCE_ATTACK_END		21.5f	// スピードキャラの攻撃終了時間
-#define POWER_ATTACK_START		12.5f	// スピードキャラの攻撃開始時間
-#define POWER_ATTACK_END		21.0f	// スピードキャラの攻撃終了時間
+#define BALANCE_ATTACK_START	10.0f	// スピードキャラの攻撃開始時間
+#define BALANCE_ATTACK_END		12.5f	// スピードキャラの攻撃終了時間
+#define POWER_ATTACK_START		9.00f	// スピードキャラの攻撃開始時間
+#define POWER_ATTACK_END		14.5f	// スピードキャラの攻撃終了時間
 
 // ブロック
-#define MAX_BLOCK			640		// ブロックの最大数
+#define MAX_BLOCK			660		// ブロックの最大数
+#define MAX_BLOCK2			12		// ステージ2のブロック最大数
 #define BLOCK_TYPE			10		// ブロックの種類
 #define BLOCK_TOP			100.0f	// ブロックの高さ
 #define BLOCK_X_SIZE		125.0f	// ブロックの横幅二分の一
@@ -95,7 +101,7 @@
 // 背景
 #define BACKGROUNDTYPE		5	// 
 #define BACKGROUNDTATAMI	0	// 
-#define BACKGROUNDFLOOR		18	// 背景のブロックの種類階層数
+#define BACKGROUNDFLOOR		19	// 背景のブロックの種類階層数
 
 // プレイヤーの移動攻撃時の加速
 #define Player_ATTACK_SPEED 16.0f
@@ -112,15 +118,13 @@
 #define BLOWLEFT	2	// 左に吹っ飛ぶ
 
 // マップ
-#define MAP_Y 181		// ブロックの縦の数
+#define MAP_Y 190		// ブロックの縦の数
 #define MAP_X 16		// ブロックの横の数
-#define MIN_X 70.0f		// マップ上で最も左の座標
-#define MAX_X 2930.0f	// マップ上で最も右の座標
-#define MAP_Y 181
-#define MAP_X 16
+#define MIN_X 80.0f		// マップ上で最も左の座標
+#define MAX_X 2920.0f	// マップ上で最も右の座標
 
 #define MAP_Y2 13
-
+#define MAX_MOB 5
 /* -----------------------------------------------------------------------------------------
 |
 |       構造体宣言
@@ -206,16 +210,11 @@ enum EnemyMode
 |       プロトタイプ宣言
 |
 + --------------------------------------------------------------------------------------- */
-// --- アニメーション
-extern void AnimationPlayer(int);
-
-// --- プレイヤー
-
-// --- カメラの移動
-void CameraMove();
-
 // --- 描画
-extern void Draw();
+void Draw();
+
+void MobInit();
+void MobDraw();
 
 /* -----------------------------------------------------------------------------------------
 |
@@ -233,14 +232,16 @@ extern Player* g_Chara[2];
 extern AnimationDate Original[3];
 extern int CharaIcon[2];
 
+// モブ
+extern MOBChara mob[MAX_MOB];
+
 // --- カメラ
 extern VECTOR cpos;
 extern VECTOR ctgt;
 extern VECTOR cadd;
 
 // --- キー入力
-extern int key1;
-extern int key2;
+extern int key[2];
 
 // シャドウマップハンドル
 extern int ShadowMapHandle;
@@ -269,6 +270,8 @@ extern int blockcnt;
 extern int moon;	// 月
 extern int castle;	// 城
 extern int roof;	// 屋根
+extern int bg_roof;	// 背景屋根
+extern int rizarut;	// 表彰台
 
 // 背景
 extern int bgdate[BACKGROUNDTYPE];
@@ -278,7 +281,6 @@ extern int bg_tatami[BACKGROUNDFLOOR];
 extern MATRIX WeaponMatrix;
 
 // 連打制限
-extern int continuous_limit;
 extern int DrawLimit;
 
 // --- 死去数

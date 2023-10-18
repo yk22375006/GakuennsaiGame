@@ -19,6 +19,14 @@ class Block {
 	public:
 		int b_model;
 
+		// ブロック
+		Block();
+		~Block();
+		void init();
+		void BlockMove(Block* bb);
+		void BlockFall(Block* bb);
+
+
 		// 位置情報
 		VECTOR GetBlockPosition() {
 			return b_posi;
@@ -97,12 +105,5 @@ class Block {
 		void SetMoveBlodkFlag(bool set_b_move_flg) {
 			b_move_flg = set_b_move_flg;
 		}
-
-		// ブロック
-		Block();
-		~Block();
-		void init();
-		void BlockMove( Block *bb);
-
 };
 

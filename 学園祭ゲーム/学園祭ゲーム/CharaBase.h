@@ -22,7 +22,20 @@ enum Direction {
 	RIGHT ,		// 右向き
 } ;
 
-
+typedef struct
+{
+	VECTOR pos;					// 位置情報
+	int use_flg;				// 使用フラグ
+	float direction;			// 方向
+	int motion;					// 現在のアニメモーション
+	int anim_attach;			// 現在のアニメーションを格納
+	float anim_time;			// アニメーションの総時間を格納
+	float play_time;			// アニメーションの再生時間
+	int rootflm;				// アニメーション+移動可能にする
+	int number;					// プレイヤー番号
+	int type;					// キャラのタイプ
+	AnimationDate anim;			// アニメーションデータ	
+}MOBChara;
 
 class CharaBase {
 	protected :
@@ -44,11 +57,14 @@ class CharaBase {
 		int type;					// キャラのタイプ
 		int blowdirection;			// 吹っ飛び方向の指定
 		int score;					// 死亡回数
+		int repeated_limit;			//
 		float attack_time_start;	// 攻撃開始時間
 		float attack_time_end;		// 攻撃終了時間
 		float attack_middle_range;	// 攻撃の中間距離
 		float attack_range;			// 攻撃の距離
 		float blowdistance;			// 吹っ飛び距離
+		float initial_velocity;		// 
+		float gravity;				// 
 		bool selectflg;				// キャラの選択
 		bool damageflg;				// ダメージを食らっている
 		bool block_damage;			// ブロックにあたった
@@ -262,6 +278,24 @@ class CharaBase {
 			score++;
 		}
 
+		// 連打制限
+		int GetRepeatedLimit() {
+			return repeated_limit;
+		}
+
+		void SetRepeatedLimit(int set_continuous_limit) {
+			repeated_limit = set_continuous_limit;
+		}
+
+		void RepeatedProces(CharaBase *pp1) {
+			if (pp1->repeated_limit > 0) {
+				pp1->repeated_limit--;
+			}
+			if (pp1->repeated_limit < 0) {
+				pp1->repeated_limit = 0;
+			}
+		}
+
 		// 攻撃開始時間
 		float GetAttackTimeStart() {
 			return attack_time_start;
@@ -304,6 +338,23 @@ class CharaBase {
 		}
 		void SetBlowDistance(float set_blowdistance) {
 			blowdistance = set_blowdistance;
+		}
+
+		// ジャンプ時の初速
+		float GetInitialVelocity() {
+			return initial_velocity;
+		}
+
+		void SetInitialVelocity(float set_initial_velocity) {
+			initial_velocity = set_initial_velocity;
+		}
+
+		float GetGravity() {
+			return gravity;
+		}
+
+		void SetGravity(float set_gravity) {
+			gravity = set_gravity;
 		}
 
 		// 被ダメージのフラグ

@@ -34,6 +34,7 @@ void Block::init() {
 		bg_tatami[i] = MV1DuplicateModel(bgdate[BACKGROUNDTATAMI]);
 		MV1SetPosition(bg_tatami[i], VGet(1500.0f, 100.0f + (i * 1000.0f), 100.0f));
 	}
+	MV1SetPosition(bg_roof, VGet(1500.0f, 19000.0f, -140.0f));
 	blockcnt = 0;
 	// マップデータを反映
 	for (int y = MAP_Y - 1; y >= 0; y--) {

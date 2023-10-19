@@ -485,7 +485,7 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 				ClearDrawScreen();
 
 				// îwåi(ãÛ)ÇÃëÄçÏ
-				MV1SetPosition(skydate, skypos);
+				skypos.x = cpos.x;
 				skypos.y = cpos.y - 3000.0f;
 				skypos.z = cpos.z;
 
@@ -498,7 +498,7 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 				MV1SetPosition(player[0].anim.model, player[0].GetPosition());
 				MV1SetPosition(player[1].anim.model, player[1].GetPosition());
 
-			MV1SetPosition(skydate, skypos);
+				MV1SetPosition(skydate, skypos);
 
 				// ï`âÊ
 				Draw();
@@ -524,11 +524,24 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 						DrawString(920, 400, "2", GetColor(255, 0, 0), GetColor(0, 0, 0));
 					}
 					if (timediff / 1000000 <= 92 && timediff / 1000000 > 91) {
+						DrawString(920, 400, "1", GetColor(255, 0, 0), GetColor(0, 0, 0));
+					}
+					if (timediff / 1000000 <= 91) {
+						DrawString(600, 350, "ÇÕÇ∂Çﬂ!!", GetColor(255, 0, 0), GetColor(0, 0, 0));
+					}
+				}
+
+				if (DrawLimit > 0)
+					DrawLimit--;
+
+				if (DrawLimit < 0)
+					DrawLimit = 0;
+
 				// --- âÊñ êÿÇËë÷Ç¶èàóù
 				if (GamemodeChenge_flg == 1) {
 					x += 30;
 					x1 += 20;
-					}
+
 					if (x >= 1500 && x <= 3000) {
 						DrawBox(0, 0, 1920, 1080, GetColor(0, 0, 0), TRUE);
 
@@ -806,10 +819,6 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 				//DrawGraph(0, 0, BmpDate[6], TRUE);
 				ScreenFlip();
 				break;
-			}
-
-			ScreenFlip();
-			break;
 		}
 	}
 

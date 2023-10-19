@@ -52,7 +52,6 @@ int CharaBase::MoveSet(CharaBase* pp1)
 	{
 		case PAD_INPUT_C :
 			if (act_mode != eCharaFall) {
-				posi.y = posi.y + 11.0f;
 				act_mode = eCharaJump;
 			}
 			break ;
@@ -70,7 +69,7 @@ int CharaBase::MoveSet(CharaBase* pp1)
 			break ;
 
 		case (PAD_INPUT_LEFT + PAD_INPUT_C):
-			spd.x = -PLAYER_SPEED; // 右を押下 右に移動
+			spd.x = -pp1->GetMoveSpeed(); // 右を押下 右に移動
 			if (act_mode != eCharaFall) {
 				posi.y = posi.y + 11.0f;
 				switch (type) {
@@ -91,7 +90,7 @@ int CharaBase::MoveSet(CharaBase* pp1)
 			break ;
 
 		case (PAD_INPUT_RIGHT + PAD_INPUT_C):
-			spd.x = PLAYER_SPEED; // 右を押下 右に移動
+			spd.x = pp1->GetMoveSpeed(); // 右を押下 右に移動
 			if (act_mode != eCharaFall) {
 				posi.y = posi.y + 11.0f;
 				switch (type) {
@@ -111,11 +110,14 @@ int CharaBase::MoveSet(CharaBase* pp1)
 			}
 			break ;
 	}
-	if (posi.x < (100.0f + PLAYER_SIZE_W)&& spd.x < 0 )
-		spd.x = 0.0f;
-	if (posi.x > (2900.0f - PLAYER_SIZE_W) && spd.x > 0)
-		spd.x = 0.0f;
 
+	//横の移動制限
+	if (gamemode != eScenePlay2) {
+		if (posi.x < (MIN_X + PLAYER_SIZE_W) && spd.x < 0)
+			spd.x = 0.0f;
+		if (posi.x > (MAX_X - PLAYER_SIZE_W) && spd.x > 0)
+			spd.x = 0.0f;
+	}
 	return( false ) ;
 }
 

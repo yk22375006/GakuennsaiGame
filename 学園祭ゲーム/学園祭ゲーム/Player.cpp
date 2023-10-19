@@ -206,19 +206,9 @@ int Player::Animation(CharaBase* pp1)
 	}
 	// アニメーション再生時間と同期させる
 	MV1SetAttachAnimTime(pp1->GetAnimation_Data().model, pp1->GetAnim_Attach(), pp1->GetPlay_Time());
-		
+
 	return(false);
 }
-
-/*int Player::Animation(MOB* pmb) {
-	if (pmb->GetPlay_Time() > pmb->GetAnim_Time()) {
-		pmb->SetPlay_Time(0.0f);
-	}
-	// アニメーション再生時間と同期させる
-	MV1SetAttachAnimTime(pmb->GetAnimation_Data().model, pmb->GetAnim_Attach(), pmb->GetPlay_Time());
-	return ;
-}*/
-
 
 /* ======================================================== +
  |                     ChangeAnimation( )                   |
@@ -310,11 +300,6 @@ void Player::CharaChoice(CharaBase* pp1) {
 	}
 }
 
-void Player::CharaRizarut(CharaBase* pp1) {
-	
-	pp1->SetDirection(DOWN);
-	ChangeAnimationType(pp1, pp1->anim.typestop[pp1->GetType()]);
-}
 /* ############################################################################################### */
 /* ======================================================== +
  |                       CharaStop( )                       |
@@ -347,9 +332,6 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 
 	// 移動量を加える
 	pp1->SetPosition(VAdd(pp1->GetPosition(), pp1->GetSpeed()));
-
-	// 移動量セット
-//	pp1->MoveSet( ) ;
 
 	// Aが△
 	// Bが○

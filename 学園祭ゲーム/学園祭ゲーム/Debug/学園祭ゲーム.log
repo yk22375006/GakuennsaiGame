@@ -1,13 +1,4 @@
-﻿  Animation.cpp
-  Block.cpp
-  Camera.cpp
-  CharaBase.cpp
-  Common.cpp
-  ConsoleWindow.cpp
-  Draw.cpp
-  Player.cpp
-  Weapon.cpp
+﻿  Player.cpp
   WinMain.cpp
   コードを生成中...
-  LINK : 前回のインクリメンタル リンクで C:\Users\koyama\Desktop\学園祭かも\学園祭ゲーム\Debug\学園祭ゲーム.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
   学園祭ゲーム.vcxproj -> C:\Users\koyama\Desktop\学園祭かも\学園祭ゲーム\Debug\学園祭ゲーム.exe

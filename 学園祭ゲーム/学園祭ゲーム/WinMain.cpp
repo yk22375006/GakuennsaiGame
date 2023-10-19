@@ -5,7 +5,8 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 
 	int ScreenHandle;
 	int Gauss = 0;			//ガウスフィルタ大きさ
-	int BmpDate[7];			// ＢＭＰ画像のメモリへの読みこみ
+	int BmpDate[8];			// ＢＭＰ画像のメモリへの読みこみ
+	int SE_flg[4] = { 0,0,0,0 };
 
 	float camera_direction = 0.0f;
 
@@ -44,9 +45,14 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 
 	//月モデルの読み込み
 	moon = MV1LoadModel("..\\Data\\Stage\\moon.mv1");
+
 	//城モデルの読み込み
-	castle = MV1LoadModel("..\\Data\\japanese-castle\\source\\japanese castle 2.mv1");
-	//城モデルの読み込み
+	castle = MV1LoadModel("..\\Data\\japanese-castle\\城.mv1");
+	if (castle == -1) {
+		return -1;
+	}
+
+	//屋根モデルの読み込み
 	roof = MV1LoadModel("..\\Data\\Stage\\瓦.mv1");
 
 	// 
@@ -116,8 +122,8 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 	SetLightDirection(VGet(0.0f, -0.5f, 0.5f));
 	ShadowMapHandle = MakeShadowMap(1024, 2048);
 
-	// ライトの色　黒
-	SetLightDifColor(GetColorF(0.5f, 0.5f, 0.5f, 0.0f));
+	// ライトの色 白
+	SetLightDifColor(GetColorF(1.0f, 1.0f, 1.0f, 0.0f));
 
 	// シャドウマップが想定するライトの方向もセット
 	SetShadowMapLightDirection(ShadowMapHandle, VGet(0.0f, 0.0f, 0.5f));
@@ -133,7 +139,7 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 	//月 初期セット
 	MV1SetPosition(moon, VGet(600.0f, 1000.0f, 1000.0f));
 	//城 初期セット
-	MV1SetPosition(castle, VGet(3000.0f, 170.0f, 3000.0f));
+	MV1SetPosition(castle, VGet(3000.0f, 300.0f, 3000.0f));
 	MV1SetRotationXYZ(castle, VGet(0.0f, 1.57f * 1.3f, 0.0f));
 	//屋根 初期セット
 	MV1SetPosition(roof, VGet(1550.0f, -1000.0f, 700.0f));
@@ -146,6 +152,18 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 	BmpDate[4] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト5.png");
 	BmpDate[5] = LoadGraph("..\\Data\\Stage\\金箔雲エフェクト6.png");
 	BmpDate[6] = LoadGraph("..\\Data\\Stage\\milky2.jpg");
+	BmpDate[7] = LoadGraph("..\\Data\\Stage\\makimono.png");
+
+	//音楽ファイル読み込み
+	SHandle[TITLE_BGM] = LoadSoundMem("..\\Data\\Sound\\BGM\\TitleBGM.ogg");
+	SHandle[GAME_BGM] = LoadSoundMem("..\\Data\\Sound\\BGM\\GameBGM.ogg");
+	SHandle[GAME2_BGM] = LoadSoundMem("..\\Data\\Sound\\BGM\\GameBGM2.ogg");
+	//	SHandle[RESULT_BGM] = LoadSoundMem("..\\Data\\Sound\\BGM\\GameBGM.mp3");
+	SHandle[GAMESTARTBUTTON_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\GameStartButton.mp3");
+	SHandle[MAPCHENGE_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\MapChange.mp3");
+	SHandle[TAIKO1_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\Taiko1.mp3");
+	SHandle[TAIKO2_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\Taiko2.mp3");
+	SHandle[BLOCKBREAK_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\BlockBreak.mp3");
 
 	/* ------------------------------------------------------------------------------------------------
 												ゲームループ
@@ -166,12 +184,20 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 			//カメラ情報の反映
 			SetCameraPositionAndTargetAndUpVec(cpos, ctgt, VGet(0.0f, 1.0f, 0.0f));
 
+			MobInit();
+
 			g_Chara[0] = &player[0];
 			g_Chara[1] = &player[1];
+
+			player[0].LoadSE(g_Chara[0]);
+			player[1].LoadSE(g_Chara[1]);
 
 			gamemode = eSceneTitle;
 			DrawLimit = 0;
 			continuous_limit = 0;
+
+			// BGMの再生
+			PlaySoundMem(SHandle[TITLE_BGM], DX_PLAYTYPE_LOOP, TRUE);
 			break;
 			// ------------------------------------------------------------------------ //
 			//																			//
@@ -186,6 +212,12 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 			MV1DrawModel(stagedate);
 			MV1DrawModel(moon);
 			MV1DrawModel(castle);
+			MobDraw();
+
+			DrawGraph(300, 50, BmpDate[7], TRUE);
+			SetFontSize(200);
+			ChangeFont("HGS行書体");
+			DrawString(450, 120, "攻城忍法帖", GetColor(252, 0, 0));
 
 			ScreenFlip();
 			key1 = GetJoypadInputState(DX_INPUT_KEY_PAD1);
@@ -196,6 +228,8 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 				player[1].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
 				player[0].ChangeAnimationType(g_Chara[0], player[0].anim.typestop[player[0].GetType()]);
 				player[1].ChangeAnimationType(g_Chara[1], player[1].anim.typestop[player[1].GetType()]);
+				// BGMの再生
+				PlaySoundMem(SHandle[TAIKO1_SE], DX_PLAYTYPE_BACK, TRUE);
 			}
 			if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
 				gamemode = eSceneChoice;
@@ -204,8 +238,11 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 				player[1].SetPosition(VGet(3000.0f, 200.0f, 500.0f));
 				player[0].ChangeAnimationType(g_Chara[0], player[0].anim.typestop[player[0].GetType()]);
 				player[1].ChangeAnimationType(g_Chara[1], player[1].anim.typestop[player[1].GetType()]);
+				// BGMの再生
+				PlaySoundMem(SHandle[TAIKO1_SE], DX_PLAYTYPE_BACK, TRUE);
 			}
 			break;
+
 			// ------------------------------------------------------------------------ //
 			//																			//
 			//								キャラ選択画面　							//
@@ -223,6 +260,9 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 			key2 = GetJoypadInputState(DX_INPUT_PAD2);
 			if (((key1 & PAD_INPUT_B) || (CheckHitKey(KEY_INPUT_RETURN) == 1)) && GamemodeChenge_flg != 1 &&
 				player[0].GetSelectFlg() == TRUE && player[1].GetSelectFlg() == TRUE) {
+				// SEの再生
+				PlaySoundMem(SHandle[GAMESTARTBUTTON_SE], DX_PLAYTYPE_BACK, TRUE);
+
 				GamemodeChenge_flg = 1;
 				x = 0;
 				x1 = 0;
@@ -275,17 +315,26 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 					break;
 				}
 			}
-			if (CheckHitKey(KEY_INPUT_I) == 1 || key1 & PAD_INPUT_B)
+			if (CheckHitKey(KEY_INPUT_I) == 1 || key1 & PAD_INPUT_B) {
 				player[0].SetSelectFlg(TRUE);
-
-			if (CheckHitKey(KEY_INPUT_O) == 1 || key2 & PAD_INPUT_B)
+				// SEの再生
+				PlaySoundMem(player[0].SoundHandle[CHARA_DECISION_SE], DX_PLAYTYPE_BACK, TRUE);
+			}
+			if (CheckHitKey(KEY_INPUT_O) == 1 || key2 & PAD_INPUT_B) {
 				player[1].SetSelectFlg(TRUE);
-
-			if ((CheckHitKey(KEY_INPUT_K) == 1 || key1 & PAD_INPUT_C) && player[0].GetSelectFlg() == TRUE)
+				// SEの再生
+				PlaySoundMem(player[1].SoundHandle[CHARA_DECISION_SE], DX_PLAYTYPE_BACK, TRUE);
+			}
+			if ((CheckHitKey(KEY_INPUT_K) == 1 || key1 & PAD_INPUT_C) && player[0].GetSelectFlg() == TRUE) {
 				player[0].SetSelectFlg(FALSE);
-
-			if ((CheckHitKey(KEY_INPUT_L) == 1 || key2 & PAD_INPUT_C) && player[1].GetSelectFlg() == TRUE)
+				// SEの再生
+				PlaySoundMem(player[0].SoundHandle[CANCEL_SE], DX_PLAYTYPE_BACK, TRUE);
+			}
+			if ((CheckHitKey(KEY_INPUT_L) == 1 || key2 & PAD_INPUT_C) && player[1].GetSelectFlg() == TRUE) {
 				player[1].SetSelectFlg(FALSE);
+				// SEの再生
+				PlaySoundMem(player[1].SoundHandle[CANCEL_SE], DX_PLAYTYPE_BACK, TRUE);
+			}
 
 			g_Chara[0]->CharaChoice(g_Chara[0]);
 			g_Chara[1]->CharaChoice(g_Chara[1]);
@@ -335,7 +384,6 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 
 			if (player[0].GetPosition().x <= 1930) {
 				SetFontSize(128);
-				ChangeFont("HGS行書体");
 				if (player[0].GetSelectFlg() == FALSE) {
 					DrawString(130, 70, "プレイヤー１", GetColor(252, 0, 0));
 					DrawString(100, 380, "<", GetColor(252, 0, 0));
@@ -394,8 +442,21 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 					// 描画
 					Draw();
 				}
+				if (SE_flg[0] == 0) {
+					PlaySoundMem(SHandle[MAPCHENGE_SE], DX_PLAYTYPE_BACK, TRUE);
+					// BGMの停止
+					StopSoundMem(SHandle[TITLE_BGM]);
+					SE_flg[0] = 1;
+				}
 				if (x >= 4500) {
 					timelimit = GetNowHiPerformanceCount() + 96000000;
+
+					// ライトの色　黒
+					SetLightDifColor(GetColorF(0.5f, 0.5f, 0.5f, 0.0f));
+
+					StopSoundMem(SHandle[MAPCHENGE_SE]);
+
+					SE_flg[0] = 0;
 					GamemodeChenge_flg = 0;
 					gamemode = eScenePlay1;
 				}
@@ -483,6 +544,12 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 				DrawString(900, 50, drawtime, GetColor(0, 0, 0));
 				SetFontSize(120);
 				DrawString(900, 50, drawtime, GetColor(255, 255, 0));
+
+				if (SE_flg[0] == 0) {
+					// BGMの再生
+					PlaySoundMem(SHandle[GAME_BGM], DX_PLAYTYPE_LOOP, TRUE);
+					SE_flg[0] = 1;
+				}
 			}
 			else {
 				//制限時間を開始まで90秒で固定
@@ -494,15 +561,39 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 				SetFontSize(210);
 				if (timediff / 1000000 <= 94 && timediff / 1000000 > 93) {
 					DrawString(920, 400, "3", GetColor(255, 0, 0), GetColor(0, 0, 0));
+					if (SE_flg[0] == 0) {
+						// BGMの再生
+						PlaySoundMem(SHandle[TAIKO1_SE], DX_PLAYTYPE_BACK, TRUE);
+						SE_flg[0] = 1;
+					}
 				}
 				if (timediff / 1000000 <= 93 && timediff / 1000000 > 92) {
 					DrawString(920, 400, "2", GetColor(255, 0, 0), GetColor(0, 0, 0));
+					// BGMの再生
+					if (SE_flg[1] == 0) {
+						// BGMの再生
+						PlaySoundMem(SHandle[TAIKO1_SE], DX_PLAYTYPE_BACK, TRUE);
+						SE_flg[1] = 1;
+					}
 				}
 				if (timediff / 1000000 <= 92 && timediff / 1000000 > 91) {
 					DrawString(920, 400, "1", GetColor(255, 0, 0), GetColor(0, 0, 0));
+					// BGMの再生
+					if (SE_flg[2] == 0) {
+						// BGMの再生
+						PlaySoundMem(SHandle[TAIKO1_SE], DX_PLAYTYPE_BACK, TRUE);
+						SE_flg[2] = 1;
+					}
 				}
 				if (timediff / 1000000 <= 91) {
 					DrawString(600, 350, "はじめ!!", GetColor(255, 0, 0), GetColor(0, 0, 0));
+					// BGMの再生
+					if (SE_flg[3] == 0) {
+						// BGMの再生
+						PlaySoundMem(SHandle[TAIKO2_SE], DX_PLAYTYPE_BACK, TRUE);
+						SE_flg[3] = 1;
+						SE_flg[0] = 0;
+					}
 				}
 			}
 
@@ -527,6 +618,8 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 					cpos = VGet(1484.0f, 2100.0f, -1700.0f);
 					ctgt = VGet(1484.0f, 2100.0f, -1500.0f);
 					MV1SetPosition(moon, VGet(0.0f, 3000.0f, 1000.0f));
+
+					SE_flg[0] = 0;
 
 					for (int i = 0; i <= MAX_BLOCK - 1; i++) {
 						m_block[i].SetBlockFlag(FALSE);
@@ -581,10 +674,25 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 					DrawString(20, 150, "???", GetColor(255, 255, 0));
 					DrawString(1670, 150, "???", GetColor(255, 255, 0));
 				}
+				if (SE_flg[0] == 0) {
+					PlaySoundMem(SHandle[MAPCHENGE_SE], DX_PLAYTYPE_BACK, TRUE);
+					SE_flg[0] = 1;
+				}
 				if (x >= 4500) {
-					// ライトの色　黒
+					// ライトの色 白
 					SetLightDifColor(GetColorF(1.0f, 1.0f, 1.0f, 0.0f));
 					timelimit = GetNowHiPerformanceCount() + 20000000;
+
+					// BGMの再生
+					PlaySoundMem(SHandle[GAME2_BGM], DX_PLAYTYPE_LOOP, TRUE);
+					// BGMの停止
+					StopSoundMem(SHandle[GAME_BGM]);
+					StopSoundMem(SHandle[MAPCHENGE_SE]);
+
+					SE_flg[0] = 0;
+					SE_flg[1] = 0;
+					SE_flg[2] = 0;
+					SE_flg[3] = 0;
 					gamemode = eScenePlay2;
 				}
 
@@ -698,6 +806,13 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE hP, LPSTR lpC, int nC) {
 				DrawString(850 - (FontSize * 2), 400, "そこまで!!", GetColor(255, 0, 0), GetColor(0, 0, 0));
 				if (FontSize <= 200)
 					FontSize += 10;
+
+				if (SE_flg[3] == 0 && FontSize >= 200) {
+					// BGMの再生
+					PlaySoundMem(SHandle[TAIKO2_SE], DX_PLAYTYPE_BACK, TRUE);
+					SE_flg[3] = 1;
+					SE_flg[0] = 0;
+				}
 			}
 			else if (timediff / 1000000 <= 3 ) {
 				DrawString(900, 50, drawtime, GetColor(0, 0, 0));

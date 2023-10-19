@@ -150,6 +150,7 @@
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="ConsoleWindow.cpp" />
     <ClCompile Include="Draw.cpp" />
+    <ClCompile Include="MobChara.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="WinMain.cpp" />

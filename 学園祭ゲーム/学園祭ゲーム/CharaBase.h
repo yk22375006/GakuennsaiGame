@@ -22,6 +22,20 @@ enum Direction {
 	RIGHT ,		// 右向き
 } ;
 
+typedef struct
+{
+	VECTOR pos;					// 位置情報
+	int use_flg;				// 使用フラグ
+	float direction;			// 方向
+	int motion;					// 現在のアニメモーション
+	int anim_attach;			// 現在のアニメーションを格納
+	float anim_time;			// アニメーションの総時間を格納
+	float play_time;			// アニメーションの再生時間
+	int rootflm;				// アニメーション+移動可能にする
+	int number;					// プレイヤー番号
+	int type;					// キャラのタイプ
+	AnimationDate anim;			// アニメーションデータ	
+}MOBChara;
 
 
 class CharaBase {
@@ -56,6 +70,7 @@ class CharaBase {
 		int init( ) ;				// 初期セット
 		int MoveSet(CharaBase* pp1) ;			// 移動量をセット
 		AnimationDate anim ;		// アニメーションデータ
+		int SoundHandle[10];
 
 		// --- インライン関数 ---
 		// 使用フラグ取得セット

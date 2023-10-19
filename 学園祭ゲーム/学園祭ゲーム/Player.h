@@ -19,6 +19,7 @@ class Player : public CharaBase {
 		int ChangeAnimation( CharaBase *pp1 , int set_anim ) ;	// アニメーション切り替え
 		int AnimationType(CharaBase* pp1);						// タイプ別アニメーション再生
 		int ChangeAnimationType(CharaBase* pp1, int set_anim);	// タイプ別アニメーション切り替え
+		void LoadSE(CharaBase* pp1);				// アニメーション読み込み
 
 		// キャラチョイス
 		void CharaChoice(CharaBase* pp1) ;						// キャラ選択

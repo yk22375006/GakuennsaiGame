@@ -66,6 +66,9 @@ Player* g_Chara[2];
 AnimationDate Original[3];
 int CharaIcon[2];
 
+//モブ
+MOBChara mob[MAX_MOB];
+
 // --- カメラ
 VECTOR cpos;
 VECTOR ctgt;
@@ -87,6 +90,7 @@ char drawtime[10];
 // ライト
 int LHandle_p1;
 int LHandle_p2;
+int LightHandle3;
 
 float Range;
 float OutAngle;
@@ -94,6 +98,9 @@ float InAngle;
 float C_DirectionX;
 float C_DirectionY;
 float C_DirectionZ;
+
+//音楽保存用
+int SHandle[MAX_BGM];
 
 // 床
 float MaxY;
@@ -301,16 +308,6 @@ int StageMap2[MAP_Y2][MAP_X] = {
 |       グローバル関数の実装部
 |
 + --------------------------------------------------------------------------------------- */
-
-// --- アニメーション
-void AnimationInit();
-void AnimationPlayer(int);
-
-// --- カメラの移動
-void CameraMove();
-
-// --- 描画
-void Draw();
 
 
 

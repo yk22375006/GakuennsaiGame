@@ -110,6 +110,31 @@
 
 #define MAP_Y2 13
 
+#define MAX_MOB 5
+
+//音楽識別
+#define MAX_BGM				20
+#define TITLE_BGM			0
+#define GAME_BGM			1
+#define GAME2_BGM			2
+#define RESULT_BGM			3
+#define GAMESTARTBUTTON_SE	4
+#define MAPCHENGE_SE		5
+#define TAIKO1_SE			6
+#define TAIKO2_SE			7
+#define BLOCKBREAK_SE			8
+
+#define CHARA_CHENGE_SE		 0
+#define CHARA_DECISION_SE	 1
+#define CANCEL_SE			 2
+#define SPEEDATAACK_SE		 3
+#define POWERATAACK_SE		 4
+#define BALANCEATAACK_SE	 5
+#define JUMP_SE				 6
+
+
+
+
 /* -----------------------------------------------------------------------------------------
 |
 |       構造体宣言
@@ -196,15 +221,16 @@ enum EnemyMode
 |
 + --------------------------------------------------------------------------------------- */
 // --- アニメーション
-extern void AnimationPlayer(int);
-
-// --- プレイヤー
+void AnimationPlayer(int);
 
 // --- カメラの移動
 void CameraMove();
 
 // --- 描画
-extern void Draw();
+void Draw();
+
+void MobInit();
+void MobDraw();
 
 /* -----------------------------------------------------------------------------------------
 |
@@ -221,6 +247,9 @@ extern Player player[2];
 extern Player* g_Chara[2];
 extern AnimationDate Original[3];
 extern int CharaIcon[2];
+
+//モブ
+extern MOBChara mob[MAX_MOB];
 
 // --- カメラ
 extern VECTOR cpos;
@@ -282,6 +311,8 @@ extern char drawtime[10];
 // ライト
 extern int LHandle_p1;
 extern int LHandle_p2;
+extern int LightHandle3;
+
 extern float Range;
 extern float OutAngle;
 extern float InAngle;
@@ -289,6 +320,8 @@ extern float C_DirectionX;
 extern float C_DirectionY;
 extern float C_DirectionZ;
 
+//音楽保存用
+extern int SHandle[MAX_BGM];
 
 
 

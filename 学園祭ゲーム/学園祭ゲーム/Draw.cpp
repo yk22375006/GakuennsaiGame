@@ -23,21 +23,28 @@ void Draw() {
 	MV1DrawModel(stagedate);
 	
 	for (int i = 0; i < BACKGROUNDFLOOR; i++) {
-		MV1DrawModel(bg_tatami[i]);
+		if (cpos.y - MV1GetPosition(bg_tatami[i]).y > -1500.0f)
+			MV1DrawModel(bg_tatami[i]);
 	}
+//	if (cpos.y - MV1GetPosition(bg_roof).y > -1500.0f)
+		MV1DrawModel(bg_roof);
 
 	blockcnt = 0;
 	for (blockcnt = 0; blockcnt < MAX_BLOCK; blockcnt++) {
-		if (m_block[blockcnt].GetBlockFlag() == TRUE) {
-			switch (m_block[blockcnt].GetBlockType()) {
-			case MOVE_BLOCK_X:
-			case MOVE_BLOCK_Y:
-			case MOVE_BLOCK_Z:
-				m_block[blockcnt].BlockMove(&m_block[blockcnt]);
-				break;
+		if (cpos.y - m_block[blockcnt].GetBlockPosition().y > -1400.0f) {
+			if (m_block[blockcnt].GetBlockFlag() == TRUE) {
+				switch (m_block[blockcnt].GetBlockType()) {
+				case MOVE_BLOCK_X:
+				case MOVE_BLOCK_Y:
+				case MOVE_BLOCK_Z:
+					m_block[blockcnt].BlockMove(&m_block[blockcnt]);
+					break;
+				}
+				MV1DrawModel(m_block[blockcnt].b_model);
 			}
-			MV1DrawModel(m_block[blockcnt].b_model);
 		}
+		if (cpos.y - m_block[blockcnt].GetBlockPosition().y > 2450.0f)
+			m_block[blockcnt].SetBlockFlag(FALSE);
 	}
 
 	SetLightPositionHandle(LHandle_p1, VGet(player[0].GetPosition().x, player[0].GetPosition().y + 100.0f, player[0].GetPosition().z - 500.0f)); // ƒ‰ƒCƒg‚ÌˆÊ’u

@@ -48,12 +48,11 @@ int CharaBase::init( )
  + ======================================================== */
 int CharaBase::MoveSet(CharaBase* pp1)
 {
-	switch ( key1 & (PAD_INPUT_LEFT + PAD_INPUT_RIGHT + PAD_INPUT_DOWN + PAD_INPUT_UP) )
+	switch ( key[0] & (PAD_INPUT_LEFT + PAD_INPUT_RIGHT + PAD_INPUT_C) )
 	{
-		case PAD_INPUT_UP:
+		case PAD_INPUT_C :
 			if (act_mode != eCharaFall) {
 				posi.y = posi.y + 11.0f;
-				spd.y = PLAYER_JUMP_SPEED;
 				act_mode = eCharaJump;
 			}
 			break ;
@@ -70,22 +69,44 @@ int CharaBase::MoveSet(CharaBase* pp1)
 			direction = RIGHT ;
 			break ;
 
-		case (PAD_INPUT_LEFT + PAD_INPUT_UP) :
 		case (PAD_INPUT_LEFT + PAD_INPUT_C):
 			spd.x = -PLAYER_SPEED; // 右を押下 右に移動
 			if (act_mode != eCharaFall) {
 				posi.y = posi.y + 11.0f;
-				spd.y = PLAYER_JUMP_SPEED;
+				switch (type) {
+					case SPEEDMODE :
+						spd.y = SPEED_JUMP_SPEED;
+						break;
+
+					case BALANCEMODE:
+						spd.y = BALANCE_JUMP_SPEED;
+						break;
+
+					case POWERMODE:
+						spd.y = POWER_JUMP_SPEED;
+						break;
+				}
 				act_mode = eCharaJump;
 			}
 			break ;
 
-		case (PAD_INPUT_RIGHT + PAD_INPUT_UP) :
 		case (PAD_INPUT_RIGHT + PAD_INPUT_C):
 			spd.x = PLAYER_SPEED; // 右を押下 右に移動
 			if (act_mode != eCharaFall) {
 				posi.y = posi.y + 11.0f;
-				spd.y = PLAYER_JUMP_SPEED;
+				switch (type) {
+					case SPEEDMODE:
+						spd.y = SPEED_JUMP_SPEED;
+						break;
+
+					case BALANCEMODE:
+						spd.y = BALANCE_JUMP_SPEED;
+						break;
+
+					case POWERMODE:
+						spd.y = POWER_JUMP_SPEED;
+						break;
+				}
 				act_mode = eCharaJump;
 			}
 			break ;

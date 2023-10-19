@@ -68,7 +68,7 @@ Player* g_Chara[2];
 AnimationDate Original[3];
 int CharaIcon[2];
 
-// モブ
+//モブ
 MOBChara mob[MAX_MOB];
 
 // --- カメラ
@@ -91,6 +91,7 @@ char drawtime[10];
 // ライト
 int LHandle_p1;
 int LHandle_p2;
+int LightHandle3;
 
 float Range;
 float OutAngle;
@@ -98,6 +99,9 @@ float InAngle;
 float C_DirectionX;
 float C_DirectionY;
 float C_DirectionZ;
+
+//音楽保存用
+int SHandle[MAX_BGM];
 
 // 床
 float MaxY;

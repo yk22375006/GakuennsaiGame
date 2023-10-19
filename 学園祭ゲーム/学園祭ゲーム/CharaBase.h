@@ -76,6 +76,7 @@ class CharaBase {
 		int init( ) ;				// 初期セット
 		int MoveSet(CharaBase* pp1) ;			// 移動量をセット
 		AnimationDate anim ;		// アニメーションデータ
+		int SoundHandle[10];
 
 		// --- インライン関数 ---
 		// 使用フラグ取得セット

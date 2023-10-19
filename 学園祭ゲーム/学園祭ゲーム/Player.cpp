@@ -95,7 +95,6 @@ int Player::AllowKey( )
  |                                                          |
  + ======================================================== */
 int Player::LoadAnimation(CharaBase* pp1) {
-
 	if (pp1 == &player[0]) {
 		switch (pp1->GetType())
 		{
@@ -269,6 +268,20 @@ int Player::ChangeAnimationType(CharaBase* pp1, int set_anim)
 
 	return(false);
 }
+/* ======================================================== +
+ |                      LoadSE( )		                    |
+ |                   サウンド読み込み			            |
+ |                                                          |
+ + ======================================================== */
+void Player::LoadSE(CharaBase* pp1) {
+	pp1->SoundHandle[CHARA_CHENGE_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\CharaChange.mp3");
+	pp1->SoundHandle[CHARA_DECISION_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\Charadecision.mp3");
+	pp1->SoundHandle[CANCEL_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\Cancel.mp3");
+	pp1->SoundHandle[SPEEDATAACK_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\SpeedAttack.mp3");
+	pp1->SoundHandle[POWERATAACK_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\PowerAttack.mp3");
+	pp1->SoundHandle[BALANCEATAACK_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\BalanceAttack.mp3");
+	pp1->SoundHandle[JUMP_SE] = LoadSoundMem("..\\Data\\Sound\\SE\\Jump.mp3");
+}
 /* ############################################################################################### */
 /* ======================================================== +
  |						CharaChoice( )						|
@@ -295,7 +308,9 @@ void Player::CharaChoice(CharaBase* pp1) {
 				pp1->SetType(POWERMODE) ;
 		}
 		if ((key[0] & PAD_INPUT_LEFT) || (key[0] & PAD_INPUT_RIGHT)) {
-				ChangeAnimationType(pp1, pp1->anim.typestop[pp1->GetType()]);
+			ChangeAnimationType(pp1, pp1->anim.typestop[pp1->GetType()]);
+			// SEの再生
+			PlaySoundMem(pp1->SoundHandle[CHARA_CHENGE_SE], DX_PLAYTYPE_BACK, TRUE);
 		}
 	}
 }
@@ -317,6 +332,7 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 	if ( AllowKey( ) == (int)true ){
 		if (key[0] & PAD_INPUT_C){
 			pp1->MoveSet( pp1 );
+			PlaySoundMem(pp1->SoundHandle[JUMP_SE], DX_PLAYTYPE_BACK, TRUE);
 		}
 		else {
 			pp1->SetAct_Mode(eCharaMove);
@@ -342,6 +358,16 @@ void Player::CharaStop( CharaBase *pp1 , CharaBase* pp2)
 		pp1->SetAct_Mode(eCharaAttack);
 		pp1->SetMotion(pp1->GetAnimation_Data().attack);
 		ChangeAnimation(pp1, pp1->GetAnimation_Data().attack);	// アニメーション切り替え
+
+		if (pp1->GetType() == SPEEDMODE) {
+			PlaySoundMem(pp1->SoundHandle[SPEEDATAACK_SE], DX_PLAYTYPE_BACK, TRUE);
+		}
+		if (pp1->GetType() == POWERMODE) {
+			PlaySoundMem(pp1->SoundHandle[POWERATAACK_SE], DX_PLAYTYPE_BACK, TRUE);
+		}
+		if (pp1->GetType() == BALANCEMODE) {
+			PlaySoundMem(pp1->SoundHandle[BALANCEATAACK_SE], DX_PLAYTYPE_BACK, TRUE);
+		}
 	}
 }
 
